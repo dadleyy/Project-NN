@@ -2,6 +2,8 @@
 #include "framework/d3dx11Effect.h"
 #include "framework/MathHelper.h"
 
+#include "StateManager.h"
+
 
 class Game : public D3DApp
 {
@@ -15,6 +17,7 @@ public:
 	void DrawScene(); 
 
 private:
+	StateManager manager;
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
@@ -34,9 +37,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 }
  
 
-Game::Game(HINSTANCE hInstance) : D3DApp(hInstance)
+Game::Game(HINSTANCE hInstance) : D3DApp(hInstance), manager()
 {
 	mMainWndCaption = L"Project NN";
+	manager.PushState(NULL);
 }
 
 Game::~Game()
@@ -57,12 +61,15 @@ void Game::OnResize()
 
 void Game::UpdateScene(float dt)
 {
+	manager.Update(dt);
 }
 
 void Game::DrawScene()
 {
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::LightSteelBlue));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	manager.Draw();
 
 	HR(mSwapChain->Present(0, 0));
 }
