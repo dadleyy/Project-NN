@@ -1,8 +1,5 @@
-//--------------------------------------------------------------------------------------
-// File: Tutorial02.fx
-//
-// Copyright (c) Microsoft Corporation. All rights reserved.
-//--------------------------------------------------------------------------------------
+
+
 
 struct VERTEX
 {   float4 Pos : POSITION;    };
@@ -29,12 +26,33 @@ PIXEL VS( VERTEX input )
 }
 
 
+
+//*********************************
+// Pixel Shader
+//*********************************
+float4 PS( PIXEL input ) : SV_Target
+{
+	float4 final =  float4( 0.2f, 0.8f, 0.3f, 1.0f );
+	return final;
+}
+
 //*********************************
 // Pixel Shader 2
 //*********************************
-float4 PS( PIXEL input ) : SV_Target
+float4 PS2( PIXEL input ) : SV_Target
 {
 	float4 final =  float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	final = final - (1-input.depth);
 	return final;
+}
+
+
+technique11 Render
+{
+    pass P0
+    {
+        SetVertexShader( CompileShader( vs_4_0, VS() ) );
+        SetGeometryShader( NULL );
+        SetPixelShader( CompileShader( ps_4_0, PS() ) );
+    }
 }
