@@ -19,6 +19,7 @@ void TestState::Init(StateManager* manager)
 
 void TestState::Cleanup()
 {
+	sphere->destroy();
 }
 
 void TestState::Update(float dt)
