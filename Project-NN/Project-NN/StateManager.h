@@ -1,6 +1,7 @@
 #pragma once
+#include <vector>
 
-class State;
+class GameState;
 
 class StateManager
 {
@@ -10,7 +11,10 @@ public:
 
 	void Update(float dt);
 	void Draw();
-	void PushState(State* state);
+	void PushState(GameState* state);
 	void PopState();
+
+private:
+	std::vector<GameState*> states;
 };
 
