@@ -64,7 +64,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 Game::Game(HINSTANCE hInstance) : D3DApp(hInstance), manager()
 {
 	mMainWndCaption = L"Project NN";
-	manager.PushState(TestState::Instance());
 }
 
 Game::~Game()
@@ -75,6 +74,8 @@ bool Game::Init()
 {
 	if(!D3DApp::Init())
 		return false;
+	manager.Init(md3dDevice, md3dImmediateContext);
+	manager.PushState(TestState::Instance());
 	return true;
 }
 

@@ -2,6 +2,7 @@
 #include "../GameState.h"
 
 class StateManager;
+class Drawable;
 
 class TestState : public GameState
 {
@@ -18,4 +19,6 @@ public:
 
 private:
 	static TestState instance;
+
+	Drawable* sphere;
 };

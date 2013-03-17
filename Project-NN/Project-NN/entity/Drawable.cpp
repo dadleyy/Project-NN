@@ -12,8 +12,6 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext)
 	deviceContext = immediateContext;
 	pVertexBuffer = 0;
 	pVertexLayout = 0;
-	vertexShader = 0;
-	pixelShader = 0;
 	vertexStride = 0;
 	vertexOffset = 0;
 }
@@ -38,9 +36,17 @@ void Drawable::draw()
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	deviceContext->VSSetShader( vertexShader, NULL, 0 );
-	deviceContext->PSSetShader( pixelShader, NULL, 0 );
-    deviceContext->Draw( numVerts, 0 );
+	//deviceContext->VSSetShader( vertexShader, NULL, 0 );
+	//deviceContext->PSSetShader( pixelShader, NULL, 0 );
+    //deviceContext->Draw( numVerts, 0 );
+
+	D3DX11_TECHNIQUE_DESC techDesc;
+    technique->GetDesc( &techDesc );
+    for(UINT p = 0; p < techDesc.Passes; ++p)
+    {
+        technique->GetPassByIndex(p)->Apply(0, deviceContext);
+		deviceContext->Draw( numVerts, 0 );
+	}
 }
 
 
@@ -61,8 +67,7 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 #endif
 
     ID3DBlob* pErrorBlob;
-    hr = D3DX11CompileFromFile( szFileName, NULL, NULL, szEntryPoint, szShaderModel, 
-        dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
+    hr = D3DX11CompileFromFile( szFileName, 0, 0, 0, szShaderModel, dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
     if( FAILED(hr) )
     {
         if( pErrorBlob != NULL )

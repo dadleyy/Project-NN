@@ -3,6 +3,7 @@
 #include <d3dx11.h>
 #include <d3dcompiler.h>
 #include <xnamath.h>
+#include "..\framework\d3dx11effect.h"
 
 class Drawable
 {
@@ -21,10 +22,10 @@ protected:
 	ID3D11Device*			pD3DDevice;    //reference to the DX device being used
 	ID3D11DeviceContext*    deviceContext; //reference DX device context being used
 
-
-	ID3D11VertexShader*     vertexShader; //reference to the vertex shader for this object
-	//ID3D11GeometryShader*	geometryShader;	//reference to the geometry shader for this object
-	ID3D11PixelShader*      pixelShader; //reference to the pixel shader for this object
+	//pointers to compiles shader data, the effect and the technique
+	ID3DX11Effect*			effect;
+	ID3DX11EffectTechnique*	technique;
+	ID3D10Blob*				ppShader;
 
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
 	ID3D11InputLayout*  pVertexLayout;	//the description of our verticies

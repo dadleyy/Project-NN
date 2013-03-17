@@ -77,6 +77,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entity\Drawable.cpp" />
+    <ClCompile Include="entity\Sphere.cpp" />
     <ClCompile Include="framework\Camera.cpp" />
     <ClCompile Include="framework\d3dApp.cpp" />
     <ClCompile Include="framework\d3dUtil.cpp" />
@@ -93,6 +95,8 @@
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entity\Drawable.h" />
+    <ClInclude Include="entity\Sphere.h" />
     <ClInclude Include="framework\Camera.h" />
     <ClInclude Include="framework\d3dApp.h" />
     <ClInclude Include="framework\d3dUtil.h" />
