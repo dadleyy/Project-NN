@@ -32,7 +32,8 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 final =  float4( 0.2f, 0.8f, 0.3f, 1.0f );
+	float4 final =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
+	final = final - (input.depth);
 	return final;
 }
 

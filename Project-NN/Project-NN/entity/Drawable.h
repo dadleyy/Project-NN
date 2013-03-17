@@ -11,9 +11,12 @@ public:
 	Drawable(void);
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
-	virtual void createBuffer(); 
+	
 	void destroy(); //releases all buffers and deletes all pointers. Call before deleteing this object.
 	void draw();	
+	virtual void createBuffer(); 
+	virtual XMFLOAT3* getVerts(float radius, int divisions);
+	virtual UINT* getIndicies();
 
 protected:
 	UINT vertexStride; //the size of an individual vertex in bytes
@@ -27,9 +30,16 @@ protected:
 	ID3DX11EffectTechnique*	technique;
 	ID3D10Blob*				ppShader;
 
+	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
 	ID3D11InputLayout*  pVertexLayout;	//the description of our verticies
+	//index buffer
+	ID3D11Buffer*		indexBuffer;	//the buffer for our verticies
+
 	int numVerts;
+	int numIndicies;
+
+
 
 	//Microsofts method that compiles shaders from inside a file
 	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );
