@@ -12,6 +12,12 @@ StateManager::~StateManager(void)
 }
 
 
+void StateManager::Init(ID3D11Device* device, ID3D11DeviceContext* context)
+{
+	this->device = device;
+	this->context = context;
+}
+
 void StateManager::Update(float dt)
 {
 	states[states.size() - 1]->Update(dt);
@@ -25,7 +31,7 @@ void StateManager::Draw()
 
 void StateManager::PushState(GameState* state)
 {
-	state->Init();
+	state->Init(this);
 	states.push_back(state);
 }
 
@@ -33,4 +39,14 @@ void StateManager::PopState()
 {
 	states[states.size() - 1]->Cleanup();
 	states.pop_back();
+}
+
+ID3D11Device* StateManager::GetDevice()
+{
+	return device;
+}
+
+ID3D11DeviceContext* StateManager::GetContext()
+{
+	return context;
 }

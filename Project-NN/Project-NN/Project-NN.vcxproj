@@ -77,6 +77,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entity\Drawable.cpp" />
+    <ClCompile Include="entity\Sphere.cpp" />
     <ClCompile Include="framework\Camera.cpp" />
     <ClCompile Include="framework\d3dApp.cpp" />
     <ClCompile Include="framework\d3dUtil.cpp" />
@@ -87,11 +89,14 @@
     <ClCompile Include="framework\TextureMgr.cpp" />
     <ClCompile Include="framework\Waves.cpp" />
     <ClCompile Include="framework\xnacollision.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entity\Drawable.h" />
+    <ClInclude Include="entity\Sphere.h" />
     <ClInclude Include="framework\Camera.h" />
     <ClInclude Include="framework\d3dApp.h" />
     <ClInclude Include="framework\d3dUtil.h" />

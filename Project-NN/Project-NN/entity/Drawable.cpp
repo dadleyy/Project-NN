@@ -12,8 +12,6 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext)
 	deviceContext = immediateContext;
 	pVertexBuffer = 0;
 	pVertexLayout = 0;
-	vertexShader = 0;
-	pixelShader = 0;
 	vertexStride = 0;
 	vertexOffset = 0;
 }

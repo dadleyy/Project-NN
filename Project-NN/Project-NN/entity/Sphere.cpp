@@ -24,7 +24,7 @@ void Sphere::createBuffer()
 	HRESULT hr;
 	//create the vertex shader
 	ID3DBlob* pVSBlob = NULL;
-    hr = CompileShaderFromFile( L"DrawSphere.fx", NULL, "fx_5_0", &ppShader ); 
+    hr = CompileShaderFromFile( L"res/shaders/DrawSphere.fx", NULL, "fx_5_0", &ppShader ); 
 	//hr = pD3DDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &vertexShader );
 	D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &effect);
 	technique = effect->GetTechniqueByName("Render");
