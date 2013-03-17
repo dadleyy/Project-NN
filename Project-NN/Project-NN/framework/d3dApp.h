@@ -36,10 +36,12 @@ public:
 	virtual void DrawScene()=0; 
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	// Convenience overrides for handling mouse input.
+	// Convenience overrides for handling mouse and keyboard input.
 	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
 	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
+	virtual void OnKeyDown(WPARAM keyCode){ }
+	virtual void OnKeyUp(WPARAM keyCode){ }
 
 protected:
 	bool InitMainWindow();
