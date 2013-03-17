@@ -5,8 +5,9 @@ using namespace std;
 
 TestState TestState::instance;
 
-void TestState::Init()
+void TestState::Init(StateManager* manager)
 {
+	GameState::Init(manager);
 	cout << "Initting" << endl;
 }
 

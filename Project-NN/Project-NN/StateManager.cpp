@@ -25,7 +25,7 @@ void StateManager::Draw()
 
 void StateManager::PushState(GameState* state)
 {
-	state->Init();
+	state->Init(this);
 	states.push_back(state);
 }
 

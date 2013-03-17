@@ -1,11 +1,13 @@
 #pragma once
 #include "../GameState.h"
 
+class StateManager;
+
 class TestState : public GameState
 {
 public:
 
-	void Init();
+	void Init(StateManager* manager);
 	void Cleanup();
 	void Update(float dt);
 	void Draw();

@@ -87,6 +87,7 @@
     <ClCompile Include="framework\TextureMgr.cpp" />
     <ClCompile Include="framework\Waves.cpp" />
     <ClCompile Include="framework\xnacollision.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
