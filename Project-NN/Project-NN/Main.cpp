@@ -4,8 +4,6 @@
 #include <fcntl.h>
 
 #include "framework/d3dApp.h"
-#include "framework/d3dx11Effect.h"
-#include "framework/MathHelper.h"
 
 #include "StateManager.h"
 #include "states/TestState.h"
