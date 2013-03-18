@@ -14,6 +14,8 @@ public:
 	void Init(ID3D11Device* device, ID3D11DeviceContext* context);
 	void Update(float dt);
 	void Draw();
+	void OnMouseDown(int x, int y);
+
 	void PushState(GameState* state);
 	void PopState();
 

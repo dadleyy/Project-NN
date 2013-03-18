@@ -20,6 +20,8 @@ public:
 	void UpdateScene(float dt);
 	void DrawScene(); 
 
+	void OnMouseDown(WPARAM btnState, int x, int y);
+
 private:
 	StateManager manager;
 };
@@ -97,4 +99,9 @@ void Game::DrawScene()
 	manager.Draw();
 
 	HR(mSwapChain->Present(0, 0));
+}
+
+void Game::OnMouseDown(WPARAM btnState, int x, int y)
+{
+	manager.OnMouseDown(x, y);
 }

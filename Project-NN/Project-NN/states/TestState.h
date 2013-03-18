@@ -12,6 +12,7 @@ public:
 	void Cleanup();
 	void Update(float dt);
 	void Draw();
+	void OnMouseDown(int x, int y);
 
 	static TestState* Instance() {
 		return &instance;

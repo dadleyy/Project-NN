@@ -29,6 +29,11 @@ void StateManager::Draw()
 	states[states.size() - 1]->Draw();
 }
 
+void StateManager::OnMouseDown(int x, int y)
+{
+	states[states.size() - 1]->OnMouseDown(x, y);
+}
+
 void StateManager::PushState(GameState* state)
 {
 	state->Init(this);

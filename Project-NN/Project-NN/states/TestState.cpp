@@ -24,11 +24,14 @@ void TestState::Cleanup()
 
 void TestState::Update(float dt)
 {
-	cout << "Updating: " << dt << endl;
 }
 
 void TestState::Draw()
 {
-	cout << "Drawing" << endl;
 	sphere->draw();
+}
+
+void TestState::OnMouseDown(int x, int y)
+{
+	cout << "You clicked in the game!" << endl;
 }
