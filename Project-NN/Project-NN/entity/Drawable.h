@@ -4,14 +4,17 @@
 #include <d3dcompiler.h>
 #include <xnamath.h>
 #include "..\framework\d3dx11effect.h"
+#include "..\ResourceManager.h"
+
+extern ResourceManager* drawAtts;
 
 class Drawable
 {
+	
 public:
 	Drawable(void);
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
-	
 	void destroy(); //releases all buffers and deletes all pointers. Call before deleteing this object.
 	void draw();	
 	virtual void createBuffer(); 
@@ -28,7 +31,6 @@ protected:
 	//pointers to compiles shader data, the effect and the technique
 	ID3DX11Effect*			effect;
 	ID3DX11EffectTechnique*	technique;
-	ID3D10Blob*				ppShader;
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies

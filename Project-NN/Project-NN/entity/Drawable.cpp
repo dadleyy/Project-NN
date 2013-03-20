@@ -41,7 +41,7 @@ void Drawable::draw()
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
+	
 	D3DX11_TECHNIQUE_DESC techDesc;
     technique->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
@@ -93,7 +93,7 @@ void Drawable::createBuffer()
 {
 	HRESULT hr;
 	//create the vertex shader
-	ID3DBlob* pVSBlob = NULL;
+	ID3DBlob* ppShader = NULL;
     hr = CompileShaderFromFile( L"res/shaders/DrawSphere.fx", NULL, "fx_5_0", &ppShader ); 
 	//hr = pD3DDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &vertexShader );
 	D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &effect);
@@ -111,7 +111,7 @@ void Drawable::createBuffer()
 				1,
 				passDesc.pIAInputSignature,
 				passDesc.IAInputSignatureSize,
-				&pVertexLayout);
+			&pVertexLayout);
 
 	XMFLOAT3 *v = getVerts(.3, 50);
 
@@ -150,6 +150,7 @@ void Drawable::createBuffer()
 	// Create the index buffer.
 	ID3D11Buffer* mIB;
 	pD3DDevice->CreateBuffer(&indB, &InitData, &indexBuffer);
+
 }
 
 

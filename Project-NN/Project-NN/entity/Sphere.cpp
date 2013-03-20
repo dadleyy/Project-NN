@@ -21,7 +21,33 @@ Sphere::~Sphere(void)
 //****************************************************************
 void Sphere::createBuffer()
 {
-	Drawable::createBuffer();
+	HRESULT hr;
+	//create the vertex shader
+	technique = drawAtts->effects.at("sphereEffect")->effect->GetTechniqueByName("Render");
+
+	//VERTEX BUFFER
+	//describe the input layout
+	D3D11_INPUT_ELEMENT_DESC layout[] = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
+	
+	//get required vertex information from a shader technique
+	D3DX11_PASS_DESC passDesc;
+    technique->GetPassByIndex(0)->GetDesc(&passDesc);
+
+	hr = pD3DDevice->CreateInputLayout(layout,
+				1,
+				passDesc.pIAInputSignature,
+				passDesc.IAInputSignatureSize,
+				&pVertexLayout);
+
+
+	pVertexBuffer = drawAtts->meshes.at("sphereMesh")->verticies;
+	indexBuffer = drawAtts->meshes.at("sphereMesh")->indicies;
+
+	vertexStride = drawAtts->meshes.at("sphereMesh")->vertexStride;
+	vertexOffset = drawAtts->meshes.at("sphereMesh")->vertexOffset;
+
+	numVerts = drawAtts->meshes.at("sphereMesh")->numVerts;
+	numIndicies = drawAtts->meshes.at("sphereMesh")->numIndicies;
 }
 
 //********************************************************
