@@ -40,14 +40,14 @@ void Sphere::createBuffer()
 				&pVertexLayout);
 
 
-	pVertexBuffer = drawAtts->meshes.at("sphereMesh")->verticies;
-	indexBuffer = drawAtts->meshes.at("sphereMesh")->indicies;
+	pVertexBuffer = drawAtts->meshes.at("testSphere")->verticies;
+	indexBuffer = drawAtts->meshes.at("testSphere")->indicies;
 
-	vertexStride = drawAtts->meshes.at("sphereMesh")->vertexStride;
-	vertexOffset = drawAtts->meshes.at("sphereMesh")->vertexOffset;
+	vertexStride = drawAtts->meshes.at("testSphere")->vertexStride;
+	vertexOffset = drawAtts->meshes.at("testSphere")->vertexOffset;
 
-	numVerts = drawAtts->meshes.at("sphereMesh")->numVerts;
-	numIndicies = drawAtts->meshes.at("sphereMesh")->numIndicies;
+	numVerts = drawAtts->meshes.at("testSphere")->numVerts;
+	numIndicies = drawAtts->meshes.at("testSphere")->numIndicies;
 }
 
 //********************************************************

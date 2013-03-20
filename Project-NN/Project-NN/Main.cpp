@@ -7,7 +7,9 @@
 
 #include "StateManager.h"
 #include "states/TestState.h"
+#include "ResourceManager.h"
 
+ResourceManager* drawAtts;
 
 class Game : public D3DApp
 {
@@ -76,7 +78,15 @@ bool Game::Init()
 {
 	if(!D3DApp::Init())
 		return false;
+
+	
+
 	manager.Init(md3dDevice, md3dImmediateContext);
+
+	drawAtts = new ResourceManager(md3dDevice);
+	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
+	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
+
 	manager.PushState(TestState::Instance());
 	return true;
 }
