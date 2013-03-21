@@ -12,8 +12,11 @@ TestState TestState::instance;
 void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
-	sphere = new Sphere(manager->GetDevice(), manager->GetContext());
+	
+    sphere = new Sphere(manager->GetDevice(), manager->GetContext());
+    sphere->getEffectVariables("sphereEffect", "Render");
 	sphere->createBuffer();
+
 	cout << "Initting" << endl;
 }
 

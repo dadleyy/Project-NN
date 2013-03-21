@@ -22,8 +22,6 @@ Sphere::~Sphere(void)
 void Sphere::createBuffer()
 {
 	HRESULT hr;
-	//create the vertex shader
-	technique = drawAtts->effects.at("sphereEffect")->effect->GetTechniqueByName("Render");
 
 	//VERTEX BUFFER
 	//describe the input layout

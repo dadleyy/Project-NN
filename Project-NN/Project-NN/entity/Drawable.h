@@ -15,11 +15,16 @@ public:
 	Drawable(void);
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
-	void destroy(); //releases all buffers and deletes all pointers. Call before deleteing this object.
+	void destroy(); //releases all buffers and deletes all pointers. Call before deleting this object.
+	
 	void draw();	
+	void update();
+
 	virtual void createBuffer(); 
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
+    virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
+	void setPosition(XMFLOAT3 pos);
 
 protected:
 	UINT vertexStride; //the size of an individual vertex in bytes
@@ -31,6 +36,7 @@ protected:
 	//pointers to compiles shader data, the effect and the technique
 	ID3DX11Effect*			effect;
 	ID3DX11EffectTechnique*	technique;
+    ID3DX11EffectMatrixVariable* effectWorldViewRef;
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
@@ -45,7 +51,12 @@ protected:
 
 	//Microsofts method that compiles shaders from inside a file
 	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );
-	//-Things needed in the future-
+  
+    // world matrix
+    XMFLOAT4X4 world;
+    XMFLOAT3 position;
+       
+    //-Things needed in the future-
 	//global shader paramterts[]
 	//location
 	//scale

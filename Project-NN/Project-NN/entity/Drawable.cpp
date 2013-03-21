@@ -5,7 +5,7 @@ Drawable::Drawable(void)
 {
 }
 
-Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext)
+Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : world()
 {
 	numVerts = 0;
 	pD3DDevice = device;
@@ -14,10 +14,14 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext)
 	pVertexLayout = 0;
 	vertexStride = 0;
 	vertexOffset = 0;
+	XMMATRIX I = XMMatrixIdentity();
+	XMStoreFloat4x4( &world, I );
+	setPosition(XMFLOAT3(.1, .2, 0));
 }
 
 Drawable::~Drawable(void)
 {
+		
 }
 
 XMFLOAT3* Drawable::getVerts(float radius, int divisions)
@@ -35,6 +39,18 @@ void Drawable::draw()
 {
 	UINT stride = sizeof(float)*3;
 	UINT offset = 0;
+
+	//build world matrix
+	XMMATRIX w = XMLoadFloat4x4( &world );
+	//translate matrix
+	XMMATRIX translate = XMMatrixTranslation(position.x, position.y, position.z);
+	w = w*translate;
+	// Set constants 
+	
+	//XMMATRIX vp = drawAtts->camera.ViewProj();
+	//XMMATRIX wvp = XMMatrixMultiply( vp, w );
+
+	effectWorldViewRef->SetMatrix( reinterpret_cast<float*>(&w) );
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
@@ -82,7 +98,11 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
     return S_OK;
 }
 
-
+void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
+{
+    technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
+    effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
+}
 
 //****************************************************************
 //Creates all buffers needed for the object (vertex, index, etc.)
@@ -163,3 +183,8 @@ void Drawable::destroy()
 }
 
 
+//Properties
+void Drawable::setPosition(XMFLOAT3 pos)
+{
+	position = pos;
+}

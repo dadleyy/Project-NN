@@ -4,6 +4,7 @@
 #include <d3dcompiler.h>
 #include <xnamath.h>
 #include "framework\d3dx11effect.h"
+#include "framework\Camera.h"
 #include <unordered_map>
 
 struct Mesh
@@ -42,6 +43,9 @@ public:
 	void addEffect(WCHAR* file, char* name);
 	void addTesellatedSphere(float radius, int divisions, char* name);
 	void addMesh(char* objFile, char* name);
+    void makeCamera( );
+
+    Camera camera;
 
 private:
 	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );

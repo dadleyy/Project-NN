@@ -86,7 +86,7 @@ bool Game::Init()
 	drawAtts = new ResourceManager(md3dDevice);
 	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
 	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
-
+	drawAtts->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
 }

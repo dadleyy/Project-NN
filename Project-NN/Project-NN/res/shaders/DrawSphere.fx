@@ -1,5 +1,6 @@
-
-
+cbuffer cbPerObject {
+	float4x4 worldViewProj; 
+};
 
 struct VERTEX
 {   float4 Pos : POSITION;    };
@@ -16,11 +17,12 @@ PIXEL VS( VERTEX input )
 {
     PIXEL output = (PIXEL)0;
 
-	float4 i = input.Pos;
-	i.z = .5;
+	float d = input.Pos.z;
 
-	output.Pos = i;
-	output.depth = input.Pos.z;
+	output.Pos = mul( input.Pos, worldViewProj );
+	output.depth  = d;
+	//output.Pos.x = output.Pos.x/input.z;
+	//output.Pos.y = output.Pos.x/input.z;
 
 	return output;
 }

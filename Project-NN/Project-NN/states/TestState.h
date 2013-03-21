@@ -1,4 +1,5 @@
 #pragma once
+
 #include "../GameState.h"
 
 class StateManager;
@@ -20,6 +21,6 @@ public:
 
 private:
 	static TestState instance;
-
 	Drawable* sphere;
+
 };
