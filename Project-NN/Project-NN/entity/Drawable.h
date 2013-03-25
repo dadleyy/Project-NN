@@ -24,6 +24,7 @@ public:
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
+	XMFLOAT3 getPosition();
 	void setPosition(XMFLOAT3 pos);
 
 protected:

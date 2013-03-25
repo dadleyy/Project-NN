@@ -182,8 +182,10 @@ void Drawable::destroy()
 	pVertexLayout->Release();*/
 }
 
+XMFLOAT3 Drawable::getPosition() {
+	return position;
+}
 
-//Properties
 void Drawable::setPosition(XMFLOAT3 pos)
 {
 	position = pos;
