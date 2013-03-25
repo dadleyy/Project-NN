@@ -1,6 +1,8 @@
 #include "Sphere.h"
 
 
+extern ResourceManager* drawAtts;
+
 Sphere::Sphere(void)
 {
 }

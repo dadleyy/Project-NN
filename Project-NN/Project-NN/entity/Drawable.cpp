@@ -1,6 +1,8 @@
 #include "Drawable.h"
 
 
+extern ResourceManager* drawAtts;
+
 Drawable::Drawable(void)
 {
 }
@@ -47,10 +49,10 @@ void Drawable::draw()
 	w = w*translate;
 	// Set constants 
 	
-	//XMMATRIX vp = drawAtts->camera.ViewProj();
-	//XMMATRIX wvp = XMMatrixMultiply( vp, w );
+	XMMATRIX vp = drawAtts->camera.ViewProj();
+	XMMATRIX wvp = w * vp;
 
-	effectWorldViewRef->SetMatrix( reinterpret_cast<float*>(&w) );
+	effectWorldViewRef->SetMatrix( reinterpret_cast<float*>(&wvp) );
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );

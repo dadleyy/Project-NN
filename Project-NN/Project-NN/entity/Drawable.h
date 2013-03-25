@@ -6,7 +6,6 @@
 #include "..\framework\d3dx11effect.h"
 #include "..\ResourceManager.h"
 
-extern ResourceManager* drawAtts;
 
 class Drawable
 {
