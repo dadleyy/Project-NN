@@ -18,7 +18,7 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext) 
 	vertexOffset = 0;
 	XMMATRIX I = XMMatrixIdentity();
 	XMStoreFloat4x4( &world, I );
-	setPosition(XMFLOAT3(.1, .2, 0));
+	setPosition(XMFLOAT3(0, 0, 0));
 }
 
 Drawable::~Drawable(void)

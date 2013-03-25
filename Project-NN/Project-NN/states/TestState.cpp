@@ -46,5 +46,6 @@ void TestState::OnMouseDown(int x, int y)
 {
 	cout << "You clicked in the game!" << endl;
 	drawAtts->camera.Walk(-0.1f);
+	drawAtts->camera.Strafe(0.1f);
 	cout << drawAtts->camera.GetPosition().z << endl;
 }

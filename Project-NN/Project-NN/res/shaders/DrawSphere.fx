@@ -21,8 +21,6 @@ PIXEL VS( VERTEX input )
 
 	output.Pos = mul( input.Pos, worldViewProj );
 	output.depth  = d;
-	//output.Pos.x = output.Pos.x/input.z;
-	//output.Pos.y = output.Pos.x/input.z;
 
 	return output;
 }
