@@ -1,4 +1,4 @@
 Project-NN
 ==========
 
-3G game programming foundations project
+3D game programming foundations project
