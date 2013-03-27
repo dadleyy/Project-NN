@@ -322,7 +322,9 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		OnMouseMove(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		return 0;
 	case WM_KEYDOWN:
-		OnKeyDown(wParam);
+		//Ignore key repeat.
+		if(!(lParam & 0x40000000))
+			OnKeyDown(wParam);
 		return 0;
 	case WM_KEYUP:
 		OnKeyUp(wParam);
