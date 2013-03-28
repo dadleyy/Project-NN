@@ -4,8 +4,8 @@
 #ifndef _INPUT_H                // prevent multiple definitions if this 
 #define _INPUT_H                // ..file is included in more than one place
 
-#include "d3dUtil.h"
-#include "GameTimer.h"
+#include "framework/d3dUtil.h"
+#include "framework/GameTimer.h"
 #include <string>
 #include <windows.h>
 #include <WindowsX.h>
@@ -124,6 +124,6 @@ public:
 		// Clear text input buffer
 		void clearTextIn() {textIn.clear();}
 	//end cleanup
-}
+};
 
 #endif //Input_H
