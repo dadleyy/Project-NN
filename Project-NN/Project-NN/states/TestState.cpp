@@ -1,8 +1,8 @@
 #include "TestState.h"
 
-#include "../StateManager.h"
-#include "../entity/Drawable.h"
-#include "../entity/Sphere.h"
+#include "StateManager.h"
+#include "entity/Drawable.h"
+#include "entity/Sphere.h"
 
 #include <iostream>
 using namespace std;
