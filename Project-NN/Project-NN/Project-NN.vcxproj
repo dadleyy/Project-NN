@@ -90,6 +90,7 @@
     <ClCompile Include="framework\Waves.cpp" />
     <ClCompile Include="framework\xnacollision.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="framework\Waves.h" />
     <ClInclude Include="framework\xnacollision.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="states\TestState.h" />
