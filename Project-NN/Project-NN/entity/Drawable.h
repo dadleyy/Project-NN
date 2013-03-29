@@ -3,11 +3,13 @@
 #include <d3dx11.h>
 #include <d3dcompiler.h>
 #include <xnamath.h>
-#include "..\framework\d3dx11effect.h"
-#include "..\ResourceManager.h"
+
+#include "Component.h"
+#include "framework/d3dx11effect.h"
+#include "ResourceManager.h"
 
 
-class Drawable
+class Drawable : public Component
 {
 	
 public:
@@ -15,10 +17,8 @@ public:
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
 	void destroy(); //releases all buffers and deletes all pointers. Call before deleting this object.
-	
-	void draw();	
-	void update();
 
+	void draw();	
 	virtual void createBuffer(); 
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();

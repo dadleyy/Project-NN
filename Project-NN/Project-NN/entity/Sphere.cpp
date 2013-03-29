@@ -3,16 +3,11 @@
 
 extern ResourceManager* drawAtts;
 
-Sphere::Sphere(void)
-{
-}
-
 Sphere::Sphere(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : Drawable(device, immediateContext)
 {
-	
 }
 
-Sphere::~Sphere(void)
+Sphere::~Sphere()
 {
 }
 

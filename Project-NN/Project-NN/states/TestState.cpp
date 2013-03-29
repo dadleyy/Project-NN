@@ -2,7 +2,7 @@
 
 #include "StateManager.h"
 #include "entity/Drawable.h"
-#include "entity/Sphere.h"
+#include "entity/Asteroid.h"
 
 #include <iostream>
 using namespace std;
@@ -14,17 +14,14 @@ void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 	
-    sphere = new Sphere(manager->GetDevice(), manager->GetContext());
-    sphere->getEffectVariables("sphereEffect", "Render");
-	sphere->createBuffer();
+	asteroid = new Asteroid(manager->GetDevice(), manager->GetContext());
 
 	cout << "Initting" << endl;
-	drawAtts->camera.SetPosition(XMFLOAT3(-0.3f, -0.3f, -0.3f));
+	drawAtts->camera.SetPosition(XMFLOAT3(-0.7f, -0.7f, -0.7f));
 }
 
 void TestState::Cleanup()
 {
-	sphere->destroy();
 }
 
 void TestState::Update(float dt)
@@ -35,11 +32,13 @@ void TestState::Update(float dt)
 
 	drawAtts->camera.LookAt(pos, target, up);
 	drawAtts->camera.UpdateViewMatrix();
+
+	asteroid->Update(dt);
 }
 
 void TestState::Draw()
 {
-	sphere->draw();
+	asteroid->Draw();
 }
 
 void TestState::OnMouseDown(int x, int y)
