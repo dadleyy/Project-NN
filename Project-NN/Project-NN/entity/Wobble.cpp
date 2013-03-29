@@ -10,7 +10,7 @@ using namespace std;
 
 
 void Wobble::Init(GameObject* go) {
-	drawable = go->GetComponent<Sphere>();
+	drawable = go->GetComponent<Drawable>();
 	if(drawable == nullptr) {
 		//TODO: Cause program to crash
 		cout << "ERROR: Drawable not found!" << endl;
