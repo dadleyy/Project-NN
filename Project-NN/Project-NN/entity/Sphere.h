@@ -10,6 +10,7 @@ public:
 	~Sphere();
 
 	virtual void createBuffer();
+	virtual void createBuffer(char* mesh);
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
 

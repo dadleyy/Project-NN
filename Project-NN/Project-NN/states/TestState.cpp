@@ -17,7 +17,8 @@ void TestState::Init(StateManager* manager)
 	asteroid = new Asteroid(manager->GetDevice(), manager->GetContext());
 
 	cout << "Initting" << endl;
-	drawAtts->camera.SetPosition(XMFLOAT3(-0.7f, -0.7f, -0.7f));
+	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0/600.0f, 0.01f, 100.0f);
+	drawAtts->camera.SetPosition(XMFLOAT3(0.5f, 0.5f, -1.0f));
 }
 
 void TestState::Cleanup()

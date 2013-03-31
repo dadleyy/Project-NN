@@ -20,6 +20,7 @@ public:
 
 	void draw();	
 	virtual void createBuffer(); 
+	virtual void createBuffer(char* mesh);
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);

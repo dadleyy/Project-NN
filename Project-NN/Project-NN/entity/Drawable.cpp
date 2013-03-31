@@ -100,6 +100,7 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
     return S_OK;
 }
 
+
 void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 {
     technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
@@ -111,15 +112,9 @@ void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 //and compiles the shaders to be used for this object
 // **We need to add the index buffer code still**
 //****************************************************************
-void Drawable::createBuffer()
+void Drawable::createBuffer(char* mesh)
 {
 	HRESULT hr;
-	//create the vertex shader
-	ID3DBlob* ppShader = NULL;
-    hr = CompileShaderFromFile( L"res/shaders/DrawSphere.fx", NULL, "fx_5_0", &ppShader ); 
-	//hr = pD3DDevice->CreateVertexShader( pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), NULL, &vertexShader );
-	D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &effect);
-	technique = effect->GetTechniqueByName("Render");
 
 	//VERTEX BUFFER
 	//describe the input layout
@@ -133,48 +128,48 @@ void Drawable::createBuffer()
 				1,
 				passDesc.pIAInputSignature,
 				passDesc.IAInputSignatureSize,
-			&pVertexLayout);
+				&pVertexLayout);
 
-	XMFLOAT3 *v = getVerts(.3, 50);
 
-	D3D11_BUFFER_DESC bufferDescription;
-	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change
-	bufferDescription.ByteWidth = sizeof(float) * 3 * numVerts; //total number of bytes for all verticies
-	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER; //binds the buffer to the correct type
-	bufferDescription.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
-	bufferDescription.MiscFlags = 0;	//only one D3D device
-	
-	//add the data for the buffer
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = v;
+	pVertexBuffer = drawAtts->meshes.at(mesh)->verticies;
+	indexBuffer = drawAtts->meshes.at(mesh)->indicies;
 
-	//Set the size of a single vertex
-	vertexStride = sizeof(float)*3;
+	vertexStride = drawAtts->meshes.at(mesh)->vertexStride;
+	vertexOffset = drawAtts->meshes.at(mesh)->vertexOffset;
 
-	//create the vertex buffer
-	hr = pD3DDevice->CreateBuffer(&bufferDescription, &InitData, &pVertexBuffer);
-
-	//INDEX BUFFER
-	UINT* i = getIndicies();
-
-	// Describe the index buffer we are going to create.
-    D3D11_BUFFER_DESC indB;
-    indB.Usage = D3D11_USAGE_IMMUTABLE;
-    indB.ByteWidth = sizeof(UINT) * numIndicies;
-    indB.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indB.CPUAccessFlags = 0;
-    indB.MiscFlags = 0;
-    indB.StructureByteStride = 0;
-
-	// Specify the data to initialize the index buffer.
-	InitData.pSysMem = i;
-
-	// Create the index buffer.
-	ID3D11Buffer* mIB;
-	pD3DDevice->CreateBuffer(&indB, &InitData, &indexBuffer);
-
+	numVerts = drawAtts->meshes.at(mesh)->numVerts;
+	numIndicies = drawAtts->meshes.at(mesh)->numIndicies;
 }
 
+
+void Drawable::createBuffer()
+{
+	HRESULT hr;
+
+	//VERTEX BUFFER
+	//describe the input layout
+	D3D11_INPUT_ELEMENT_DESC layout[] = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
+	
+	//get required vertex information from a shader technique
+	D3DX11_PASS_DESC passDesc;
+    technique->GetPassByIndex(0)->GetDesc(&passDesc);
+
+	hr = pD3DDevice->CreateInputLayout(layout,
+				1,
+				passDesc.pIAInputSignature,
+				passDesc.IAInputSignatureSize,
+				&pVertexLayout);
+
+
+	pVertexBuffer = drawAtts->meshes.at("testSphere")->verticies;
+	indexBuffer = drawAtts->meshes.at("testSphere")->indicies;
+
+	vertexStride = drawAtts->meshes.at("testSphere")->vertexStride;
+	vertexOffset = drawAtts->meshes.at("testSphere")->vertexOffset;
+
+	numVerts = drawAtts->meshes.at("testSphere")->numVerts;
+	numIndicies = drawAtts->meshes.at("testSphere")->numIndicies;
+}
 
 
 void Drawable::destroy()
@@ -184,9 +179,11 @@ void Drawable::destroy()
 	pVertexLayout->Release();*/
 }
 
+
 XMFLOAT3 Drawable::getPosition() {
 	return position;
 }
+
 
 void Drawable::setPosition(XMFLOAT3 pos)
 {
