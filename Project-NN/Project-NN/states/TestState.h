@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "GameState.h"
 
 class StateManager;
@@ -21,6 +23,6 @@ public:
 
 private:
 	static TestState instance;
-	Asteroid* asteroid;
+	std::vector<Asteroid*> asteroids;
 
 };

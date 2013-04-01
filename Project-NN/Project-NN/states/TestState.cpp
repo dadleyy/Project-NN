@@ -5,6 +5,7 @@
 #include "entity/Asteroid.h"
 
 #include <iostream>
+#include <random>
 using namespace std;
 
 TestState TestState::instance;
@@ -13,8 +14,14 @@ extern ResourceManager* drawAtts;
 void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
+
+	default_random_engine generator;
+	uniform_real_distribution<float> distribution(-10, 10.0);
 	
-	asteroid = new Asteroid(manager->GetDevice(), manager->GetContext());
+	for(int i = 0; i < 400; i++) {
+		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
+			distribution(generator), distribution(generator), distribution(generator)));
+	}
 
 	cout << "Initting" << endl;
 	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0/600.0f, 0.01f, 100.0f);
@@ -34,12 +41,16 @@ void TestState::Update(float dt)
 	drawAtts->camera.LookAt(pos, target, up);
 	drawAtts->camera.UpdateViewMatrix();
 
-	asteroid->Update(dt);
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+		(*it)->Update(dt);
+	}
 }
 
 void TestState::Draw()
 {
-	asteroid->Draw();
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+		(*it)->Draw();
+	}
 }
 
 void TestState::OnMouseDown(int x, int y)
