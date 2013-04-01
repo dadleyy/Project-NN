@@ -1,9 +1,5 @@
 #include "entity/GameObject.h"
 
-#include <iostream>
-#include <typeinfo>
-using namespace std;
-
 #include "Component.h"
 
 void GameObject::Update(float dt) {
