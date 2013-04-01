@@ -1,6 +1,7 @@
 #include "Asteroid.h"
 
-
+#include "Drawable.h"
+#include "Wobble.h"
 
 
 Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext) {

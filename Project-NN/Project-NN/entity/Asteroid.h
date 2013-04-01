@@ -1,9 +1,9 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Drawable.h"
-#include "Wobble.h"
 
+class Drawable;
+class Wobble;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
