@@ -6,6 +6,9 @@
 
 #include <iostream>
 #include <random>
+
+#define CAMERA_VELOCITY 3.0
+
 using namespace std;
 
 TestState TestState::instance;
@@ -14,6 +17,11 @@ extern ResourceManager* drawAtts;
 void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
+
+    mouseDown = false;
+    currentmouseposition[0] = currentmouseposition[1] = 0;
+    lastmouseposition[0] = lastmouseposition[1] = 0;
+
 
 	uniform_real_distribution<float> distribution(-10, 10);
 	
@@ -34,18 +42,66 @@ void TestState::Cleanup()
 	}
 }
 
+void TestState::handleKey( int keycode, float dt )
+{
+    // cout << keycode << endl;
+    switch(keycode)
+    {
+    case 81:
+        drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
+        break;
+    case 69:
+        drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
+        break;
+    case 83:
+        drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
+        break;
+    case 87:
+        drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
+        break;
+    default:
+        break;
+    }
+}
+
 void TestState::Update(float dt)
 {
-	XMFLOAT3 pos    = drawAtts->camera.GetPosition();
+
+    if( mouseDown ) {
+        float rotAngle = (1 * dt);
+        drawAtts->camera.RotateY(rotAngle);
+    }
+
+    for( int i = 0; i < 256; i++ ){
+        if( manager->keystates[i] )
+            handleKey( i, dt ); 
+    }
+
+    if( currentmouseposition[0] != lastmouseposition[0] ){
+        int dx = currentmouseposition[0] - lastmouseposition[0];
+        drawAtts->camera.RotateY(dx * dt);
+    }
+    if( currentmouseposition[1] != lastmouseposition[1] ){
+        int dy = currentmouseposition[1] - lastmouseposition[1];
+        drawAtts->camera.Pitch(dy * dt);
+    }
+
+
+	XMFLOAT3 pos    = drawAtts->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 up     = XMFLOAT3(0.0f, 1.0f, 0.0f);
 
-	drawAtts->camera.LookAt(pos, target, up);
-	drawAtts->camera.UpdateViewMatrix();
+	//drawAtts->camera.LookAt(pos, target, up);
+
+    drawAtts->camera.UpdateViewMatrix();
 
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Update(dt);
 	}
+
+
+    lastmouseposition[0] = currentmouseposition[0];
+    lastmouseposition[1] = currentmouseposition[1];
 }
 
 void TestState::Draw()
@@ -55,10 +111,22 @@ void TestState::Draw()
 	}
 }
 
+void TestState::OnMouseMove(int x, int y)
+{
+    currentmouseposition[0] = x;
+    currentmouseposition[1] = y;
+}
+
 void TestState::OnMouseDown(int x, int y)
 {
-	cout << "You clicked in the game!" << endl;
-	drawAtts->camera.Walk(-0.1f);
-	drawAtts->camera.Strafe(0.1f);
+	cout << "mouse down" << endl;
+    mouseDown = true;
+
 	cout << drawAtts->camera.GetPosition().z << endl;
+}
+
+void TestState::OnMouseUp(int x, int y)
+{
+    cout << "mouse up" << endl;
+    mouseDown = false;
 }
