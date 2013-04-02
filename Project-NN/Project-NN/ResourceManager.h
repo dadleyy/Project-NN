@@ -1,11 +1,13 @@
 #pragma once
+
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dcompiler.h>
 #include <xnamath.h>
-#include "framework\d3dx11effect.h"
-#include "framework\Camera.h"
+#include "framework/d3dx11effect.h"
+#include "framework/Camera.h"
 #include <unordered_map>
+#include <random>
 
 struct Mesh
 {
@@ -22,6 +24,7 @@ struct Effect
 {
 	ID3DX11Effect* effect;
 };
+
 //struct Material
 //{
 //	XMFLOAT4 color;
@@ -46,6 +49,7 @@ public:
     void makeCamera( );
 
     Camera camera;
+	std::default_random_engine randomEngine;
 
 private:
 	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );

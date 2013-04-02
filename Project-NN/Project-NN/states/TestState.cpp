@@ -15,16 +15,15 @@ void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 
-	default_random_engine generator;
-	uniform_real_distribution<float> distribution(-10, 10.0);
+	uniform_real_distribution<float> distribution(-10, 10);
 	
 	for(int i = 0; i < 400; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
-			distribution(generator), distribution(generator), distribution(generator)));
+			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
 	}
 
 	cout << "Initting" << endl;
-	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0/600.0f, 0.01f, 100.0f);
+	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0f/600.0f, 0.01f, 100.0f);
 	drawAtts->camera.SetPosition(XMFLOAT3(0.5f, 0.5f, -1.0f));
 }
 

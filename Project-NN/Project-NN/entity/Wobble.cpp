@@ -1,23 +1,29 @@
 #include "Wobble.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <cmath>
+#include <random>
 using namespace std;
 
+#include "ResourceManager.h"
 #include "GameObject.h"
 #include "Drawable.h"
 #include "Sphere.h"
 
 
+extern ResourceManager* drawAtts;
+
 void Wobble::Init(GameObject* go) {
 	drawable = go->GetComponent<Drawable>();
 	if(drawable == nullptr) {
-		//TODO: Cause program to crash
-		cout << "ERROR: Drawable not found!" << endl;
-		return;
+		cerr << "ERROR: Drawable not found!" << endl;
+		exit(1);
 	}
 	basePosition = drawable->getPosition();
-	totalTime = 0;
+
+	uniform_real_distribution<float> distribution(-1000, 1000);
+	totalTime = distribution(drawAtts->randomEngine);
 }
 
 void Wobble::Update(float dt) {

@@ -24,5 +24,4 @@ public:
 private:
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
-
 };

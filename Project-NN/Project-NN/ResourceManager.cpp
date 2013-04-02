@@ -1,5 +1,5 @@
 #include "ResourceManager.h"
-
+#include <cstdlib>
 
 ResourceManager::ResourceManager(void)
 {
@@ -11,7 +11,7 @@ ResourceManager::~ResourceManager(void)
 }
 
 
-ResourceManager::ResourceManager(ID3D11Device* device)
+ResourceManager::ResourceManager(ID3D11Device* device) : randomEngine((unsigned int)time(0))
 {
 	pD3DDevice = device;
 }
