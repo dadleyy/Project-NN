@@ -30,6 +30,9 @@ void TestState::Init(StateManager* manager)
 
 void TestState::Cleanup()
 {
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+		delete *it;
+	}
 }
 
 void TestState::Update(float dt)
