@@ -11,6 +11,8 @@ public:
 	virtual void Draw() = 0;
 
 	virtual void OnMouseDown(int x, int y) = 0;
+    virtual void OnMouseUp(int x, int y) = 0;
+    virtual void OnMouseMove(int x, int y) = 0;
 
 protected:
 	StateManager* manager;

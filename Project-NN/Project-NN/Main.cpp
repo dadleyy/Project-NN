@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
+#include <iostream>
 
 #include "framework/d3dApp.h"
 
@@ -23,6 +24,10 @@ public:
 	void DrawScene(); 
 
 	void OnMouseDown(WPARAM btnState, int x, int y);
+    void OnMouseUp(WPARAM btnState, int x, int y);
+    void OnMouseMove(WPARAM btnState, int x, int y);
+    void OnKeyDown(WPARAM keyCode);
+    void OnKeyUp(WPARAM keyCode);
 
 private:
 	StateManager manager;
@@ -114,4 +119,23 @@ void Game::DrawScene()
 void Game::OnMouseDown(WPARAM btnState, int x, int y)
 {
 	manager.OnMouseDown(x, y);
+}
+void Game::OnMouseUp(WPARAM btnState, int x, int y)
+{
+    manager.OnMouseUp(x, y);
+}
+
+void Game::OnMouseMove(WPARAM btnState, int x, int y)
+{
+    manager.OnMouseMove(x, y);
+}
+
+void Game::OnKeyDown(WPARAM keyCode)
+{
+    std::cout << (int)keyCode << std::endl;
+    manager.OnKeyDown( (int)keyCode );
+}
+void Game::OnKeyUp(WPARAM keyCode)
+{
+    manager.OnKeyUp( (int)keyCode );
 }
