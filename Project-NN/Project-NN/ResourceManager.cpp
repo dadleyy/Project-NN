@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include <cstdlib>
+#include "framework\OBJLoader.h"
 
 ResourceManager::ResourceManager(void)
 {
@@ -26,12 +27,18 @@ ResourceManager::ResourceManager(ID3D11Device* device) : randomEngine((unsigned 
 
 void ResourceManager::addEffect(WCHAR* file, char* name)
 {
+	HRESULT hr;
+
 	Effect* e = new Effect;
 	ID3DBlob* ppShader = NULL;
-	CompileShaderFromFile(file, NULL, "fx_5_0", &ppShader);
-	ID3DX11Effect* effect;
-	HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
-	effects.insert(std::make_pair<char*, Effect*>(name, e));
+	hr = CompileShaderFromFile(file, NULL, "fx_5_0", &ppShader);
+
+	if(hr == S_OK)
+	{
+		ID3DX11Effect* effect;
+		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
+		effects.insert(std::make_pair<char*, Effect*>(name, e));
+	}
 }
 
 void ResourceManager::addTesellatedSphere(float radius, int divisions, char* name)
@@ -133,116 +140,55 @@ void ResourceManager::addTesellatedSphere(float radius, int divisions, char* nam
 
 bool ResourceManager::addMesh(char* objFile, char* name)
 {
-    ifstream file;
-    file.open( objFile, ios::in );
+	HRESULT hr;
 
-    /* check openness */
-    if( file.bad() || file.good() != true ) {
-        return false;
-    }
+	Mesh* mesh = new Mesh();
 
-    string line;
-    Mesh* mesh = new Mesh( );
+	int numVerts;
+	int numIndex;
 
-    int icount = 0, 
-        vcount = 0,
-        maxsize = 0;
+	OBJLoader obj;
+	obj.readFile(objFile);
 
-    bool okay = true;
+	numVerts = obj.getNumVerts();
+	numIndex = obj.getNumInds();
 
-    XMFLOAT3 *verts = 0;
-    UINT *indices = 0;
+	ID3D11Buffer* vertexBuffer;
+	ID3D11Buffer* indexBuffer;
 
-    cmatch vmr,
-           fmr,
-           imr;
+	D3D11_BUFFER_DESC bufferDescription;
+	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change
+	bufferDescription.ByteWidth = sizeof(float) * obj.numVerts * 8; //total number of bytes for all verticies
+	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER; //binds the buffer to the correct type
+	bufferDescription.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
+	bufferDescription.MiscFlags = 0; //only one D3D device
+	
+	//add the data for the buffer
+	D3D11_SUBRESOURCE_DATA initData;
+	float* v = obj.getVerticies();
+	initData.pSysMem = v;
 
-    regex vrx("v (.+) (.+) (.+)"),
-          frx("f (.+\/.+\/.+) (.+\/.+\/.+) (.+\/.+\/.+)"),
-          irx("(.+)\/(.+)\/(.+)");
+	//create the buffer
+	hr = pD3DDevice->CreateBuffer(&bufferDescription, &initData, &vertexBuffer);
 
-    file.seekg(0, file.end );
-    maxsize = file.tellg( );
-    file.seekg (0, file.beg );
+	//create index buffer
+	bufferDescription.Usage = D3D11_USAGE_DEFAULT;
+	bufferDescription.ByteWidth = sizeof(unsigned int) * numIndex;
+	bufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	unsigned int* i = obj.getIndicies();
+	initData.pSysMem = i;
 
-    verts = (XMFLOAT3*)calloc( maxsize, sizeof(XMFLOAT3) );
-    indices = (UINT*)calloc( maxsize, sizeof(UINT) );
+	hr = pD3DDevice->CreateBuffer(&bufferDescription, &initData, &indexBuffer);
 
-    while( getline( file, line ) && okay )
-    {
-        if( regex_search( line.c_str(), vmr, vrx ) ) {
-            XMFLOAT3 point;
-            
-            string x = vmr[1].str(),
-                   y = vmr[2].str(),
-                   z = vmr[3].str();
+	//add the mesh to the vertex buffer map
+	mesh->verticies = vertexBuffer;
+	mesh->indicies = indexBuffer;
+	mesh->numIndicies = numIndex;
+	mesh->numVerts = numVerts;
+	mesh->vertexStride = sizeof(float) * 8;
+	meshes.insert( make_pair<char*, Mesh*>(name, mesh) );
 
-            point.x = (float) atof( x.c_str() );
-            point.y = (float) atof( y.c_str() );
-            point.z = (float) atof( z.c_str() );
-
-            // cout << "fount vert: ( " << x.c_str() << ", " << y.c_str() << ", " << z.c_str() << " ) " << endl; 
-            verts[vcount] = point;
-            vcount++;
-        }
-
-        else if( regex_search( line.c_str(), fmr, frx ) ) {
-            // each face is made up of 3 verts in a strange form...
-            for( int j = 0; j < 3; j++ ) {
-                string fv = fmr[ j + 1 ];
-                regex_search( fv.c_str(), imr, irx );
-                int val = atoi( fv.c_str() );
-                indices[icount] = (UINT) (val - 1);
-                cout << val << " | "; 
-                icount++;
-            }
-            // cout << endl << endl; 
-        } 
-
-        okay = file.good( );
-    }
-    mesh->numVerts = vcount;
-    mesh->numIndicies = icount;
-
-
-
-
-    D3D11_BUFFER_DESC vbdesc;
-    vbdesc.Usage = D3D11_USAGE_IMMUTABLE;         // the data will not change
-    vbdesc.ByteWidth = sizeof(XMFLOAT3) * vcount; // total number of bytes for all verticies
-    vbdesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;  // binds the buffer to the correct type
-    vbdesc.CPUAccessFlags = 0;	                 // 0 means the cpu does not have access to the buffer
-    vbdesc.MiscFlags = 0;	                     // only one D3D device
-
-    //add the data for the buffer
-    D3D11_SUBRESOURCE_DATA bdata;
-    bdata.pSysMem = verts;
-
-    //Set the size of a single vertex
-    mesh->vertexStride = sizeof(XMFLOAT3);
-    mesh->vertexOffset = 0;
-    //create the vertex buffer
-    HRESULT hr = pD3DDevice->CreateBuffer( &vbdesc, &bdata, &mesh->verticies );
-
-    // Describe the index buffer we are going to create.
-    D3D11_BUFFER_DESC ibdesc;
-    ibdesc.Usage = D3D11_USAGE_IMMUTABLE;
-    ibdesc.ByteWidth = sizeof(UINT) * icount;
-    ibdesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    ibdesc.CPUAccessFlags = 0;
-    ibdesc.MiscFlags = 0;
-    ibdesc.StructureByteStride = 0;
-
-    // Specify the data to initialize the index buffer.
-    bdata.pSysMem = indices;
-
-    // Create the index buffer.
-    hr = pD3DDevice->CreateBuffer(&ibdesc, &bdata, &mesh->indicies);
-
-
-    meshes.insert( std::make_pair<char*, Mesh*>(name,mesh) );
-
-    return true;
+	return 1;
 }
 
 

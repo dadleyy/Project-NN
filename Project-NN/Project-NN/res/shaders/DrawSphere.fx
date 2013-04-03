@@ -3,7 +3,11 @@ cbuffer cbPerObject {
 };
 
 struct VERTEX
-{   float4 Pos : POSITION;    };
+{   
+	float4 Pos : POSITION;    
+	float3 Norm : NORMAL;
+	float2 UV: TEXCOORD;
+};
 
 struct PIXEL
 {	float4 Pos : SV_POSITION; float depth : DEPTH;};

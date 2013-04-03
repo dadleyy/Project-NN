@@ -38,6 +38,9 @@ protected:
 	ID3DX11Effect*			effect;
 	ID3DX11EffectTechnique*	technique;
     ID3DX11EffectMatrixVariable* effectWorldViewRef;
+	ID3DX11EffectMatrixVariable* effectWorld;
+	ID3DX11EffectMatrixVariable* effectViewProject;
+	ID3DX11EffectVectorVariable* cameraPos;
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
@@ -47,7 +50,6 @@ protected:
 
 	int numVerts;
 	int numIndicies;
-
 
 
 	//Microsofts method that compiles shaders from inside a file

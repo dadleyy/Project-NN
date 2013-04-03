@@ -52,7 +52,10 @@ void Drawable::draw()
 	XMMATRIX vp = drawAtts->camera.ViewProj();
 	XMMATRIX wvp = w * vp;
 
+	effectWorld->SetMatrix( reinterpret_cast<float*>(&w) );
+	effectViewProject->SetMatrix( reinterpret_cast<float*>(&vp) );
 	effectWorldViewRef->SetMatrix( reinterpret_cast<float*>(&wvp) );
+	cameraPos->SetFloatVector( reinterpret_cast<float*>(&drawAtts->camera.GetPosition()) );
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
@@ -65,7 +68,7 @@ void Drawable::draw()
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
         technique->GetPassByIndex(p)->Apply(0, deviceContext);
-		deviceContext->DrawIndexed( numIndicies, 0, 0 );
+		deviceContext->Draw( numVerts, 0 );
 	}
 }
 
@@ -105,6 +108,9 @@ void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 {
     technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
     effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
+	effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();
+	effectViewProject = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("ViewProj")->AsMatrix();
+	cameraPos = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("cameraPosition")->AsVector();
 }
 
 //****************************************************************
@@ -120,14 +126,18 @@ void Drawable::createBuffer(char* mesh)
 
 	//VERTEX BUFFER
 	//describe the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
+	D3D11_INPUT_ELEMENT_DESC layout[] = { 
+											{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0 ,                            D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+											{"NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+											{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0} 
+										};
 	
 	//get required vertex information from a shader technique
 	D3DX11_PASS_DESC passDesc;
     technique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	hr = pD3DDevice->CreateInputLayout(layout,
-				1,
+				3,
 				passDesc.pIAInputSignature,
 				passDesc.IAInputSignatureSize,
 				&pVertexLayout);

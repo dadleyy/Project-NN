@@ -26,7 +26,9 @@ void TestState::Init(StateManager* manager)
     spacer = 0;
 
 	uniform_real_distribution<float> distribution(-10, 10);
-	
+
+	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
+	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
 	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
