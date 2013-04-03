@@ -33,7 +33,7 @@ void TestState::Init(StateManager* manager)
 	}
 
 
-    if( drawAtts->addMesh("objs/car.obj","CoolObject") ){
+    if(drawAtts->addMesh("res/models/cool.obj", "CoolObject")) {
         cout << "okay loading" << endl;
         spacer = new Spacecraft(manager->GetDevice(), manager->GetContext(), 0, 0, 0 );
     } else {
