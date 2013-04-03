@@ -25,16 +25,15 @@ void TestState::Init(StateManager* manager)
 
     spacer = 0;
 
-
 	uniform_real_distribution<float> distribution(-10, 10);
 	
-	for(int i = 0; i < 2; i++) {
+	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
 	}
 
 
-    if( drawAtts->addMesh("objs/spacecraft.obj","CoolObject") ){
+    if( drawAtts->addMesh("objs/car.obj","CoolObject") ){
         cout << "okay loading" << endl;
         spacer = new Spacecraft(manager->GetDevice(), manager->GetContext(), 0, 0, 0 );
     } else {
@@ -109,6 +108,9 @@ void TestState::Update(float dt)
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Update(dt);
 	}
+
+    if( spacer != 0 )
+        spacer->Update(dt);
 
 
     lastmouseposition[0] = currentmouseposition[0];

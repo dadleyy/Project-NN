@@ -181,7 +181,7 @@ bool ResourceManager::addMesh(char* objFile, char* name)
             point.y = (float) atof( y.c_str() );
             point.z = (float) atof( z.c_str() );
 
-            cout << "fount vert: ( " << x.c_str() << ", " << y.c_str() << ", " << z.c_str() << " ) " << endl; 
+            // cout << "fount vert: ( " << x.c_str() << ", " << y.c_str() << ", " << z.c_str() << " ) " << endl; 
             verts[vcount] = point;
             vcount++;
         }
@@ -196,13 +196,15 @@ bool ResourceManager::addMesh(char* objFile, char* name)
                 cout << val << " | "; 
                 icount++;
             }
-            cout << endl << endl; 
+            // cout << endl << endl; 
         } 
 
         okay = file.good( );
     }
     mesh->numVerts = vcount;
     mesh->numIndicies = icount;
+
+
 
 
     D3D11_BUFFER_DESC vbdesc;
