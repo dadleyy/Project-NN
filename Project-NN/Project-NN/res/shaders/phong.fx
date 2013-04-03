@@ -33,14 +33,13 @@ struct PIXEL
 PIXEL VS( VERTEX input )
 {
     PIXEL output = (PIXEL)0;
-	float3 lightPosition = float3(5, 5, -5);
-	float3 pos = input.Pos.xyz;
+	float3 lightPosition = float3(0, 0, 0);
 
-	float4x4 worldViewProj = mul(world, ViewProj);
+	float4 worldCoord = mul(input.Pos, world);
+	float3 pos = worldCoord.xyz;
+	output.Pos = mul( worldCoord, ViewProj );
 
-	output.Pos = mul( input.Pos, worldViewProj );
-
-	output.N = normalize(input.Pos.xyz);
+	output.N = normalize(input.Norm);
 	output.L = normalize(lightPosition - pos);
 	output.V = normalize(cameraPosition - pos);
 	output.H = normalize(output.V+output.L);
@@ -56,7 +55,7 @@ PIXEL VS( VERTEX input )
 float4 PS( PIXEL input ) : SV_Target
 {
 	float4 ObjectColor =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
-	float4 finalColor;
+	float4 finalColor = float4(0,0,0,1.0);
 	float4 white = float4(1.0,1.0,1.0,0.0);
 
 	//reflect the View vector over the normal:: The halfway vector wasn't interpolating correctly for some reason
