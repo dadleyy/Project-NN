@@ -14,9 +14,6 @@ Input::Input()
     // clear key pressed array
     for (size_t i = 0; i < inputNS::KEYS_ARRAY_LEN; i++)
         keysPressed[i] = false;
-    newLine = true;                     // start new line
-    textIn = "";                        // clear textIn
-    charIn = 0;                         // clear charIn
 
     // mouse data
     mouseX = 0;                         // screen X
@@ -34,91 +31,52 @@ Input::~Input()
 }
 
 //initialize
-void Input::initialize(HWND hwnd, bool capture)
+/*void Input::initialize(HWND hwnd, bool capture, StateManager gManager)
 {
     try{
         mouseCaptured = capture;
         if(mouseCaptured)
-            SetCapture(hwnd);           // capture mouse
+            //SetCapture(hwnd);           // capture mouse
+			SetCapture();
 	}
     catch(...)
     {
 	//    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing input system"));
     }
+	manager = gManager;
+}*/
+
+void Input::initialize(StateManager* gManager)
+{
+	manager = gManager;
 }
 
-//sets the equivalent value to true in the key down array
-void Input::keyDown(WPARAM wParam)
+/*void OnMouseDown(int x, int y);
+void OnMouseUp(int x, int y);
+void OnMouseMove(int x, int y);
+void OnKeyUp(int keycode);
+void OnKeyDown(int keycode);*/
+
+
+void Input::OnMouseDown(WPARAM btnState, int x, int y)
 {
-    // make sure key code is within buffer range
-    if (wParam < inputNS::KEYS_ARRAY_LEN)
-    {
-        keysDown[wParam] = true;    // update keysDown array
-        // key has been "pressed, erased by clear()
-        keysPressed[wParam] = true; // update keysPressed array
-    }
+	manager->OnMouseDown(x, y);
+}
+void Input::OnMouseUp(WPARAM btnState, int x, int y)
+{
+    manager->OnMouseUp(x, y);
 }
 
-//sets the equivalent value to false in the key down array
-void Input::keyUp(WPARAM wParam)
+void Input::OnMouseMove(WPARAM btnState, int x, int y)
 {
-    // make sure key code is within buffer range
-    if (wParam < inputNS::KEYS_ARRAY_LEN)
-        // update state table
-        keysDown[wParam] = false;
+    manager->OnMouseMove(x, y);
 }
 
-//returns true if the specified key has been pressed in the most recent frame
-bool Input::wasKeyPressed(UCHAR vkey) const
+void Input::OnKeyDown(WPARAM keyCode)
 {
-    if (vkey < inputNS::KEYS_ARRAY_LEN)
-        return keysPressed[vkey];
-    else
-        return false;
+    manager->OnKeyDown( (int)keyCode );
 }
-
-//returns true if a key is pressed
-bool Input::anyKeyPressed() const
+void Input::OnKeyUp(WPARAM keyCode)
 {
-    for (size_t i = 0; i < inputNS::KEYS_ARRAY_LEN; i++)
-        if(keysPressed[i] == true)
-            return true;
-    return false;
-}
-
-//clear the specified key press
-void Input::clearKeyPress(UCHAR vkey)
-{
-    if (vkey < inputNS::KEYS_ARRAY_LEN)
-        keysPressed[vkey] = false;
-}
-
-//clear the specified buffers
-void Input::clear(UCHAR what)
-{
-    if(what & inputNS::KEYS_DOWN)       // if clear keys down
-    {
-        for (size_t i = 0; i < inputNS::KEYS_ARRAY_LEN; i++)
-            keysDown[i] = false;
-    }
-    if(what & inputNS::KEYS_PRESSED)    // if clear keys pressed
-    {
-        for (size_t i = 0; i < inputNS::KEYS_ARRAY_LEN; i++)
-            keysPressed[i] = false;
-    }
-    if(what & inputNS::MOUSE)           // if clear mouse
-    {
-        mouseX = 0;
-        mouseY = 0;
-    }
-    if(what & inputNS::TEXT_IN)
-        clearTextIn();
-}
-
-
-//mouse input
-void Input::mouseIn(LPARAM lParam)
-{
-    mouseX = GET_X_LPARAM(lParam); 
-    mouseY = GET_Y_LPARAM(lParam);
+    manager->OnKeyUp( (int)keyCode );
 }

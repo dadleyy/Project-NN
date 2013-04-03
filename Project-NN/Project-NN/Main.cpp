@@ -9,6 +9,7 @@
 #include "StateManager.h"
 #include "states/TestState.h"
 #include "ResourceManager.h"
+#include "input.h"
 
 ResourceManager* drawAtts;
 int screenWidth;
@@ -33,6 +34,7 @@ public:
 
 private:
 	StateManager manager;
+	Input input;
 };
 
 
@@ -86,8 +88,9 @@ bool Game::Init()
 	if(!D3DApp::Init())
 		return false;
 
-	manager.Init(md3dDevice, md3dImmediateContext);
 
+	manager.Init(md3dDevice, md3dImmediateContext);
+	input.initialize(&manager);
 	drawAtts = new ResourceManager(md3dDevice);
 	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
 	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
@@ -118,25 +121,26 @@ void Game::DrawScene()
 	HR(mSwapChain->Present(0, 0));
 }
 
+
 void Game::OnMouseDown(WPARAM btnState, int x, int y)
 {
-	manager.OnMouseDown(x, y);
+	input.OnMouseDown(btnState, x, y);
 }
 void Game::OnMouseUp(WPARAM btnState, int x, int y)
 {
-    manager.OnMouseUp(x, y);
+    input.OnMouseUp(btnState, x, y);
 }
 
 void Game::OnMouseMove(WPARAM btnState, int x, int y)
 {
-    manager.OnMouseMove(x, y);
+    input.OnMouseMove(btnState, x, y);
 }
 
 void Game::OnKeyDown(WPARAM keyCode)
 {
-    manager.OnKeyDown( (int)keyCode );
+    input.OnKeyDown(keyCode);
 }
 void Game::OnKeyUp(WPARAM keyCode)
 {
-    manager.OnKeyUp( (int)keyCode );
+    input.OnKeyUp(keyCode);
 }
