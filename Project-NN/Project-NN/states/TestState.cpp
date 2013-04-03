@@ -58,19 +58,19 @@ void TestState::Cleanup()
 
 void TestState::handleKey( int keycode, float dt )
 {
-    // cout << keycode << endl;
+     cout << keycode << endl;
     switch(keycode)
     {
-    case 81:
+    case 'A':
         drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
         break;
-    case 69:
+    case 'D':
         drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
         break;
-    case 83:
+    case 'S':
         drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
         break;
-    case 87:
+    case 'W':
         drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
         break;
     default:

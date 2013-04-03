@@ -9,7 +9,7 @@ cbuffer sceneAttributes
 {
 	float3 cameraPosition;
 	float pad;
-};
+}
 
 struct VERTEX
 {   
@@ -55,22 +55,20 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 color =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
+	float4 ObjectColor =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
+	float4 finalColor;
 	float4 white = float4(1.0,1.0,1.0,0.0);
 
 	//reflect the View vector over the normal:: The halfway vector wasn't interpolating correctly for some reason
 	float3 R = normalize(reflect(-input.V, input.N));
 	
 	//get the diffuse shading
-	color = color*max(0, dot(input.N, input.L));
+	finalColor = ObjectColor*max(0, dot(input.N, input.L));
 	//get the specular highlight
-	color = color + white*pow( max(0,dot(R, input.L)), 25 );
+	finalColor = finalColor + white*pow( max(0,dot(R, input.L)), 25 );
+	finalColor = finalColor + ObjectColor*float4(.2,.2,.2,0.0);
 
-
-	//color = cameraPosition;
-	//color.w = 1.0;
-
-	return color;
+	return finalColor;
 }
 
 
