@@ -14,7 +14,6 @@ Sphere::~Sphere()
 
 void Sphere::createBuffer(char* mesh)
 {
-
 }
 //****************************************************************
 //Creates all buffers needed for the object (vertex, index, etc.)

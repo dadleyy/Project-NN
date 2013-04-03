@@ -6,6 +6,10 @@
 
 class StateManager;
 class Asteroid;
+class Spacecraft;
+
+extern int screenWidth;
+extern int screenHeight;
 
 class TestState : public GameState
 {
@@ -29,6 +33,8 @@ private:
 
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
+    Spacecraft *spacer;
+
     bool mouseDown;
 
     int currentmouseposition[2];

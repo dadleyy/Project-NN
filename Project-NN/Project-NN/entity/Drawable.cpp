@@ -116,6 +116,8 @@ void Drawable::createBuffer(char* mesh)
 {
 	HRESULT hr;
 
+    cout << "creating buffer for: " << mesh << endl;
+
 	//VERTEX BUFFER
 	//describe the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] = {"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0};
@@ -139,6 +141,8 @@ void Drawable::createBuffer(char* mesh)
 
 	numVerts = drawAtts->meshes.at(mesh)->numVerts;
 	numIndicies = drawAtts->meshes.at(mesh)->numIndicies;
+
+    cout << mesh << " : " << drawAtts->meshes.at(mesh)->numVerts << endl;
 }
 
 

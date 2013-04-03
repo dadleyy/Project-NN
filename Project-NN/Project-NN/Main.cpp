@@ -11,6 +11,8 @@
 #include "ResourceManager.h"
 
 ResourceManager* drawAtts;
+int screenWidth;
+int screenHeight;
 
 class Game : public D3DApp
 {
@@ -84,8 +86,6 @@ bool Game::Init()
 	if(!D3DApp::Init())
 		return false;
 
-	
-
 	manager.Init(md3dDevice, md3dImmediateContext);
 
 	drawAtts = new ResourceManager(md3dDevice);
@@ -99,6 +99,8 @@ bool Game::Init()
 void Game::OnResize()
 {
 	D3DApp::OnResize();
+    screenWidth = mClientWidth;
+    screenHeight = mClientHeight;
 }
 
 void Game::UpdateScene(float dt)

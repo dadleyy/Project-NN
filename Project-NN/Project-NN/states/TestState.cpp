@@ -3,6 +3,7 @@
 #include "StateManager.h"
 #include "entity/Drawable.h"
 #include "entity/Asteroid.h"
+#include "entity/Spacecraft.h"
 
 #include <iostream>
 #include <random>
@@ -22,15 +23,26 @@ void TestState::Init(StateManager* manager)
     currentmouseposition[0] = currentmouseposition[1] = 0;
     lastmouseposition[0] = lastmouseposition[1] = 0;
 
+    spacer = 0;
+
 
 	uniform_real_distribution<float> distribution(-10, 10);
 	
-	for(int i = 0; i < 400; i++) {
+	for(int i = 0; i < 2; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
 	}
 
+
+    if( drawAtts->addMesh("objs/spacecraft.obj","CoolObject") ){
+        cout << "okay loading" << endl;
+        spacer = new Spacecraft(manager->GetDevice(), manager->GetContext(), 0, 0, 0 );
+    } else {
+        cout << "not okay loading" << endl;
+    }
+
 	cout << "Initting" << endl;
+    
 	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0f/600.0f, 0.01f, 100.0f);
 	drawAtts->camera.SetPosition(XMFLOAT3(0.5f, 0.5f, -1.0f));
 }
@@ -40,6 +52,7 @@ void TestState::Cleanup()
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		delete *it;
 	}
+    delete spacer;
 }
 
 void TestState::handleKey( int keycode, float dt )
@@ -77,14 +90,12 @@ void TestState::Update(float dt)
             handleKey( i, dt ); 
     }
 
-    if( currentmouseposition[0] != lastmouseposition[0] ){
-        int dx = currentmouseposition[0] - lastmouseposition[0];
-        drawAtts->camera.RotateY(dx * dt);
-    }
-    if( currentmouseposition[1] != lastmouseposition[1] ){
-        int dy = currentmouseposition[1] - lastmouseposition[1];
-        drawAtts->camera.Pitch(dy * dt);
-    }
+    int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
+    drawAtts->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
+    
+    int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
+    drawAtts->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
+    
 
 
 	XMFLOAT3 pos    = drawAtts->camera.GetPosition( );
@@ -109,6 +120,9 @@ void TestState::Draw()
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Draw();
 	}
+    
+    if( spacer != 0 )
+        spacer->Draw( );
 }
 
 void TestState::OnMouseMove(int x, int y)

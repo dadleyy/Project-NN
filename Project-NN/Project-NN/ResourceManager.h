@@ -9,6 +9,11 @@
 #include <unordered_map>
 #include <random>
 
+#include <iostream>
+#include <fstream>
+#include <regex>
+using namespace std;
+
 struct Mesh
 {
 	ID3D11Buffer* verticies;
@@ -45,7 +50,7 @@ public:
 	//void addMaterial(Material *m, char* name);
 	void addEffect(WCHAR* file, char* name);
 	void addTesellatedSphere(float radius, int divisions, char* name);
-	void addMesh(char* objFile, char* name);
+	bool addMesh(char* objFile, char* name);
     void makeCamera( );
 
     Camera camera;
