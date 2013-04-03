@@ -12,9 +12,7 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	sphere->createBuffer("testSphere");
 	components.push_back(sphere);
 	components.push_back(wobble);
-	//TODO: This might be better off in GameObject.
-	sphere->Init(this);
-	wobble->Init(this);
+	GameObject::InitComponents();
 }
 
 Asteroid::~Asteroid() {
