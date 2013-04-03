@@ -8,13 +8,11 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	wobble = new Wobble();
 	sphere = new Drawable(device, immediateContext);
 	sphere->setPosition(XMFLOAT3(xPos, yPos, zPos));
-    sphere->getEffectVariables("sphereEffect", "Render");
-	sphere->createBuffer("testSphere");
+    sphere->getEffectVariables("phong", "Render");
+	sphere->createBuffer("Sphere");
 	components.push_back(sphere);
 	components.push_back(wobble);
-	//TODO: This might be better off in GameObject.
-	sphere->Init(this);
-	wobble->Init(this);
+	GameObject::InitComponents();
 }
 
 Asteroid::~Asteroid() {

@@ -21,4 +21,6 @@ public:
 
 protected:
 	std::vector<Component*> components;
+
+	void InitComponents();
 };

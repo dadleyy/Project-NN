@@ -26,7 +26,9 @@ void TestState::Init(StateManager* manager)
     spacer = 0;
 
 	uniform_real_distribution<float> distribution(-10, 10);
-	
+
+	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
+	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
 	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
@@ -56,19 +58,19 @@ void TestState::Cleanup()
 
 void TestState::handleKey( int keycode, float dt )
 {
-    // cout << keycode << endl;
+     cout << keycode << endl;
     switch(keycode)
     {
-    case 81:
+    case 'A':
         drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
         break;
-    case 69:
+    case 'D':
         drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
         break;
-    case 83:
+    case 'S':
         drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
         break;
-    case 87:
+    case 'W':
         drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
         break;
     default:

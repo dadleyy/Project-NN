@@ -7,13 +7,11 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
     wobble = new Wobble();
     sphere = new Drawable(device, immediateContext);
     sphere->setPosition(XMFLOAT3(xPos, yPos, zPos));
-    sphere->getEffectVariables("sphereEffect", "Render");
-    sphere->createBuffer("CoolObject");
+    sphere->getEffectVariables("phong", "Render");
+    sphere->createBuffer("Sphere");
     components.push_back(sphere);
     components.push_back(wobble);
-    //TODO: This might be better off in GameObject.
-    sphere->Init(this);
-    wobble->Init(this);
+	GameObject::InitComponents();
 }
 
 void Spacecraft::Draw()
