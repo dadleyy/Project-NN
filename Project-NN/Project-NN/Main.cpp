@@ -134,7 +134,6 @@ void Game::OnMouseMove(WPARAM btnState, int x, int y)
 
 void Game::OnKeyDown(WPARAM keyCode)
 {
-    std::cout << (int)keyCode << std::endl;
     manager.OnKeyDown( (int)keyCode );
 }
 void Game::OnKeyUp(WPARAM keyCode)
