@@ -4,6 +4,8 @@
 #ifndef _INPUT_H                // prevent multiple definitions if this 
 #define _INPUT_H                // ..file is included in more than one place
 
+#pragma once
+
 #include "framework/d3dUtil.h"
 #include "framework/GameTimer.h"
 #include <string>
@@ -20,9 +22,12 @@ namespace inputNS
     const UCHAR KEYS_DOWN = 1;
     const UCHAR KEYS_PRESSED = 2;
     const UCHAR MOUSE = 4;
+	const UINT L_BTN = 1;
+	const UINT M_BTN = 2;
+	const UINT R_BTN = 3;
     const UCHAR TEXT_IN = 8;
     const UCHAR KEYS_MOUSE_TEXT = KEYS_DOWN + KEYS_PRESSED + MOUSE + TEXT_IN;
-}
+};
 
 class Input
 {
@@ -37,7 +42,7 @@ private:
     bool mouseMButton;                          // true if middle mouse button down
     bool mouseRButton;                          // true if right mouse button down
 	//other
-	StateManager* manager;
+	//StateManager* manager;
 public:
     // Constructor
     Input();
@@ -47,14 +52,22 @@ public:
 
 	//initialize
 	//void initialize(HWND hwnd, bool capture, StateManager gManager);
-	void initialize(StateManager* gManager);
+	//void initialize(StateManager* gManager);
 
-	void OnMouseDown(WPARAM btnState, int x, int y);
-    void OnMouseUp(WPARAM btnState, int x, int y);
+	void OnMouseDown(WPARAM btnState, UINT btn,int x, int y);
+    void OnMouseUp(WPARAM btnState, UINT btn, int x, int y);
     void OnMouseMove(WPARAM btnState, int x, int y);
     void OnKeyUp(WPARAM keyCode);
     void OnKeyDown(WPARAM keyCode);
 	
+	int getMouseX();
+
+	bool getLMouseButton(){return mouseLButton;}
+
+	bool getKeyDown(int i){return keysDown[i];}
+
+	int getMouseY() {return mouseY;}
+
 };
 
 #endif //Input_H

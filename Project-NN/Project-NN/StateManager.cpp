@@ -34,29 +34,6 @@ void StateManager::Draw()
 	states[states.size() - 1]->Draw();
 }
 
-void StateManager::OnMouseDown(int x, int y)
-{
-	states[states.size() - 1]->OnMouseDown(x, y);
-}
-void StateManager::OnMouseUp(int x, int y)
-{
-    states[states.size() - 1]->OnMouseUp(x, y);
-}
-
-void StateManager::OnMouseMove(int x, int y)
-{
-    states[states.size() - 1]->OnMouseMove(x, y);
-}
-
-void StateManager::OnKeyDown(int keycode)
-{
-    keystates[keycode] = true;
-}
-
-void StateManager::OnKeyUp(int keycode)
-{
-    keystates[keycode] = false;
-}
 
 void StateManager::PushState(GameState* state)
 {

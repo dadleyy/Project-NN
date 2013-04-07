@@ -12,6 +12,7 @@
 #include "input.h"
 
 ResourceManager* drawAtts;
+Input* input;
 int screenWidth;
 int screenHeight;
 void addResources();
@@ -27,15 +28,23 @@ public:
 	void UpdateScene(float dt);
 	void DrawScene(); 
 
-	void OnMouseDown(WPARAM btnState, int x, int y);
-    void OnMouseUp(WPARAM btnState, int x, int y);
+	void OnMouseDownL(WPARAM btnState, int x, int y);
+	void OnMouseDownM(WPARAM btnState, int x, int y);
+	void OnMouseDownR(WPARAM btnState, int x, int y);
+    void OnMouseUpL(WPARAM btnState, int x, int y);
+	void OnMouseUpM(WPARAM btnState, int x, int y);
+	void OnMouseUpR(WPARAM btnState, int x, int y);
     void OnMouseMove(WPARAM btnState, int x, int y);
     void OnKeyDown(WPARAM keyCode);
     void OnKeyUp(WPARAM keyCode);
 
+
+
 private:
 	StateManager manager;
-	Input input;
+	UINT L_btn;
+	UINT M_btn;
+	UINT R_btn;
 };
 
 
@@ -89,11 +98,19 @@ bool Game::Init()
 	if(!D3DApp::Init())
 		return false;
 
+	L_btn = 1;
+	M_btn = 2;
+	R_btn = 3;
+	input = new Input();
 
 	manager.Init(md3dDevice, md3dImmediateContext);
-	input.initialize(&manager);
+
 	drawAtts = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources();
+
+	//Call again to calculate aspect ratio now that the camera has been initialized.
+	OnResize();
+
 	drawAtts->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
@@ -104,6 +121,11 @@ void Game::OnResize()
 	D3DApp::OnResize();
     screenWidth = mClientWidth;
     screenHeight = mClientHeight;
+	if(drawAtts != nullptr)
+		drawAtts->camera.SetLens(drawAtts->camera.GetFovY(),
+			((float)screenWidth)/screenHeight,
+			drawAtts->camera.GetNearZ(),
+			drawAtts->camera.GetFarZ());
 }
 
 void Game::UpdateScene(float dt)
@@ -122,27 +144,50 @@ void Game::DrawScene()
 }
 
 
-void Game::OnMouseDown(WPARAM btnState, int x, int y)
+void Game::OnMouseDownL(WPARAM btnState, int x, int y)
 {
-	input.OnMouseDown(btnState, x, y);
+	input->OnMouseDown(btnState, L_btn, x, y);
 }
-void Game::OnMouseUp(WPARAM btnState, int x, int y)
+
+void Game::OnMouseDownM(WPARAM btnState, int x, int y)
 {
-    input.OnMouseUp(btnState, x, y);
+	input->OnMouseDown(btnState, M_btn, x, y);
 }
+
+void Game::OnMouseDownR(WPARAM btnState, int x, int y)
+{
+	input->OnMouseDown(btnState, R_btn, x, y);
+}
+
+void Game::OnMouseUpL(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, L_btn, x, y);
+}
+
+void Game::OnMouseUpM(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, M_btn, x, y);
+}
+
+void Game::OnMouseUpR(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, R_btn, x, y);
+}
+
+
 
 void Game::OnMouseMove(WPARAM btnState, int x, int y)
 {
-    input.OnMouseMove(btnState, x, y);
+    input->OnMouseMove(btnState, x, y);
 }
 
 void Game::OnKeyDown(WPARAM keyCode)
 {
-    input.OnKeyDown(keyCode);
+    input->OnKeyDown(keyCode);
 }
 void Game::OnKeyUp(WPARAM keyCode)
 {
-    input.OnKeyUp(keyCode);
+    input->OnKeyUp(keyCode);
 }
 
 void addResources()
@@ -160,3 +205,4 @@ void addResources()
 	drawAtts->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .04,  NONE, 1, AMBIENT_LIGHT);
 	drawAtts->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
 }
+
