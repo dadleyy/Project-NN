@@ -96,18 +96,20 @@ bool Game::Init()
 {
 	if(!D3DApp::Init())
 		return false;
+
 	L_btn = 1;
 	M_btn = 2;
 	R_btn = 3;
 	input = new Input();
+
 	manager.Init(md3dDevice, md3dImmediateContext);
-//	input->initialize(&manager);
-//	manager.setInput(&input);
-	
+
 	drawAtts = new ResourceManager(md3dDevice);
 	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
 	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
 	drawAtts->addEffect(L"res/shaders/phong.fx", "phong");
+	//Call again to calculate aspect ratio now that the camera has been initialized.
+	OnResize();
 	drawAtts->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
@@ -118,6 +120,11 @@ void Game::OnResize()
 	D3DApp::OnResize();
     screenWidth = mClientWidth;
     screenHeight = mClientHeight;
+	if(drawAtts != nullptr)
+		drawAtts->camera.SetLens(drawAtts->camera.GetFovY(),
+			((float)screenWidth)/screenHeight,
+			drawAtts->camera.GetNearZ(),
+			drawAtts->camera.GetFarZ());
 }
 
 void Game::UpdateScene(float dt)
