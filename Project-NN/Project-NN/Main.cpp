@@ -14,6 +14,7 @@
 ResourceManager* drawAtts;
 int screenWidth;
 int screenHeight;
+void addResources();
 
 class Game : public D3DApp
 {
@@ -91,10 +92,8 @@ bool Game::Init()
 
 	manager.Init(md3dDevice, md3dImmediateContext);
 	input.initialize(&manager);
-	drawAtts = new ResourceManager(md3dDevice);
-	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
-	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
-	drawAtts->addEffect(L"res/shaders/phong.fx", "phong");
+	drawAtts = new ResourceManager(md3dDevice, md3dImmediateContext);
+	addResources();
 	drawAtts->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
@@ -144,4 +143,20 @@ void Game::OnKeyDown(WPARAM keyCode)
 void Game::OnKeyUp(WPARAM keyCode)
 {
     input.OnKeyUp(keyCode);
+}
+
+void addResources()
+{
+	drawAtts->addCBuffer(816, "Light");
+	drawAtts->addCBuffer(144, "Camera");
+	drawAtts->addCBuffer(128, "Object");
+
+	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
+	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
+
+	drawAtts->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+
+	drawAtts->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
+	drawAtts->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .04,  NONE, 1, AMBIENT_LIGHT);
+	drawAtts->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
 }

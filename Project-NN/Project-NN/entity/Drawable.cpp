@@ -39,23 +39,24 @@ UINT* Drawable::getIndicies()
 
 void Drawable::draw()
 {
-	UINT stride = sizeof(float)*3;
-	UINT offset = 0;
+	UINT stride = vertexStride;
+	UINT offset = vertexOffset;
 
-	//build world matrix
+	//build world matrix and normal matrix
 	XMMATRIX w = XMLoadFloat4x4( &world );
 	//translate matrix
 	XMMATRIX translate = XMMatrixTranslation(position.x, position.y, position.z);
 	w = w*translate;
-	// Set constants 
-	
-	XMMATRIX vp = drawAtts->camera.ViewProj();
-	XMMATRIX wvp = w * vp;
+	//w = XMMatrixTranspose(w);
+	XMMATRIX wn = w;
 
-	effectWorld->SetMatrix( reinterpret_cast<float*>(&w) );
-	effectViewProject->SetMatrix( reinterpret_cast<float*>(&vp) );
-	effectWorldViewRef->SetMatrix( reinterpret_cast<float*>(&wvp) );
-	cameraPos->SetFloatVector( reinterpret_cast<float*>(&drawAtts->camera.GetPosition()) );
+	//update the world matrix in the shader
+	D3D11_MAPPED_SUBRESOURCE resource;
+	
+	HRESULT hr = deviceContext->Map(drawAtts->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+	memcpy((float*)resource.pData,    &w._11,  64);
+	memcpy((float*)resource.pData+16, &wn._11, 64);
+	deviceContext->Unmap(drawAtts->getCBuffer("Object"), 0);
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
@@ -107,10 +108,10 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 {
     technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
-    effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
-	effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();
-	effectViewProject = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("ViewProj")->AsMatrix();
-	cameraPos = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("cameraPosition")->AsVector();
+    //effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
+	//effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();
+	//effectViewProject = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("ViewProj")->AsMatrix();
+	//cameraPos = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("cameraPosition")->AsVector();
 }
 
 //****************************************************************

@@ -87,6 +87,9 @@
     <ClCompile Include="framework\OBJLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="entity\Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\Camera.h">
@@ -161,17 +164,12 @@
     <ClInclude Include="framework\OBJLoader.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="entity\Light.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />
     <Library Include="framework\Effects11d.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\DrawSphere.fx">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\shaders\phong.fx">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

@@ -158,6 +158,19 @@ XMMATRIX Camera::Proj()const
 {
 	return XMLoadFloat4x4(&mProj);
 }
+float* Camera::getViewPointer()
+{
+	return &mView._11;
+}
+float* Camera::getProjPointer()
+{
+	return &mProj._11;
+}
+float* Camera::getPosPointer()
+{
+	return &mPosition.x;
+}
+
 
 XMMATRIX Camera::ViewProj()const
 {

@@ -7,7 +7,7 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
     wobble = new Wobble();
     sphere = new Drawable(device, immediateContext);
     sphere->setPosition(XMFLOAT3(xPos, yPos, zPos));
-    sphere->getEffectVariables("phong", "Render");
+    sphere->getEffectVariables("betterPhong", "Render");
     sphere->createBuffer("Sphere");
     components.push_back(sphere);
     components.push_back(wobble);

@@ -12,9 +12,13 @@ ResourceManager::~ResourceManager(void)
 }
 
 
-ResourceManager::ResourceManager(ID3D11Device* device) : randomEngine((unsigned int)time(0))
+ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : randomEngine((unsigned int)time(0))
 {
 	pD3DDevice = device;
+	md3dImmediateContext = immediateContext;
+	lightChange = 1;
+	cameraChange = 1;
+	numLights = 0;
 }
 
 //
@@ -39,103 +43,10 @@ void ResourceManager::addEffect(WCHAR* file, char* name)
 		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
 		effects.insert(std::make_pair<char*, Effect*>(name, e));
 	}
-}
 
-void ResourceManager::addTesellatedSphere(float radius, int divisions, char* name)
-{
-	HRESULT hr = S_OK;
-	Mesh* mesh = new Mesh();
-
-	 if( divisions < 6 ) {
-        divisions = 6;
-    }
-	
-	 //define the vertex buffer
-	float trigDelta = (360.0/divisions) * (3.1415926536/180);
-	mesh->numVerts = divisions*ceil(divisions/2.0)*6;
-	XMFLOAT3* verts = new XMFLOAT3[mesh->numVerts];
-	int counter = 0;
-	for(int k = 0; k < divisions; k++)
-	{
-		for(int i = 0; i < divisions/2; i++)
-		{
-			float angle1 = trigDelta * k;
-			float angle2 = trigDelta * i;
-
-			float X1 = radius*sin(angle2)*cos(angle1);
-			float X2 = radius*cos(angle1+trigDelta)*sin(angle2);
-			float X3 = radius*sin(angle2+trigDelta)*cos(angle1);
-			float X4 = radius*cos(angle1+trigDelta)*sin(angle2+trigDelta);
-
-			float Y1 = radius*sin(angle1)*sin(angle2);
-			float Y2 = radius*sin(angle2+trigDelta)*sin(angle1);
-			float Y3 = radius*sin(angle1+trigDelta)*sin(angle2);
-			float Y4 = radius*sin(angle2+trigDelta)*sin(angle1+trigDelta);
-
-			float Z1 = radius*cos(angle2)+radius;
-			float Z2 = radius*cos(angle2+trigDelta)+radius;
-
-			XMFLOAT3 p1(X1, Y1, Z1);
-			XMFLOAT3 p2(X2, Y3, Z1);
-			XMFLOAT3 p3(X3, Y2, Z2);
-			XMFLOAT3 p4(X4, Y4, Z2);
-			verts[counter] = p3;	counter++;
-			verts[counter] = p2;	counter++;
-			verts[counter] = p1;	counter++;
-			verts[counter] = p3;	counter++;
-			verts[counter] = p4;	counter++;
-			verts[counter] = p2;	counter++;
-			//addTriangle(p2, p3, p1);
-			//addTriangle(p4, p3, p2);
-		}
-	}
-
-	XMFLOAT3 *v = verts;
-
-	D3D11_BUFFER_DESC bufferDescription;
-	bufferDescription.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change
-	bufferDescription.ByteWidth = sizeof(float) * 3 * mesh->numVerts; //total number of bytes for all verticies
-	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER; //binds the buffer to the correct type
-	bufferDescription.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
-	bufferDescription.MiscFlags = 0;	//only one D3D device
-	
-	//add the data for the buffer
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = v;
-
-	//Set the size of a single vertex
-	mesh->vertexStride = sizeof(float)*3;
-	mesh->vertexOffset = 0;
-	//create the vertex buffer
-	hr = pD3DDevice->CreateBuffer(&bufferDescription, &InitData, &mesh->verticies);
-
-	//define index buffer
-	mesh->numIndicies = mesh->numVerts;
-	UINT* indicies = new UINT[mesh->numIndicies];
-
-	for(int k = 0; k < mesh->numIndicies; k++)
-	{
-		indicies[k] = k;
-	}
-
-	UINT* i = indicies;
-
-	// Describe the index buffer we are going to create.
-    D3D11_BUFFER_DESC indB;
-    indB.Usage = D3D11_USAGE_IMMUTABLE;
-    indB.ByteWidth = sizeof(UINT) * mesh->numIndicies;
-    indB.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    indB.CPUAccessFlags = 0;
-    indB.MiscFlags = 0;
-    indB.StructureByteStride = 0;
-
-	// Specify the data to initialize the index buffer.
-	InitData.pSysMem = i;
-
-	// Create the index buffer.
-	pD3DDevice->CreateBuffer(&indB, &InitData, &mesh->indicies);
-	
-	meshes.insert(std::make_pair<char*, Mesh*>(name,mesh));
+	e->effect->GetConstantBufferByName("LightsBuffer")->SetConstantBuffer(getCBuffer("Light"));
+	e->effect->GetConstantBufferByName("CameraBuffer")->SetConstantBuffer(getCBuffer("Camera"));
+	e->effect->GetConstantBufferByName("perObject")->SetConstantBuffer(getCBuffer("Object"));
 }
 
 bool ResourceManager::addMesh(char* objFile, char* name)
@@ -189,6 +100,119 @@ bool ResourceManager::addMesh(char* objFile, char* name)
 	meshes.insert( make_pair<char*, Mesh*>(name, mesh) );
 
 	return 1;
+}
+
+void ResourceManager::addCBuffer(unsigned int byteWidth, char* name)
+{
+	ID3D11Buffer* buffer;
+	HRESULT hr;
+
+	D3D11_BUFFER_DESC bd;
+	bd.Usage = D3D11_USAGE_DYNAMIC;
+	bd.ByteWidth = byteWidth;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bd.MiscFlags = 0;
+
+	//D3D10_SUBRESOURCE_DATA initData;
+	//LightStruct* v = lights[0];
+	//initData.pSysMem = v;
+
+	hr = pD3DDevice->CreateBuffer( &bd, NULL, &buffer );
+
+	if(hr == S_OK)
+		cBuffers.insert( make_pair<char*, ID3D11Buffer*>(name, buffer));
+}
+
+void ResourceManager::addLight(float posX, float posY, float posZ,
+						 float colX, float colY, float colZ, float colA,
+						 float dirX, float dirY, float dirZ,
+						 float radius, float angle, float intensity, int falloff, 
+						 int onOff, int type)
+{
+	if(numLights < 10)
+	{
+		numLights++;
+		lights.push_back(createLight(posX, posY, posZ, colX, colY, colZ, colA, dirX, dirY, dirZ, radius, angle, intensity, falloff, onOff, type));
+	}
+}
+
+
+Mesh* ResourceManager::getMesh( char* meshName )
+{
+	Mesh* m;
+	try
+	{
+		m = meshes[ meshName ];
+	}
+	catch ( out_of_range e )
+	{
+		m = 0;
+	}
+	return m;
+}
+
+ID3DX11Effect* ResourceManager::getEffect( char* effectName )
+{
+	Effect* e;
+	try
+	{
+		e = effects.at( effectName );
+	}
+	catch ( out_of_range e )
+	{
+		return 0;
+	}
+	return e->effect;
+}
+
+ID3D11Buffer* ResourceManager::getCBuffer( char* bufferName )
+{
+	ID3D11Buffer* b;
+	try
+	{
+		b = cBuffers.at( bufferName );
+	}
+	catch ( out_of_range e )
+	{
+		return 0;
+	}
+	return b;
+}
+
+void ResourceManager::updateShaderBuffers()
+{
+	D3D11_MAPPED_SUBRESOURCE resource;
+
+	//update light buffer if it has changed
+	if(lightChange)
+	{
+		md3dImmediateContext->Map(getCBuffer("Light"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+
+		for(int i = 0; i < numLights; i++)
+		{
+			memcpy((float*)resource.pData+20*i, lights[i], 80);
+		}
+		memcpy((float*)resource.pData+200, &numLights, 16);
+
+		md3dImmediateContext->Unmap(getCBuffer("Light"), 0);
+
+		lightChange = 0;
+	}
+
+	//update camera buffer if it has changed
+	if(cameraChange)
+	{
+		md3dImmediateContext->Map(getCBuffer("Camera"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+
+		memcpy((float*)resource.pData,    camera.getViewPointer(),  64);
+		memcpy((float*)resource.pData+16, camera.getProjPointer(),  64);
+		memcpy((float*)resource.pData+32, camera.getPosPointer(),    12);
+		
+		md3dImmediateContext->Unmap(getCBuffer("Camera"), 0);
+
+		//cameraChange = 0;
+	}
 }
 
 

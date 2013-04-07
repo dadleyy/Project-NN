@@ -27,8 +27,7 @@ void TestState::Init(StateManager* manager)
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
-	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
-	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
+	
 	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
@@ -45,7 +44,7 @@ void TestState::Init(StateManager* manager)
 	cout << "Initting" << endl;
     
 	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0f/600.0f, 0.01f, 100.0f);
-	drawAtts->camera.SetPosition(XMFLOAT3(0.5f, 0.5f, -1.0f));
+	drawAtts->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 
 void TestState::Cleanup()
@@ -114,6 +113,7 @@ void TestState::Update(float dt)
     if( spacer != 0 )
         spacer->Update(dt);
 
+	drawAtts->updateShaderBuffers();
 
     lastmouseposition[0] = currentmouseposition[0];
     lastmouseposition[1] = currentmouseposition[1];

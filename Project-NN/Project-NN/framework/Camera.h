@@ -57,7 +57,9 @@ public:
 	XMMATRIX View()const;
 	XMMATRIX Proj()const;
 	XMMATRIX ViewProj()const;
-
+	float* getViewPointer();
+	float* getProjPointer();
+	float* getPosPointer();
 	// Strafe/Walk the camera a distance d.
 	void Strafe(float d);
 	void Walk(float d);
