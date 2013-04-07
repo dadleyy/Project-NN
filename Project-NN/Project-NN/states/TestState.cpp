@@ -44,7 +44,6 @@ void TestState::Init(StateManager* manager)
 
 	cout << "Initting" << endl;
     
-	drawAtts->camera.SetLens(0.25f*MathHelper::Pi, 800.0f/600.0f, 0.01f, 100.0f);
 	drawAtts->camera.SetPosition(XMFLOAT3(0.5f, 0.5f, -1.0f));
 }
 
