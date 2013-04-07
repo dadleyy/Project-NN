@@ -166,12 +166,4 @@
     <Library Include="framework\Effects11.lib" />
     <Library Include="framework\Effects11d.lib" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\DrawSphere.fx">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\shaders\phong.fx">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

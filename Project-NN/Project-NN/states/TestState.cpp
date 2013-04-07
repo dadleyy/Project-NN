@@ -4,6 +4,7 @@
 #include "entity/Drawable.h"
 #include "entity/Asteroid.h"
 #include "entity/Spacecraft.h"
+#include "input.h"
 
 #include <iostream>
 #include <random>
@@ -14,12 +15,13 @@ using namespace std;
 
 TestState TestState::instance;
 extern ResourceManager* drawAtts;
+extern Input* input;
 
 void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 
-    mouseDown = false;
+    mouseDown = true;
     currentmouseposition[0] = currentmouseposition[1] = 0;
     lastmouseposition[0] = lastmouseposition[1] = 0;
 
@@ -81,21 +83,26 @@ void TestState::handleKey( int keycode, float dt )
 void TestState::Update(float dt)
 {
 
-    if( mouseDown ) {
+	if( input->getLMouseButton()) {
         float rotAngle = (1 * dt);
         drawAtts->camera.RotateY(rotAngle);
     }
 
     for( int i = 0; i < 256; i++ ){
-        if( manager->keystates[i] )
+        if(// manager->keystates[i]
+			input->getKeyDown(i))
+		{
             handleKey( i, dt ); 
+		}
     }
 
-    int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
+    //int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
+	int dx = input->getMouseX() - ( screenWidth * 0.5 );
     drawAtts->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
     
-    int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
-    drawAtts->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
+    //int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
+	int dy = input->getMouseY() - ( screenHeight * 0.5 );
+	drawAtts->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
     
 
 
@@ -115,8 +122,8 @@ void TestState::Update(float dt)
         spacer->Update(dt);
 
 
-    lastmouseposition[0] = currentmouseposition[0];
-    lastmouseposition[1] = currentmouseposition[1];
+    //lastmouseposition[0] = currentmouseposition[0];
+    //lastmouseposition[1] = currentmouseposition[1];
 }
 
 void TestState::Draw()
@@ -129,22 +136,23 @@ void TestState::Draw()
         spacer->Draw( );
 }
 
-void TestState::OnMouseMove(int x, int y)
-{
-    currentmouseposition[0] = x;
-    currentmouseposition[1] = y;
-}
 
 void TestState::OnMouseDown(int x, int y)
 {
-	cout << "mouse down" << endl;
+	/*cout << "mouse down" << endl;
     mouseDown = true;
 
-	cout << drawAtts->camera.GetPosition().z << endl;
+	cout << drawAtts->camera.GetPosition().z << endl;*/
 }
 
 void TestState::OnMouseUp(int x, int y)
 {
-    cout << "mouse up" << endl;
-    mouseDown = false;
+    /*cout << "mouse up" << endl;
+    mouseDown = false;*/
+}
+
+void TestState::OnMouseMove(int x, int y)
+{
+    //currentmouseposition[0] = x;
+    //currentmouseposition[1] = y;
 }

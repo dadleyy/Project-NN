@@ -12,6 +12,7 @@
 #include "input.h"
 
 ResourceManager* drawAtts;
+Input* input;
 int screenWidth;
 int screenHeight;
 
@@ -26,15 +27,23 @@ public:
 	void UpdateScene(float dt);
 	void DrawScene(); 
 
-	void OnMouseDown(WPARAM btnState, int x, int y);
-    void OnMouseUp(WPARAM btnState, int x, int y);
+	void OnMouseDownL(WPARAM btnState, int x, int y);
+	void OnMouseDownM(WPARAM btnState, int x, int y);
+	void OnMouseDownR(WPARAM btnState, int x, int y);
+    void OnMouseUpL(WPARAM btnState, int x, int y);
+	void OnMouseUpM(WPARAM btnState, int x, int y);
+	void OnMouseUpR(WPARAM btnState, int x, int y);
     void OnMouseMove(WPARAM btnState, int x, int y);
     void OnKeyDown(WPARAM keyCode);
     void OnKeyUp(WPARAM keyCode);
 
+
+
 private:
 	StateManager manager;
-	Input input;
+	UINT L_btn;
+	UINT M_btn;
+	UINT R_btn;
 };
 
 
@@ -87,10 +96,14 @@ bool Game::Init()
 {
 	if(!D3DApp::Init())
 		return false;
-
-
+	L_btn = 1;
+	M_btn = 2;
+	R_btn = 3;
+	input = new Input();
 	manager.Init(md3dDevice, md3dImmediateContext);
-	input.initialize(&manager);
+//	input->initialize(&manager);
+//	manager.setInput(&input);
+	
 	drawAtts = new ResourceManager(md3dDevice);
 	drawAtts->addTesellatedSphere(.3, 50, "testSphere");
 	drawAtts->addEffect(L"res/shaders/DrawSphere.fx", "sphereEffect");
@@ -123,25 +136,48 @@ void Game::DrawScene()
 }
 
 
-void Game::OnMouseDown(WPARAM btnState, int x, int y)
+void Game::OnMouseDownL(WPARAM btnState, int x, int y)
 {
-	input.OnMouseDown(btnState, x, y);
+	input->OnMouseDown(btnState, L_btn, x, y);
 }
-void Game::OnMouseUp(WPARAM btnState, int x, int y)
+
+void Game::OnMouseDownM(WPARAM btnState, int x, int y)
 {
-    input.OnMouseUp(btnState, x, y);
+	input->OnMouseDown(btnState, M_btn, x, y);
 }
+
+void Game::OnMouseDownR(WPARAM btnState, int x, int y)
+{
+	input->OnMouseDown(btnState, R_btn, x, y);
+}
+
+void Game::OnMouseUpL(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, L_btn, x, y);
+}
+
+void Game::OnMouseUpM(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, M_btn, x, y);
+}
+
+void Game::OnMouseUpR(WPARAM btnState, int x, int y)
+{
+    input->OnMouseUp(btnState, R_btn, x, y);
+}
+
+
 
 void Game::OnMouseMove(WPARAM btnState, int x, int y)
 {
-    input.OnMouseMove(btnState, x, y);
+    input->OnMouseMove(btnState, x, y);
 }
 
 void Game::OnKeyDown(WPARAM keyCode)
 {
-    input.OnKeyDown(keyCode);
+    input->OnKeyDown(keyCode);
 }
 void Game::OnKeyUp(WPARAM keyCode)
 {
-    input.OnKeyUp(keyCode);
+    input->OnKeyUp(keyCode);
 }

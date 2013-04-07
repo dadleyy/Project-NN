@@ -23,7 +23,7 @@ public:
 
 	void PushState(GameState* state);
 	void PopState();
-
+	
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetContext();
 
@@ -31,7 +31,6 @@ public:
 
 private:
 	std::vector<GameState*> states;
-
 	ID3D11Device* device;
 	ID3D11DeviceContext* context;
 };

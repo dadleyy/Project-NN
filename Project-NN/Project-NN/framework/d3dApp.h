@@ -37,8 +37,12 @@ public:
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	// Convenience overrides for handling mouse and keyboard input.
-	virtual void OnMouseDown(WPARAM btnState, int x, int y){ }
-	virtual void OnMouseUp(WPARAM btnState, int x, int y)  { }
+	virtual void OnMouseDownL(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseDownM(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseDownR(WPARAM btnState, int x, int y){ }
+	virtual void OnMouseUpL(WPARAM btnState, int x, int y)  { }
+	virtual void OnMouseUpM(WPARAM btnState, int x, int y)  { }
+	virtual void OnMouseUpR(WPARAM btnState, int x, int y)  { }
 	virtual void OnMouseMove(WPARAM btnState, int x, int y){ }
 	virtual void OnKeyDown(WPARAM keyCode){ }
 	virtual void OnKeyUp(WPARAM keyCode){ }

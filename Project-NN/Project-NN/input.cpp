@@ -30,6 +30,11 @@ Input::~Input()
         ReleaseCapture();               // release mouse
 }
 
+
+int Input::getMouseX() {
+	return mouseX;	
+}
+
 //initialize
 /*void Input::initialize(HWND hwnd, bool capture, StateManager gManager)
 {
@@ -46,10 +51,10 @@ Input::~Input()
 	manager = gManager;
 }*/
 
-void Input::initialize(StateManager* gManager)
+/*void Input::initialize(StateManager* gManager)
 {
 	manager = gManager;
-}
+}*/
 
 /*void OnMouseDown(int x, int y);
 void OnMouseUp(int x, int y);
@@ -58,25 +63,53 @@ void OnKeyUp(int keycode);
 void OnKeyDown(int keycode);*/
 
 
-void Input::OnMouseDown(WPARAM btnState, int x, int y)
+void Input::OnMouseDown(WPARAM btnState, UINT btn, int x, int y)
 {
-	manager->OnMouseDown(x, y);
+	//manager->OnMouseDown(x, y);
+	if(btn == inputNS::L_BTN)
+	{
+		mouseLButton = true;
+	}
+	else if(btn == inputNS::M_BTN)
+	{
+		mouseMButton = true;
+	}
+	else
+	{
+		mouseRButton = true;
+	}
 }
-void Input::OnMouseUp(WPARAM btnState, int x, int y)
+void Input::OnMouseUp(WPARAM btnState, UINT btn, int x, int y)
 {
-    manager->OnMouseUp(x, y);
+    //manager->OnMouseUp(x, y);
+	if(btn == inputNS::L_BTN)
+	{
+		mouseLButton = false;
+	}
+	else if(btn == inputNS::M_BTN)
+	{
+		mouseMButton = false;
+	}
+	else
+	{
+		mouseRButton = false;
+	}
 }
 
 void Input::OnMouseMove(WPARAM btnState, int x, int y)
 {
-    manager->OnMouseMove(x, y);
+    //manager->OnMouseMove(x, y);
+	mouseX = x;
+	mouseY = y;
 }
 
 void Input::OnKeyDown(WPARAM keyCode)
 {
-    manager->OnKeyDown( (int)keyCode );
+    //manager->OnKeyDown( (int)keyCode );
+	keysDown[(int)keyCode] = true;
 }
 void Input::OnKeyUp(WPARAM keyCode)
 {
-    manager->OnKeyUp( (int)keyCode );
+   //manager->OnKeyUp( (int)keyCode );
+	keysDown[(int)keyCode] = false;
 }
