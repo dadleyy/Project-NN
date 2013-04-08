@@ -21,14 +21,6 @@ ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* imme
 	numLights = 0;
 }
 
-//
-//
-//void DrawableAttributes::addMaterial(Material *m, char* name)
-//{
-//
-//}
-
-
 void ResourceManager::addEffect(WCHAR* file, char* name)
 {
 	HRESULT hr;
@@ -43,10 +35,22 @@ void ResourceManager::addEffect(WCHAR* file, char* name)
 		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
 		effects.insert(std::make_pair<char*, Effect*>(name, e));
 	}
-
 	e->effect->GetConstantBufferByName("LightsBuffer")->SetConstantBuffer(getCBuffer("Light"));
 	e->effect->GetConstantBufferByName("CameraBuffer")->SetConstantBuffer(getCBuffer("Camera"));
 	e->effect->GetConstantBufferByName("perObject")->SetConstantBuffer(getCBuffer("Object"));
+}
+
+void ResourceManager::addTexture(WCHAR* file, char* name)
+{
+	HRESULT hr;
+	ID3D11ShaderResourceView* view;
+	hr = D3DX11CreateShaderResourceViewFromFile(pD3DDevice, 
+		file, 0, 0, &view, 0 );
+
+	if(hr == S_OK)
+	{
+		textures.insert(std::make_pair<char*, ID3D11ShaderResourceView*>(name, view));
+	}
 }
 
 bool ResourceManager::addMesh(char* objFile, char* name)

@@ -36,6 +36,7 @@ protected:
 
 	//pointers to compiles shader data, the effect and the technique
 	ID3DX11Effect*			effect;
+	ID3DX11EffectShaderResourceVariable* diffuseMap;
 	ID3DX11EffectTechnique*	technique;
     ID3DX11EffectMatrixVariable* effectWorldViewRef;
 	ID3DX11EffectMatrixVariable* effectWorld;

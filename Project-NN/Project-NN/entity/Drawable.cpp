@@ -50,6 +50,7 @@ void Drawable::draw()
 	//w = XMMatrixTranspose(w);
 	XMMATRIX wn = w;
 
+	diffuseMap->SetResource(drawAtts->textures.at("Test"));
 	//update the world matrix in the shader
 	D3D11_MAPPED_SUBRESOURCE resource;
 	
@@ -107,6 +108,7 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 
 void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 {
+	diffuseMap = drawAtts->effects.at(fxFilename)->effect->GetVariableByName("diffuseMap")->AsShaderResource();
     technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
     //effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
 	//effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();

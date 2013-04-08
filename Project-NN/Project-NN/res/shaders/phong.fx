@@ -9,13 +9,24 @@ cbuffer sceneAttributes
 {
 	float3 cameraPosition;
 	float pad;
-}
+};
+
+SamplerState samAnisotropic
+{
+	Filter = ANISOTROPIC;
+	MaxAnisotropy = 4;
+
+	AddressU = WRAP;
+	AddressV = WRAP;
+};
+
+Texture2D diffuseMap;
 
 struct VERTEX
 {   
 	float4 Pos : POSITION;    
 	float3 Norm : NORMAL;
-	float2 UV: TEXCOORD;
+	float2 Tex: TEXCOORD;
 };
 
 struct PIXEL
@@ -25,6 +36,7 @@ struct PIXEL
 	float3 L	:	TEXCOORD1;
 	float3 H	:	TEXCOORD2;
 	float3 V	:	TEXCOORD3;
+	float2 Tex	:	TEXCOORD4;
 };
 
 //*********************************
@@ -44,6 +56,8 @@ PIXEL VS( VERTEX input )
 	output.V = normalize(cameraPosition - pos);
 	output.H = normalize(output.V+output.L);
 
+	output.Tex = input.Tex;
+
 	return output;
 }
 
@@ -54,7 +68,8 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 ObjectColor =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
+	float4 ObjectColor = diffuseMap.Sample(samAnisotropic, input.Tex);
+	//float4 ObjectColor =  float4( 0.3f, 0.3f, 0.8f, 1.0f );
 	float4 finalColor = float4(0,0,0,1.0);
 	float4 white = float4(1.0,1.0,1.0,0.0);
 
