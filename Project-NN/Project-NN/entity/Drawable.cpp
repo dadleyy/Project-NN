@@ -110,10 +110,6 @@ void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
 {
 	diffuseMap = drawAtts->effects.at(fxFilename)->effect->GetVariableByName("diffuseMap")->AsShaderResource();
     technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
-    //effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
-	//effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();
-	//effectViewProject = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("ViewProj")->AsMatrix();
-	//cameraPos = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("cameraPosition")->AsVector();
 }
 
 //****************************************************************
