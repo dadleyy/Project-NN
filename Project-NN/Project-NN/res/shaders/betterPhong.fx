@@ -145,18 +145,19 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 finalColor = diffuseMap.Sample(samAnisotropic, input.UV);
+	float4 finalColor = 0;
+	float4 texColor = diffuseMap.Sample(samAnisotropic, input.UV);
 
 	for(int i = 0; i < numLights; i++)
 	{
 		if(lights[i].LonOff != 0)
 		{
 			if(lights[i].Ltype == 0)
-				finalColor += input.Col * AmbientLight(lights[i]);
+				finalColor += texColor * AmbientLight(lights[i]);
 			if(lights[i].Ltype == 1)
-				finalColor += input.Col*DirectionalLight(lights[i], input.worldNormal);
+				finalColor += texColor*DirectionalLight(lights[i], input.worldNormal);
 			if(lights[i].Ltype == 2)
-				finalColor += input.Col*PointLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
+				finalColor += texColor*PointLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
 		}
 	}
 
