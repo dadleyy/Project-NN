@@ -10,6 +10,7 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	sphere->setPosition(XMFLOAT3(xPos, yPos, zPos));
     sphere->getEffectVariables("betterPhong", "Render");
 	sphere->createBuffer("Sphere");
+	sphere->addTexture("Test", "diffuseMap");
 	components.push_back(sphere);
 	components.push_back(wobble);
 	GameObject::InitComponents();
