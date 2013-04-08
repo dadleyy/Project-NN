@@ -53,7 +53,6 @@ struct PIXEL
 	float3 worldNormal	   : TEXCOORD1;
 };
 
-
 float4 AmbientLight(Light light)
 {
 	return light.Lintensity * light.Lcolor;
@@ -81,6 +80,49 @@ float4 PointLight(Light light, float3 shadePoint, float3 normal, float3 eyePosit
 
 		//no falloff
 		if(light.Lfalloff == 0 || radiusSq == 0)
+		{
+			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal));
+			specularColor = float3(1,1,1) * pow( max(0, dot(R, L)), 25 );
+		}
+
+		//linear falloff
+		else if(light.Lfalloff == 1)
+		{
+			float k = (1-sqrt(distSq)/light.Lradius);
+			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+			specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+		}
+
+		//quadratic falloff
+		else if(light.Lfalloff == 2)
+		{
+			float k = (1-distSq/radiusSq);
+			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+			specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+		}
+	}
+
+	return float4((specularColor+diffuseColor)*light.Lintensity, 1.0);
+}
+
+
+float4 SpotLight(Light light, float3 shadePoint, float3 normal, float3 eyePosition)
+{
+	float3 L = light.Lposition.xyz - shadePoint;
+	float3 V = -normalize(eyePosition - shadePoint);
+	float3 R = normalize(reflect(V, normal));
+	float radiusSq = light.Lradius*light.Lradius;
+	float distSq = dot(L, L);
+	L = normalize(L);
+
+	float3 diffuseColor = 0;
+	float3 specularColor = 0;
+	if(cos(light.Langle) < dot(-L, normalize(light.Ldirection)))
+	{
+		float intensity;
+
+		//no falloff
+		if(light.Lfalloff == 0)
 		{
 			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal));
 			specularColor = float3(1,1,1) * pow( max(0, dot(R, L)), 25 );
@@ -145,6 +187,8 @@ float4 PS( PIXEL input ) : SV_Target
 				finalColor += input.Col*DirectionalLight(lights[i], input.worldNormal);
 			if(lights[i].Ltype == 2)
 				finalColor += input.Col*PointLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
+			if(lights[i].Ltype == 3)
+				finalColor += input.Col*SpotLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
 		}
 	}
 
