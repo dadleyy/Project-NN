@@ -50,6 +50,10 @@ void Drawable::draw()
 	//w = XMMatrixTranspose(w);
 	XMMATRIX wn = w;
 
+	for(auto it = textures.begin(); it != textures.end(); ++it) {
+		it->first->SetResource(it->second);
+	}
+
 	//update the world matrix in the shader
 	D3D11_MAPPED_SUBRESOURCE resource;
 	
@@ -105,13 +109,10 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 }
 
 
-void Drawable::getEffectVariables(char *fxFilename, char* fxTechniqueName )
+void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 {
-    technique = drawAtts->effects.at( fxFilename )->effect->GetTechniqueByName( fxTechniqueName );
-    //effectWorldViewRef = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("worldViewProj")->AsMatrix();
-	//effectWorld = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("world")->AsMatrix();
-	//effectViewProject = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("ViewProj")->AsMatrix();
-	//cameraPos = drawAtts->effects.at( fxFilename )->effect->GetVariableByName("cameraPosition")->AsVector();
+	this->effectID = effectID;
+    technique = drawAtts->effects.at( effectID )->effect->GetTechniqueByName( fxTechniqueName );
 }
 
 //****************************************************************
@@ -184,6 +185,12 @@ void Drawable::createBuffer()
 
 	numVerts = drawAtts->meshes.at("testSphere")->numVerts;
 	numIndicies = drawAtts->meshes.at("testSphere")->numIndicies;
+}
+
+
+void Drawable::addTexture(char* id, char* textureVariable) {
+	auto diffuseMap = drawAtts->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
+	textures[diffuseMap] = drawAtts->textures[id];
 }
 
 

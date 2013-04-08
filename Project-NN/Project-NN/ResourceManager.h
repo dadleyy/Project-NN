@@ -32,11 +32,6 @@ struct Effect
 	ID3DX11Effect* effect;
 };
 
-//struct Material
-//{
-//	XMFLOAT4 color;
-//};
-
 class ResourceManager
 {
 public:
@@ -50,6 +45,7 @@ public:
 	unordered_map<char*, Effect*> effects;
 	unordered_map<char*, ID3D11Buffer*> cBuffers;
 	vector<LightStruct*> lights;
+	std::unordered_map<char*, ID3D11ShaderResourceView*> textures;
 	//unordered_map<char*, Material*> materials;
 	
 
@@ -58,8 +54,8 @@ public:
 
 	bool cameraChange;
 	
-	//void addMaterial(Material *m, char* name);
 	void addEffect(WCHAR* file, char* name);
+	void addTexture(WCHAR* file, char* name);
 	bool addMesh(char* objFile, char* name);
 	void addCBuffer(unsigned int byteWidth, char* name);
     void addCamera( );

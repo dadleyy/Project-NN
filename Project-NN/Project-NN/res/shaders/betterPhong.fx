@@ -36,7 +36,16 @@ cbuffer LightsBuffer
 	float3 pad;
 };
 
+SamplerState samAnisotropic
+{
+	Filter = ANISOTROPIC;
+	MaxAnisotropy = 4;
 
+	AddressU = WRAP;
+	AddressV = WRAP;
+};
+
+Texture2D diffuseMap;
 
 struct VERTEX
 {   
@@ -49,8 +58,9 @@ struct PIXEL
 {	
 	float4 Pos : SV_POSITION; 
 	float4 Col : COLOR0;
-	float3 worldPosition   : TEXCOORD0;
-	float3 worldNormal	   : TEXCOORD1;
+	float3 worldPosition : TEXCOORD0;
+	float3 worldNormal : TEXCOORD1;
+	float2 UV : TEXCOORD2;	
 };
 
 float4 AmbientLight(Light light)
@@ -165,6 +175,8 @@ PIXEL VS( VERTEX input )
 	output.worldPosition = worldPos.xyz;
 	output.worldNormal   = input.Norm;
 
+	output.UV = input.UV;
+
 	return output;
 }
 
@@ -175,20 +187,21 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 finalColor = float4(0, 0, 0, 1);
+	float4 finalColor = 0;
+	float4 texColor = diffuseMap.Sample(samAnisotropic, input.UV);
 
 	for(int i = 0; i < numLights; i++)
 	{
 		if(lights[i].LonOff != 0)
 		{
 			if(lights[i].Ltype == 0)
-				finalColor += input.Col * AmbientLight(lights[i]);
+				finalColor += texColor * AmbientLight(lights[i]);
 			if(lights[i].Ltype == 1)
-				finalColor += input.Col*DirectionalLight(lights[i], input.worldNormal);
+				finalColor += texColor*DirectionalLight(lights[i], input.worldNormal);
 			if(lights[i].Ltype == 2)
-				finalColor += input.Col*PointLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
+				finalColor += texColor*PointLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
 			if(lights[i].Ltype == 3)
-				finalColor += input.Col*SpotLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
+				finalColor += texColor*SpotLight(lights[i], input.worldPosition, input.worldNormal, cameraPosition);
 		}
 	}
 

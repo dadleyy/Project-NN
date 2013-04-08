@@ -29,22 +29,13 @@ void TestState::Init(StateManager* manager)
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
-	
+	drawAtts->addTexture(L"res/textures/mossy-bricks.dds", "Test");
+
 	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
 	}
 
-
-    if(drawAtts->addMesh("res/models/cool.obj", "CoolObject")) {
-        cout << "okay loading" << endl;
-        spacer = new Spacecraft(manager->GetDevice(), manager->GetContext(), 0, 0, 0 );
-    } else {
-        cout << "not okay loading" << endl;
-    }
-
-	cout << "Initting" << endl;
-    
 	drawAtts->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 

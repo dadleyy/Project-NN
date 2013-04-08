@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dcompiler.h>
+#include <unordered_map>
 #include <xnamath.h>
 
 #include "Component.h"
@@ -21,6 +22,7 @@ public:
 	void draw();	
 	virtual void createBuffer(); 
 	virtual void createBuffer(char* mesh);
+	virtual void addTexture(char* id, char* textureVariable);
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
@@ -34,13 +36,11 @@ protected:
 	ID3D11Device*			pD3DDevice;    //reference to the DX device being used
 	ID3D11DeviceContext*    deviceContext; //reference DX device context being used
 
+	std::unordered_map<ID3DX11EffectShaderResourceVariable*, ID3D11ShaderResourceView*> textures;
+
 	//pointers to compiles shader data, the effect and the technique
-	ID3DX11Effect*			effect;
+	char* effectID;
 	ID3DX11EffectTechnique*	technique;
-    ID3DX11EffectMatrixVariable* effectWorldViewRef;
-	ID3DX11EffectMatrixVariable* effectWorld;
-	ID3DX11EffectMatrixVariable* effectViewProject;
-	ID3DX11EffectVectorVariable* cameraPos;
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
