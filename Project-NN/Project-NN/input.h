@@ -64,6 +64,8 @@ public:
 
 	bool getLMouseButton(){return mouseLButton;}
 
+	bool getRMouseButton(){return mouseRButton;}
+
 	bool getKeyDown(int i){return keysDown[i];}
 
 	int getMouseY() {return mouseY;}

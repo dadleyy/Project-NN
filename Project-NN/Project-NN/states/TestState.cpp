@@ -5,6 +5,7 @@
 #include "entity/Asteroid.h"
 #include "entity/Spacecraft.h"
 #include "input.h"
+#include "entity/PlayerControls.h"
 
 #include <iostream>
 #include <random>
@@ -21,11 +22,10 @@ void TestState::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 
-    mouseDown = true;
     currentmouseposition[0] = currentmouseposition[1] = 0;
     lastmouseposition[0] = lastmouseposition[1] = 0;
 
-    spacer = 0;
+	//spacer = new Spacecraft(drawAtts->pD3DDevice, drawAtts->md3dImmediateContext, 0.0, 0.0, 0.0);
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
@@ -47,43 +47,10 @@ void TestState::Cleanup()
     delete spacer;
 }
 
-void TestState::handleKey( int keycode, float dt )
-{
-     cout << keycode << endl;
-    switch(keycode)
-    {
-    case 'A':
-        drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
-        break;
-    case 'D':
-        drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
-        break;
-    case 'S':
-        drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
-        break;
-    case 'W':
-        drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-        break;
-    default:
-        break;
-    }
-}
 
 void TestState::Update(float dt)
 {
-
-	if( input->getLMouseButton()) {
-        float rotAngle = (1 * dt);
-        drawAtts->camera.RotateY(rotAngle);
-    }
-
-    for( int i = 0; i < 256; i++ ){
-        if(// manager->keystates[i]
-			input->getKeyDown(i))
-		{
-            handleKey( i, dt ); 
-		}
-    }
+	//spacer->Update(dt);
 
     //int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
 	int dx = input->getMouseX() - ( screenWidth * 0.5 );
@@ -114,6 +81,7 @@ void TestState::Update(float dt)
 
     //lastmouseposition[0] = currentmouseposition[0];
     //lastmouseposition[1] = currentmouseposition[1];
+	
 }
 
 void TestState::Draw()

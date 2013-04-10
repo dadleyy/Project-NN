@@ -5,6 +5,10 @@
 class GameObject;
 class Drawable;
 
+
+extern int screenWidth;
+extern int screenHeight;
+
 /**
  * Adds spaceship controls to the GameObject with this attached to it.
  *
@@ -14,7 +18,9 @@ class PlayerControls : public Component {
 public:
 	void Init(GameObject* go);
 	void Update(float dt);
+	void handleKey( int keycode, float dt );
 
 private:
 	Drawable* drawable;
+
 };
