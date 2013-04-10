@@ -9,7 +9,6 @@ using namespace std;
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Drawable.h"
-#include "Sphere.h"
 
 
 extern ResourceManager* drawAtts;

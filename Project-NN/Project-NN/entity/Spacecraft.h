@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 class Drawable;
-class Wobble;
+class PlayerControls;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -14,8 +14,7 @@ public:
     void Draw();
 
 private:
-    Drawable* sphere;
-    Wobble* wobble;
-
+    Drawable* drawable;
+	PlayerControls* playerControls;
 };
 
