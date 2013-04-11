@@ -20,6 +20,8 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	float scale = distribution(drawAtts->randomEngine);
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
+	transform->rotation = XMFLOAT4(0.707f, 0, 0, 0.707f);
+
     sphere->getEffectVariables("betterPhong", "Render");
 	sphere->createBuffer("Sphere");
 	sphere->addTexture("Test", "diffuseMap");

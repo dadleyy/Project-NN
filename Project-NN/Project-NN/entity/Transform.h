@@ -11,6 +11,6 @@ public:
 	void Update(float dt);
 
 	XMFLOAT3 position;
-	XMVECTOR rotation;
+	XMFLOAT4 rotation;
 	XMFLOAT3 scale;
 };
