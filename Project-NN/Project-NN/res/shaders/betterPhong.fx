@@ -127,7 +127,10 @@ float4 SpotLight(Light light, float3 shadePoint, float3 normal, float3 eyePositi
 
 	float3 diffuseColor = 0;
 	float3 specularColor = 0;
-	if(cos(light.Langle) < dot(-L, normalize(light.Ldirection)))
+	float angleDot = dot(-L, normalize(light.Ldirection.xyz));
+	float angleCos = cos(light.Langle);
+
+	if(angleCos < angleDot)
 	{
 		float intensity;
 
@@ -152,6 +155,13 @@ float4 SpotLight(Light light, float3 shadePoint, float3 normal, float3 eyePositi
 			float k = (1-distSq/radiusSq);
 			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
 			specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+		}
+
+		float anglePercent = acos(angleDot)/acos(angleCos);
+		if(anglePercent > .95)
+		{
+			diffuseColor  *= (.05-(anglePercent - .95))/.05;
+			specularColor *= (.05-(anglePercent - .95))/.05;
 		}
 	}
 

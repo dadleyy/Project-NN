@@ -14,11 +14,6 @@ using namespace std;
 
 extern ResourceManager* drawAtts;
 
-Wobble::~Wobble() {
-	delete transform;
-	delete drawable;
-}
-
 void Wobble::Init(GameObject* go) {
 	drawable = go->GetComponent<Drawable>();
 	transform = go->GetComponent<Transform>();

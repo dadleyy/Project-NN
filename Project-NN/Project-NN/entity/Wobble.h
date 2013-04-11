@@ -15,7 +15,6 @@ class Transform;
  */
 class Wobble : public Component {
 public:
-	~Wobble();
 	void Init(GameObject* go);
 	void Update(float dt);
 

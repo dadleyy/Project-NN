@@ -113,3 +113,4 @@ void Input::OnKeyUp(WPARAM keyCode)
    //manager->OnKeyUp( (int)keyCode );
 	keysDown[(int)keyCode] = false;
 }
+
