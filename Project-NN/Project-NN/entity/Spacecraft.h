@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 
+class Transform;
 class Drawable;
 class PlayerControls;
 struct ID3D11Device;
@@ -14,6 +15,7 @@ public:
     void Draw();
 
 private:
+	Transform* transform;
     Drawable* drawable;
 	PlayerControls* playerControls;
 };

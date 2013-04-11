@@ -6,6 +6,7 @@
 
 class GameObject;
 class Drawable;
+class Transform;
 
 /**
  * Makes gameobjects wobble back and forth.
@@ -14,10 +15,12 @@ class Drawable;
  */
 class Wobble : public Component {
 public:
+	~Wobble();
 	void Init(GameObject* go);
 	void Update(float dt);
 
 private:
+	Transform* transform;
 	Drawable* drawable;
 	XMFLOAT3 basePosition;
 	float totalTime;

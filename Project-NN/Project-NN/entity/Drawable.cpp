@@ -1,5 +1,8 @@
 #include "Drawable.h"
 
+#include "GameObject.h"
+#include "Transform.h"
+
 
 extern ResourceManager* drawAtts;
 
@@ -18,12 +21,19 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext) 
 	vertexOffset = 0;
 	XMMATRIX I = XMMatrixIdentity();
 	XMStoreFloat4x4( &world, I );
-	setPosition(XMFLOAT3(0, 0, 0));
 }
 
 Drawable::~Drawable(void)
 {
-		
+	delete transform;	
+}
+
+void Drawable::Init(GameObject* go) {
+	transform = go->GetComponent<Transform>();
+	//TODO: Check to make sure that transform is not null.
+	if(transform == nullptr) {
+		exit(1);
+	}
 }
 
 XMFLOAT3* Drawable::getVerts(float radius, int divisions)
@@ -44,10 +54,11 @@ void Drawable::draw()
 
 	//build world matrix and normal matrix
 	XMMATRIX w = XMLoadFloat4x4( &world );
-	//translate matrix
-	XMMATRIX translate = XMMatrixTranslation(position.x, position.y, position.z);
-	w = w*translate;
-	//w = XMMatrixTranspose(w);
+	//translate, rotate, and scale matrix
+	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
+	//XMMATRIX rotation = XMMatrixRotationQuaternion(transform->rotation);
+	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
+	w = w * translate * scale;// * rotation * scale;
 	XMMATRIX wn = w;
 
 	for(auto it = textures.begin(); it != textures.end(); ++it) {
@@ -199,15 +210,4 @@ void Drawable::destroy()
 	/*shader->Release();
 	pVertexBuffer->Release();
 	pVertexLayout->Release();*/
-}
-
-
-XMFLOAT3 Drawable::getPosition() {
-	return position;
-}
-
-
-void Drawable::setPosition(XMFLOAT3 pos)
-{
-	position = pos;
 }

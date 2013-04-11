@@ -82,8 +82,10 @@
     <ClCompile Include="entity\Drawable.cpp" />
     <ClCompile Include="entity\GameObject.cpp" />
     <ClCompile Include="entity\Light.cpp" />
+    <ClCompile Include="entity\PlayerControls.cpp" />
     <ClCompile Include="entity\Spacecraft.cpp" />
     <ClCompile Include="entity\Sphere.cpp" />
+    <ClCompile Include="entity\Transform.cpp" />
     <ClCompile Include="entity\Wobble.cpp" />
     <ClCompile Include="framework\Camera.cpp" />
     <ClCompile Include="framework\d3dApp.cpp" />
@@ -109,8 +111,10 @@
     <ClInclude Include="entity\Drawable.h" />
     <ClInclude Include="entity\GameObject.h" />
     <ClInclude Include="entity\Light.h" />
+    <ClInclude Include="entity\PlayerControls.h" />
     <ClInclude Include="entity\Spacecraft.h" />
     <ClInclude Include="entity\Sphere.h" />
+    <ClInclude Include="entity\Transform.h" />
     <ClInclude Include="entity\Wobble.h" />
     <ClInclude Include="framework\Camera.h" />
     <ClInclude Include="framework\d3dApp.h" />

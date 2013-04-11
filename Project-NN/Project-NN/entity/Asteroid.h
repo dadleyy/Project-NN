@@ -4,6 +4,7 @@
 
 class Drawable;
 class Wobble;
+class Transform;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -15,4 +16,5 @@ public:
 private:
 	Drawable* sphere;
 	Wobble* wobble;
+	Transform* transform;
 };

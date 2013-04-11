@@ -9,6 +9,8 @@
 #include "framework/d3dx11effect.h"
 #include "ResourceManager.h"
 
+class GameObject;
+class Transform;
 
 class Drawable : public Component
 {
@@ -18,6 +20,8 @@ public:
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
 	void destroy(); //releases all buffers and deletes all pointers. Call before deleting this object.
+
+	void Init(GameObject* go);
 
 	void draw();	
 	virtual void createBuffer(); 
@@ -57,16 +61,6 @@ protected:
   
     // world matrix
     XMFLOAT4X4 world;
-    XMFLOAT3 position;
-       
-    //-Things needed in the future-
-	//global shader paramterts[]
-	//location
-	//scale
-	//etc.
-
-
-	
-	
+	Transform* transform;
 };
 
