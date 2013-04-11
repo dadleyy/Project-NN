@@ -6,6 +6,7 @@ using namespace std;
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Drawable.h"
+#include "PhysicsComponent.h"
 #include "input.h"
 
 #define CAMERA_VELOCITY 3.0
@@ -14,7 +15,9 @@ using namespace std;
 extern ResourceManager* drawAtts;
 extern Input* input;
 
-void PlayerControls::Init(GameObject* go) {
+void PlayerControls::Init(GameObject* go) 
+{
+	physics = go->GetComponent<PhysicsComponent>();
 }
 
 void PlayerControls::Update(float dt) {
@@ -55,6 +58,9 @@ void PlayerControls::handleKey( int keycode, float dt )
     case 'W':
         drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
         break;
+	case 'X':
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .2, 0, 0) );
+
     default:
         break;
     }

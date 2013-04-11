@@ -4,6 +4,7 @@
 
 class Drawable;
 class PlayerControls;
+class PhysicsComponent;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -16,5 +17,6 @@ public:
 private:
     Drawable* drawable;
 	PlayerControls* playerControls;
+	PhysicsComponent* physics;
 };
 

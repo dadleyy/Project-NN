@@ -4,7 +4,7 @@
 
 class GameObject;
 class Drawable;
-
+class PhysicsComponent;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -21,6 +21,6 @@ public:
 	void handleKey( int keycode, float dt );
 
 private:
-	Drawable* drawable;
+	PhysicsComponent* physics;
 
 };

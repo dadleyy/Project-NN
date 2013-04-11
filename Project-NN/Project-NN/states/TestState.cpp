@@ -25,11 +25,9 @@ void TestState::Init(StateManager* manager)
     currentmouseposition[0] = currentmouseposition[1] = 0;
     lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	//spacer = new Spacecraft(drawAtts->pD3DDevice, drawAtts->md3dImmediateContext, 0.0, 0.0, 0.0);
+	spacer = new Spacecraft(drawAtts->pD3DDevice, drawAtts->md3dImmediateContext, 0.0, 0.0, 0.0);
 
 	uniform_real_distribution<float> distribution(-10, 10);
-
-	drawAtts->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 
 	for(int i = 0; i < 200; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
@@ -70,7 +68,8 @@ void TestState::Update(float dt)
 
     drawAtts->camera.UpdateViewMatrix();
 
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) 
+	{
 		(*it)->Update(dt);
 	}
 
