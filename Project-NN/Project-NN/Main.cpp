@@ -204,7 +204,7 @@ void addResources()
 	//meshes
 	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
 	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
-	drawAtts->addMesh("res/models/cool.obj", "cool");
+	drawAtts->addMesh("res/models/pinnace.obj", "cool");
 
 	//effects
 	drawAtts->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
