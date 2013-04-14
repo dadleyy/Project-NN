@@ -18,7 +18,7 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
 	drawable->addTexture("Test2", "diffuseMap");
 	physics = new PhysicsComponent(resourceMgr->camera.GetLook(), resourceMgr->camera.GetRight(), resourceMgr->camera.GetUp(), 0, 10, 15, XMFLOAT3(0, 0,0), XMFLOAT3(0,0,0), XMFLOAT3(0,0,0), 0, 0);
 	playerControls = new PlayerControls();
-	playerCamera = new PlayerCameraComponent(&drawAtts->camera);
+	playerCamera = new PlayerCameraComponent(&resourceMgr->camera);
 
     components.push_back(transform);
     components.push_back(drawable);
