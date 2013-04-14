@@ -1,7 +1,7 @@
 #include "Sphere.h"
 
+#include "ResourceManager.h"
 
-extern ResourceManager* drawAtts;
 
 Sphere::Sphere(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : Drawable(device, immediateContext)
 {
@@ -39,14 +39,14 @@ void Sphere::createBuffer()
 				&pVertexLayout);
 
 
-	pVertexBuffer = drawAtts->meshes.at("testSphere")->verticies;
-	indexBuffer = drawAtts->meshes.at("testSphere")->indicies;
+	pVertexBuffer = resourceMgr->meshes.at("testSphere")->verticies;
+	indexBuffer = resourceMgr->meshes.at("testSphere")->indicies;
 
-	vertexStride = drawAtts->meshes.at("testSphere")->vertexStride;
-	vertexOffset = drawAtts->meshes.at("testSphere")->vertexOffset;
+	vertexStride = resourceMgr->meshes.at("testSphere")->vertexStride;
+	vertexOffset = resourceMgr->meshes.at("testSphere")->vertexOffset;
 
-	numVerts = drawAtts->meshes.at("testSphere")->numVerts;
-	numIndicies = drawAtts->meshes.at("testSphere")->numIndicies;
+	numVerts = resourceMgr->meshes.at("testSphere")->numVerts;
+	numIndicies = resourceMgr->meshes.at("testSphere")->numIndicies;
 }
 
 //********************************************************

@@ -12,8 +12,6 @@ using namespace std;
 #include "Drawable.h"
 
 
-extern ResourceManager* drawAtts;
-
 void Wobble::Init(GameObject* go) {
 	drawable = go->GetComponent<Drawable>();
 	transform = go->GetComponent<Transform>();
@@ -28,7 +26,7 @@ void Wobble::Init(GameObject* go) {
 	basePosition = transform->position;
 
 	uniform_real_distribution<float> distribution(-1000, 1000);
-	totalTime = distribution(drawAtts->randomEngine);
+	totalTime = distribution(resourceMgr->randomEngine);
 }
 
 void Wobble::Update(float dt) {

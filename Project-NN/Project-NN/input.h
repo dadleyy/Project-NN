@@ -69,7 +69,8 @@ public:
 	bool getKeyDown(int i){return keysDown[i];}
 
 	int getMouseY() {return mouseY;}
-
 };
+
+extern Input* input;
 
 #endif //Input_H

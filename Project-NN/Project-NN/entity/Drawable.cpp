@@ -2,9 +2,8 @@
 
 #include "GameObject.h"
 #include "Transform.h"
+#include "ResourceManager.h"
 
-
-extern ResourceManager* drawAtts;
 
 Drawable::Drawable(void)
 {
@@ -68,10 +67,10 @@ void Drawable::draw()
 	//update the world matrix in the shader
 	D3D11_MAPPED_SUBRESOURCE resource;
 	
-	HRESULT hr = deviceContext->Map(drawAtts->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+	HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
 	memcpy((float*)resource.pData,    &w._11,  64);
 	memcpy((float*)resource.pData+16, &wn._11, 64);
-	deviceContext->Unmap(drawAtts->getCBuffer("Object"), 0);
+	deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
@@ -123,7 +122,7 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 {
 	this->effectID = effectID;
-    technique = drawAtts->effects.at( effectID )->effect->GetTechniqueByName( fxTechniqueName );
+    technique = resourceMgr->effects.at( effectID )->effect->GetTechniqueByName( fxTechniqueName );
 }
 
 //****************************************************************
@@ -156,16 +155,16 @@ void Drawable::createBuffer(char* mesh)
 				&pVertexLayout);
 
 
-	pVertexBuffer = drawAtts->meshes.at(mesh)->verticies;
-	indexBuffer = drawAtts->meshes.at(mesh)->indicies;
+	pVertexBuffer = resourceMgr->meshes.at(mesh)->verticies;
+	indexBuffer = resourceMgr->meshes.at(mesh)->indicies;
 
-	vertexStride = drawAtts->meshes.at(mesh)->vertexStride;
-	vertexOffset = drawAtts->meshes.at(mesh)->vertexOffset;
+	vertexStride = resourceMgr->meshes.at(mesh)->vertexStride;
+	vertexOffset = resourceMgr->meshes.at(mesh)->vertexOffset;
 
-	numVerts = drawAtts->meshes.at(mesh)->numVerts;
-	numIndicies = drawAtts->meshes.at(mesh)->numIndicies;
+	numVerts = resourceMgr->meshes.at(mesh)->numVerts;
+	numIndicies = resourceMgr->meshes.at(mesh)->numIndicies;
 
-    cout << mesh << " : " << drawAtts->meshes.at(mesh)->numVerts << endl;
+    cout << mesh << " : " << resourceMgr->meshes.at(mesh)->numVerts << endl;
 }
 
 
@@ -188,20 +187,20 @@ void Drawable::createBuffer()
 				&pVertexLayout);
 
 
-	pVertexBuffer = drawAtts->meshes.at("testSphere")->verticies;
-	indexBuffer = drawAtts->meshes.at("testSphere")->indicies;
+	pVertexBuffer = resourceMgr->meshes.at("testSphere")->verticies;
+	indexBuffer = resourceMgr->meshes.at("testSphere")->indicies;
 
-	vertexStride = drawAtts->meshes.at("testSphere")->vertexStride;
-	vertexOffset = drawAtts->meshes.at("testSphere")->vertexOffset;
+	vertexStride = resourceMgr->meshes.at("testSphere")->vertexStride;
+	vertexOffset = resourceMgr->meshes.at("testSphere")->vertexOffset;
 
-	numVerts = drawAtts->meshes.at("testSphere")->numVerts;
-	numIndicies = drawAtts->meshes.at("testSphere")->numIndicies;
+	numVerts = resourceMgr->meshes.at("testSphere")->numVerts;
+	numIndicies = resourceMgr->meshes.at("testSphere")->numIndicies;
 }
 
 
 void Drawable::addTexture(char* id, char* textureVariable) {
-	auto diffuseMap = drawAtts->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
-	textures[diffuseMap] = drawAtts->textures[id];
+	auto diffuseMap = resourceMgr->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
+	textures[diffuseMap] = resourceMgr->textures[id];
 }
 
 
