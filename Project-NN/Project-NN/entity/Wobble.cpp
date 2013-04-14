@@ -9,16 +9,10 @@ using namespace std;
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "Drawable.h"
 
 
 void Wobble::Init(GameObject* go) {
-	drawable = go->GetComponent<Drawable>();
 	transform = go->GetComponent<Transform>();
-	if(drawable == nullptr) {
-		cerr << "ERROR: Drawable not found!" << endl;
-		exit(1);
-	}
 	if(transform == nullptr) {
 		cerr << "ERROR: Transform not found!" << endl;
 		exit(1);
