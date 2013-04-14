@@ -69,6 +69,9 @@ int sign(float x);
 Mat4 transpose(Mat4 m);
 
 
+XMFLOAT3 add(XMFLOAT3 v1, XMFLOAT3 v2);
+
+
 //*******************************
 //Multiplication*
 //*******************************
@@ -82,6 +85,7 @@ Quaternion mult(Quaternion q1, Quaternion q2);
 void scale(Mat4* m, float s);
 Quaternion scale(Quaternion q, float s);
 void scale(Quaternion* q, float s);
+XMFLOAT3 scale(XMFLOAT3 v, float s);
 
 //*******************************
 //Dot Product and Cross Product*

@@ -32,6 +32,10 @@ float* Quaternion::toArray()
 	return a;
 }
 
+XMFLOAT3 add( XMFLOAT3 v1, XMFLOAT3 v2 )
+{
+	return XMFLOAT3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
+}
 
 void Mat4::toArray(float* a)
 {
@@ -188,6 +192,10 @@ void scale(Mat4* m, float s)
 	(*m).w[3] *= s;
 }
 
+XMFLOAT3 scale(XMFLOAT3 v, float s)
+{
+	return XMFLOAT3(v.x*s, v.y*s, v.z*s);
+}
 
 void scale(Quaternion* q, float s)
 {

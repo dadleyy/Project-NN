@@ -113,6 +113,20 @@ float Camera::GetFarWindowHeight()const
 	return mFarWindowHeight;
 }
 
+
+void Camera::SetLook(XMFLOAT3 v)
+{
+	mLook = v;	
+}
+void Camera::SetUp(XMFLOAT3 v)
+{
+	mUp = v;
+}
+void Camera::SetRight(XMFLOAT3 v)
+{
+	mRight = v;
+}
+
 void Camera::SetLens(float fovY, float aspect, float zn, float zf)
 {
 	// cache properties

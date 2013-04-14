@@ -33,6 +33,10 @@ public:
 	XMVECTOR GetLookXM()const;
 	XMFLOAT3 GetLook()const;
 
+	void SetLook(XMFLOAT3 v);
+	void SetUp(XMFLOAT3 v);
+	void SetRight(XMFLOAT3 v);
+
 	// Get frustum properties.
 	float GetNearZ()const;
 	float GetFarZ()const;
