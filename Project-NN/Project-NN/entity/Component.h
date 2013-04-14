@@ -20,4 +20,11 @@ public:
 	 * doesn't need to override this.
 	 */
 	virtual void Update(float dt);
+
+	/**
+	 * Called when the game object this component is attached to collides with another game object.
+	 *
+	 * If a component doesn't care about collisions, it wouldn't need to override this.
+	 */
+	virtual void HandleCollision(GameObject* other);
 };

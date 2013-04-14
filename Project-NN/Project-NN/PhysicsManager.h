@@ -9,9 +9,7 @@ class PhysicsManager {
 public:
 	void AddObject(GameObject* go);
 	void RemoveObject(GameObject* go);
-	std::vector<GameObject*>::iterator Begin();
-	std::vector<GameObject*>::iterator End();
-	void Clear();
+	void CheckForCollisions();
 private:
 	std::vector<GameObject*> objects;
 };

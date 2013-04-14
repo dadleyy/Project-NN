@@ -111,6 +111,8 @@ bool Game::Init()
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources();
 
+	physicsMgr = new PhysicsManager();
+
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
 
@@ -133,6 +135,8 @@ void Game::OnResize()
 
 void Game::UpdateScene(float dt)
 {
+	//TODO: Commented because of performance issues.
+	//physicsMgr->CheckForCollisions();
 	manager.Update(dt);
 }
 
