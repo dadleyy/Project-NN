@@ -64,11 +64,5 @@ public:
 	XMFLOAT3 forwardAxis;
 	XMFLOAT3 sideAxis;
 	XMFLOAT3 upAxis;
-
-
-	//bounding volume to test for collision/physics
-	//for the love of god only use spheres maybe AABBs
-	//MOVE TO RIGID BODY COMPONENT
-	//RigidBody[] type
 };
 

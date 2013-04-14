@@ -18,7 +18,6 @@ class PlayerControls : public Component {
 public:
 	void Init(GameObject* go);
 	void Update(float dt);
-	void handleKey( int keycode, float dt );
 
 	float relMouseX;
 	float relMouseY;
@@ -26,4 +25,5 @@ public:
 private:
 	PhysicsComponent* physics;
 
+	void handleKey( int keycode, float dt );
 };

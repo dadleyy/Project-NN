@@ -7,7 +7,6 @@
 
 #include "Component.h"
 #include "framework/d3dx11effect.h"
-#include "ResourceManager.h"
 
 class GameObject;
 class Transform;

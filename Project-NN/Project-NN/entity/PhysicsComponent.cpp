@@ -24,8 +24,6 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	forwardAxis = fAxis;
 	sideAxis = sAxis;
 	upAxis = uAxis;
-
-	//RigidBody[] = not OBB
 }
 
 

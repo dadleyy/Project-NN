@@ -5,7 +5,6 @@
 #include <xnamath.h>
 
 class GameObject;
-class Drawable;
 class Transform;
 
 /**
@@ -20,7 +19,6 @@ public:
 
 private:
 	Transform* transform;
-	Drawable* drawable;
 	XMFLOAT3 basePosition;
 	float totalTime;
 };

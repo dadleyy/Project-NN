@@ -18,6 +18,7 @@ public:
 	}
 
 	void Update(float dt);
+	void HandleCollision(GameObject* other);
 
 protected:
 	std::vector<Component*> components;

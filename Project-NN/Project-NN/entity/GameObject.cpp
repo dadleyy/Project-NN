@@ -14,3 +14,9 @@ void GameObject::Update(float dt) {
 		(*it)->Update(dt);
 	}
 }
+
+void GameObject::HandleCollision(GameObject* other) {
+	for(auto it = components.begin(); it != components.end(); ++it) {
+		(*it)->HandleCollision(other);
+	}
+}
