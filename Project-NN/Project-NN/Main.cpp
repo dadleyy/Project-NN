@@ -9,10 +9,13 @@
 #include "StateManager.h"
 #include "states/TestState.h"
 #include "ResourceManager.h"
+#include "PhysicsManager.h"
 #include "input.h"
 
-ResourceManager* drawAtts;
+ResourceManager* resourceMgr;
+PhysicsManager* physicsMgr;
 Input* input;
+
 int screenWidth;
 int screenHeight;
 void addResources();
@@ -105,13 +108,13 @@ bool Game::Init()
 
 	manager.Init(md3dDevice, md3dImmediateContext);
 
-	drawAtts = new ResourceManager(md3dDevice, md3dImmediateContext);
+	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
 
-	drawAtts->camera.UpdateViewMatrix();
+	resourceMgr->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
 }
@@ -121,11 +124,11 @@ void Game::OnResize()
 	D3DApp::OnResize();
     screenWidth = mClientWidth;
     screenHeight = mClientHeight;
-	if(drawAtts != nullptr)
-		drawAtts->camera.SetLens(drawAtts->camera.GetFovY(),
+	if(resourceMgr != nullptr)
+		resourceMgr->camera.SetLens(resourceMgr->camera.GetFovY(),
 			((float)screenWidth)/screenHeight,
-			drawAtts->camera.GetNearZ(),
-			drawAtts->camera.GetFarZ());
+			resourceMgr->camera.GetNearZ(),
+			resourceMgr->camera.GetFarZ());
 }
 
 void Game::UpdateScene(float dt)
@@ -193,26 +196,26 @@ void Game::OnKeyUp(WPARAM keyCode)
 void addResources()
 {
 	//constant buffers
-	drawAtts->addCBuffer(816, "Light");
-	drawAtts->addCBuffer(144, "Camera");
-	drawAtts->addCBuffer(128, "Object");
+	resourceMgr->addCBuffer(816, "Light");
+	resourceMgr->addCBuffer(144, "Camera");
+	resourceMgr->addCBuffer(128, "Object");
 
 	//textures
-	drawAtts->addTexture(L"res/textures/mossy-bricks.dds", "Test");
-	drawAtts->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
+	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
+	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
 
 	//meshes
-	drawAtts->addMesh("res/models/sphere.obj", "Sphere");
-	drawAtts->addMesh("res/models/Dodecahedron.obj", "dodeca");
-	drawAtts->addMesh("res/models/pinnace.obj", "cool");
+	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
+	resourceMgr->addMesh("res/models/Dodecahedron.obj", "dodeca");
+	resourceMgr->addMesh("res/models/pinnace.obj", "cool");
 
 	//effects
-	drawAtts->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
 
 	//lights
-	drawAtts->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
-	drawAtts->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
-	drawAtts->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
-	drawAtts->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
+	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
+	resourceMgr->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
+	resourceMgr->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
+	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
 }
 

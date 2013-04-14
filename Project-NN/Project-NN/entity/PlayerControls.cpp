@@ -12,9 +12,6 @@ using namespace std;
 #define CAMERA_VELOCITY 3.0
 
 
-extern ResourceManager* drawAtts;
-extern Input* input;
-
 void PlayerControls::Init(GameObject* go) 
 {
 	physics = go->GetComponent<PhysicsComponent>();
@@ -23,12 +20,12 @@ void PlayerControls::Init(GameObject* go)
 void PlayerControls::Update(float dt) {
 	if( input->getLMouseButton() && !input->getRMouseButton()) {
         float rotAngle = -(1 * dt);
-        drawAtts->camera.RotateY(rotAngle);
+        resourceMgr->camera.RotateY(rotAngle);
     }
 	else if(!input->getLMouseButton() && input->getRMouseButton())
 	{
 		float rotAngle = (1 * dt);
-        drawAtts->camera.RotateY(rotAngle);
+        resourceMgr->camera.RotateY(rotAngle);
 	}
 
     for( int i = 0; i < 256; i++ ){
@@ -60,9 +57,9 @@ void PlayerControls::handleKey( int keycode, float dt )
         break;
     case 'W':
         //drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .2, physics->acceleration.y, physics->acceleration.z) );
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .2, physics->acceleration.y, physics->acceleration.z) );     
         break;
-	case 'Q':
+/*	case 'Q':
 		drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
 		break;
 	case 'E':
@@ -73,7 +70,7 @@ void PlayerControls::handleKey( int keycode, float dt )
 		break;
 	case 'C':
 		drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
-		break;
+		break;*/
     default:
         break;
     }
