@@ -18,9 +18,9 @@ class PlayerControls : public Component {
 public:
 	void Init(GameObject* go);
 	void Update(float dt);
-	void handleKey( int keycode, float dt );
 
 private:
 	PhysicsComponent* physics;
 
+	void handleKey( int keycode, float dt );
 };
