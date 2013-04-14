@@ -20,6 +20,9 @@ public:
 	void Update(float dt);
 	void handleKey( int keycode, float dt );
 
+	float relMouseX;
+	float relMouseY;
+
 private:
 	PhysicsComponent* physics;
 

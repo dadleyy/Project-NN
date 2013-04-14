@@ -29,7 +29,7 @@ void TestState::Init(StateManager* manager)
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
-	for(int i = 0; i < 200; i++) {
+	for(int i = 0; i < 33; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 			distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine), distribution(drawAtts->randomEngine)));
 	}
@@ -51,12 +51,12 @@ void TestState::Update(float dt)
 	//spacer->Update(dt);
 
     //int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
-	int dx = input->getMouseX() - ( screenWidth * 0.5 );
-    drawAtts->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
+	//int dx = input->getMouseX() - ( screenWidth * 0.5 );
+    //drawAtts->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
     
     //int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
-	int dy = input->getMouseY() - ( screenHeight * 0.5 );
-	drawAtts->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
+	//int dy = input->getMouseY() - ( screenHeight * 0.5 );
+	//drawAtts->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
     
 
 

@@ -58,7 +58,8 @@ void Drawable::draw()
 	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
 	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
 	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
-	w = w * translate * rotation * scale;
+	w = scale * rotation * translate;
+	//w = translate * rotation * scale;
 	XMMATRIX wn = w;
 
 	for(auto it = textures.begin(); it != textures.end(); ++it) {

@@ -6,6 +6,7 @@ class Transform;
 class Drawable;
 class PlayerControls;
 class PhysicsComponent;
+class PlayerCameraComponent;
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 
@@ -18,6 +19,7 @@ public:
 private:
 	Transform* transform;
     Drawable* drawable;
+	PlayerCameraComponent* playerCamera;
 	PlayerControls* playerControls;
 	PhysicsComponent* physics;
 };

@@ -31,6 +31,9 @@ void PlayerControls::Update(float dt) {
         drawAtts->camera.RotateY(rotAngle);
 	}
 
+	relMouseX = screenWidth/2.0 - input->getMouseX();
+	relMouseY = screenHeight/2.0 - input->getMouseY();
+
     for( int i = 0; i < 256; i++ ){
         if(// manager->keystates[i]
 			input->getKeyDown(i))
@@ -47,19 +50,19 @@ void PlayerControls::handleKey( int keycode, float dt )
     switch(keycode)
     {
     case 'A':
-        drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
+       // drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
         break;
     case 'D':
-        drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
+        //drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
         break;
     case 'S':
-        drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
+       // drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
         break;
     case 'W':
-        drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
+       // drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
         break;
 	case 'X':
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .2, 0, 0) );
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + 2, 0, 0) );
 
     default:
         break;

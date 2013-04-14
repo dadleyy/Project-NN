@@ -4,6 +4,7 @@
 #include "Drawable.h"
 #include "PlayerControls.h"
 #include "PhysicsComponent.h"
+#include "PlayerCameraComponent.h"
 #include "..\ResourceManager.h"
 
 extern ResourceManager* drawAtts;
@@ -18,10 +19,12 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
 	drawable->addTexture("Test2", "diffuseMap");
 	physics = new PhysicsComponent(drawAtts->camera.GetLook(), drawAtts->camera.GetRight(), drawAtts->camera.GetUp(), 0, 10, 15, XMFLOAT3(0, 0,0), XMFLOAT3(0,0,0), XMFLOAT3(0,0,0), 0, 0);
 	playerControls = new PlayerControls();
+	playerCamera = new PlayerCameraComponent(&drawAtts->camera);
 
     components.push_back(transform);
     components.push_back(drawable);
 	components.push_back(physics);
+	components.push_back(playerCamera);
     components.push_back(playerControls);
 
 	physics->setLinVDamp( .98 );

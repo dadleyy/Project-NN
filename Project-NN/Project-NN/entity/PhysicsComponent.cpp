@@ -1,6 +1,7 @@
 #include "PhysicsComponent.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "PlayerControls.h"
 
 void normalize(XMFLOAT3* v);
 void damp(float* s, float damp, float minDamp);
@@ -19,7 +20,7 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	acceleration = acc;
 	angularVelocity = angularVel;
 	angularAcceleration = angularAcc;
-
+	quaternion = Quaternion();
 	forwardAxis = fAxis;
 	sideAxis = sAxis;
 	upAxis = uAxis;
@@ -41,42 +42,72 @@ void PhysicsComponent::setLinADamp    ( float m )    { accelerationDamp = m; }
 void PhysicsComponent::setPosition    ( XMFLOAT3 v ) { position = v; }
 void PhysicsComponent::setVelocity    ( XMFLOAT3 v ) { velocity = v; }
 void PhysicsComponent::setAcceleration( XMFLOAT3 v ) { acceleration = v; }
-void PhysicsComponent::setQuaternion  ( XMFLOAT4 v ) { quaternion = v; }
+void PhysicsComponent::setQuaternion  ( XMFLOAT4 v ) { quaternion.x = v.x; quaternion.y = v.y; quaternion.z = v.z; quaternion.w = v.w; }
+void PhysicsComponent::setAxis( XMFLOAT3 f, XMFLOAT3 u, XMFLOAT3 s )
+{
+	forwardAxis = f;
+	upAxis = u;
+	sideAxis = s;
+}
 
 void PhysicsComponent::Init(GameObject* go)
 {
 	object = go;
 	transform = object->GetComponent<Transform>();
+	control = object->GetComponent<PlayerControls>();
 }
 
 void PhysicsComponent::Update(float dt) 
 {
-	speed = magnitude( velocity );
-
-	if(abs(speed) > MAX_SPEED)
-		speed < 0 ? speed = -MAX_SPEED : speed = MAX_SPEED;
-
+	//artificially dampen the acceleration
 	damp(&acceleration, accelerationDamp, MIN_DAMP);
+	//artificially dampen the speed
 	damp(&speed, velocityDamp, MIN_DAMP);
 
+	if(acceleration.x > 0)
+		int kjsdl = 1;
+
+	//normalize the velocity, multiply by speed, and add the acceleration from the last frame 
 	normalize( &velocity );
 	velocity = XMFLOAT3( velocity.x*speed + acceleration.x*dt,
 						 velocity.y*speed + acceleration.y*dt, 
 						 velocity.z*speed + acceleration.z*dt );
 
+	//get the new speed from the velocity
+	speed = magnitude( velocity );
+
+	//clamp speed between 0 and max speed
+	if(speed > MAX_SPEED) speed = MAX_SPEED;
+	if( speed < 0 ) speed = 0;
+
+	
+	//update the rotation
+	float rotAngle = -control->relMouseY;
+	Quaternion q(rotAngle/3600.0, sideAxis);
+
+	rotAngle = -control->relMouseX;
+	q = mult(q, Quaternion(rotAngle/3600.0, upAxis));
+
+	quaternion = mult(q, quaternion);
+	transform->rotation = XMFLOAT4(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+
+	forwardAxis = transformVector(q, forwardAxis);
+	upAxis = transformVector(q, upAxis);
+	sideAxis = transformVector(q, sideAxis);
+
+	//update the position
 	position = XMFLOAT3( position.x + (velocity.x*forwardAxis.x + velocity.y*sideAxis.x + velocity.z*upAxis.x)*dt, 
 						 position.y + (velocity.x*forwardAxis.y + velocity.y*sideAxis.y + velocity.z*upAxis.y)*dt,
 						 position.z + (velocity.x*forwardAxis.z + velocity.y*sideAxis.z + velocity.z*upAxis.z)*dt);
-
 
 	transform->position = position;
 }
 
 void damp(XMFLOAT3* v, float damp, float minDamp)
 {
-	v->x = v->x*damp; if(v->x < minDamp) v->x = 0;
-	v->y = v->y*damp; if(v->x < minDamp) v->y = 0;
-	v->z = v->z*damp; if(v->x < minDamp) v->z = 0;
+	v->x = v->x*damp; if(abs(v->x) < minDamp) v->x = 0;
+	v->y = v->y*damp; if(abs(v->y) < minDamp) v->y = 0;
+	v->z = v->z*damp; if(abs(v->z) < minDamp) v->z = 0;
 }
 
 void damp(float* s, float damp, float minDamp)

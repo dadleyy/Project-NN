@@ -2,9 +2,11 @@
 #include "Component.h"
 #include <Windows.h>
 #include <xnamath.h>
+#include "..\framework\quaternionMath.h"
 
 class GameObject;
 class Transform;
+class PlayerControls;
 
 class PhysicsComponent :
 	public Component
@@ -28,6 +30,7 @@ public:
 	void setLinVDamp( float m );
 	void setLinADamp( float m );
 
+	void setAxis( XMFLOAT3 f, XMFLOAT3 u, XMFLOAT3 s );
 	void setPosition( XMFLOAT3 v );
 	void setVelocity( XMFLOAT3 v );
 	void setAcceleration( XMFLOAT3 v );
@@ -36,6 +39,7 @@ public:
 
 	GameObject* object;
 	Transform* transform;
+	PlayerControls* control;
 
 	const float MIN_DAMP;
 
@@ -49,7 +53,7 @@ public:
 	float angAccelerationDamp;
 
 	XMFLOAT3 position;
-	XMFLOAT4 quaternion;
+	Quaternion quaternion;
 	float angularVelocity;
 	float angularAcceleration;
 	XMFLOAT3 velocity;
