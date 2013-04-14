@@ -72,9 +72,9 @@ void PhysicsComponent::Update(float dt)
 
 void damp(XMFLOAT3* v, float damp, float minDamp)
 {
-	v->x = v->x*damp; if(v->x < minDamp) v->x = 0;
-	v->y = v->y*damp; if(v->x < minDamp) v->y = 0;
-	v->z = v->z*damp; if(v->x < minDamp) v->z = 0;
+	v->x = v->x*damp; if(abs(v->x) < minDamp) v->x = 0;
+	v->y = v->y*damp; if(abs(v->y) < minDamp) v->y = 0;
+	v->z = v->z*damp; if(abs(v->z) < minDamp) v->z = 0;
 }
 
 void damp(float* s, float damp, float minDamp)
