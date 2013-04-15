@@ -166,8 +166,6 @@ void Game::OnMouseUpR(WPARAM btnState, int x, int y) {
 	input->OnMouseUp(btnState, R_btn, x, y);
 }
 
-
-
 void Game::OnMouseMove(WPARAM btnState, int x, int y) {
 	input->OnMouseMove(btnState, x, y);
 }

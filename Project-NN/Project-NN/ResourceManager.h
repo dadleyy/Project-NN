@@ -16,24 +16,21 @@
 
 using namespace std;
 
-struct Mesh
-{
+struct Mesh {
 	ID3D11Buffer* verticies;
 	ID3D11Buffer* indicies;
 
 	int numVerts;
 	int numIndicies;
-	UINT vertexStride; 
-	UINT vertexOffset; 
+	UINT vertexStride;
+	UINT vertexOffset;
 };
 
-struct Effect
-{
+struct Effect {
 	ID3DX11Effect* effect;
 };
 
-class ResourceManager
-{
+class ResourceManager {
 public:
 	ResourceManager(void);
 	ResourceManager(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
@@ -46,30 +43,28 @@ public:
 	unordered_map<char*, ID3D11Buffer*> cBuffers;
 	vector<LightStruct*> lights;
 	std::unordered_map<char*, ID3D11ShaderResourceView*> textures;
-	//unordered_map<char*, Material*> materials;
-	
 
 	bool lightChange;
 	unsigned int numLights;
 
 	bool cameraChange;
-	
+
 	void addEffect(WCHAR* file, char* name);
 	void addTexture(WCHAR* file, char* name);
 	bool addMesh(char* objFile, char* name);
 	void addCBuffer(unsigned int byteWidth, char* name);
-    void addCamera( );
+	void addCamera( );
 	void addLight(float posX, float posY, float posZ,
-						 float colX, float colY, float colZ, float colA,
-						 float dirX, float dirY, float dirZ,
-						 float radius, float angle, float intensity, int falloff, 
-						 int onOff, int type);
+	              float colX, float colY, float colZ, float colA,
+	              float dirX, float dirY, float dirZ,
+	              float radius, float angle, float intensity, int falloff,
+	              int onOff, int type);
 
 	Mesh* getMesh( char* meshName );
 	ID3DX11Effect* getEffect( char* effectName );
 	ID3D11Buffer* getCBuffer( char* bufferName );
 
-    Camera camera;
+	Camera camera;
 
 	void updateShaderBuffers();
 

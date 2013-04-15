@@ -2,11 +2,10 @@
 
 
 LightStruct* createLight(float posX, float posY, float posZ,
-						 float colX, float colY, float colZ, float colA,
-						 float dirX, float dirY, float dirZ,
-						 float radius, float angle, float intensity, int falloff, 
-						 int onOff, int type)
-{
+                         float colX, float colY, float colZ, float colA,
+                         float dirX, float dirY, float dirZ,
+                         float radius, float angle, float intensity, int falloff,
+                         int onOff, int type) {
 	LightStruct* l = new LightStruct();
 
 	l->position = D3DXVECTOR4(posX, posY, posZ, 0.0);

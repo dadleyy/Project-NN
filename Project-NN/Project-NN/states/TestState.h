@@ -11,8 +11,7 @@ class Spacecraft;
 extern int screenWidth;
 extern int screenHeight;
 
-class TestState : public GameState
-{
+class TestState : public GameState {
 public:
 
 	void Init(StateManager* manager);
@@ -21,7 +20,7 @@ public:
 	void Draw();
 	void OnMouseDown(int x, int y);
 	void OnMouseUp(int x, int y);
-    void OnMouseMove(int x, int y);
+	void OnMouseMove(int x, int y);
 
 	static TestState* Instance() {
 		return &instance;
@@ -29,15 +28,15 @@ public:
 
 private:
 
-    void handleKey( int keycode, float dt );
+	void handleKey( int keycode, float dt );
 
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
-    Spacecraft *spacer;
+	Spacecraft* spacer;
 
-    bool mouseDown;
+	bool mouseDown;
 
-    int currentmouseposition[2];
-    int lastmouseposition[2];
+	int currentmouseposition[2];
+	int lastmouseposition[2];
 
 };

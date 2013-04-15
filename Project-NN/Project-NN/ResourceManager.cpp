@@ -2,18 +2,14 @@
 #include <cstdlib>
 #include "framework\OBJLoader.h"
 
-ResourceManager::ResourceManager(void)
-{
+ResourceManager::ResourceManager(void) {
 }
 
 
-ResourceManager::~ResourceManager(void)
-{
+ResourceManager::~ResourceManager(void) {
 }
 
-
-ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : randomEngine((unsigned int)time(0))
-{
+ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : randomEngine((unsigned int)time(0)) {
 	pD3DDevice = device;
 	md3dImmediateContext = immediateContext;
 	lightChange = 1;
@@ -21,16 +17,14 @@ ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* imme
 	numLights = 0;
 }
 
-void ResourceManager::addEffect(WCHAR* file, char* name)
-{
+void ResourceManager::addEffect(WCHAR* file, char* name) {
 	HRESULT hr;
 
 	Effect* e = new Effect;
 	ID3DBlob* ppShader = NULL;
 	hr = CompileShaderFromFile(file, NULL, "fx_5_0", &ppShader);
 
-	if(hr == S_OK)
-	{
+	if(hr == S_OK) {
 		ID3DX11Effect* effect;
 		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
 		effects.insert(std::make_pair<char*, Effect*>(name, e));
@@ -40,21 +34,18 @@ void ResourceManager::addEffect(WCHAR* file, char* name)
 	e->effect->GetConstantBufferByName("perObject")->SetConstantBuffer(getCBuffer("Object"));
 }
 
-void ResourceManager::addTexture(WCHAR* file, char* name)
-{
+void ResourceManager::addTexture(WCHAR* file, char* name) {
 	HRESULT hr;
 	ID3D11ShaderResourceView* view;
-	hr = D3DX11CreateShaderResourceViewFromFile(pD3DDevice, 
-		file, 0, 0, &view, 0 );
+	hr = D3DX11CreateShaderResourceViewFromFile(pD3DDevice,
+	        file, 0, 0, &view, 0 );
 
-	if(hr == S_OK)
-	{
+	if(hr == S_OK) {
 		textures.insert(std::make_pair<char*, ID3D11ShaderResourceView*>(name, view));
 	}
 }
 
-bool ResourceManager::addMesh(char* objFile, char* name)
-{
+bool ResourceManager::addMesh(char* objFile, char* name) {
 	HRESULT hr;
 
 	Mesh* mesh = new Mesh();
@@ -77,7 +68,7 @@ bool ResourceManager::addMesh(char* objFile, char* name)
 	bufferDescription.BindFlags = D3D11_BIND_VERTEX_BUFFER; //binds the buffer to the correct type
 	bufferDescription.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
 	bufferDescription.MiscFlags = 0; //only one D3D device
-	
+
 	//add the data for the buffer
 	D3D11_SUBRESOURCE_DATA initData;
 	float* v = obj.getVerticies();
@@ -106,8 +97,7 @@ bool ResourceManager::addMesh(char* objFile, char* name)
 	return 1;
 }
 
-void ResourceManager::addCBuffer(unsigned int byteWidth, char* name)
-{
+void ResourceManager::addCBuffer(unsigned int byteWidth, char* name) {
 	ID3D11Buffer* buffer;
 	HRESULT hr;
 
@@ -129,72 +119,55 @@ void ResourceManager::addCBuffer(unsigned int byteWidth, char* name)
 }
 
 void ResourceManager::addLight(float posX, float posY, float posZ,
-						 float colX, float colY, float colZ, float colA,
-						 float dirX, float dirY, float dirZ,
-						 float radius, float angle, float intensity, int falloff, 
-						 int onOff, int type)
-{
-	if(numLights < 10)
-	{
+                               float colX, float colY, float colZ, float colA,
+                               float dirX, float dirY, float dirZ,
+                               float radius, float angle, float intensity, int falloff,
+                               int onOff, int type) {
+	if(numLights < 10) {
 		numLights++;
 		lights.push_back(createLight(posX, posY, posZ, colX, colY, colZ, colA, dirX, dirY, dirZ, radius, angle, intensity, falloff, onOff, type));
 	}
 }
 
 
-Mesh* ResourceManager::getMesh( char* meshName )
-{
+Mesh* ResourceManager::getMesh( char* meshName ) {
 	Mesh* m;
-	try
-	{
+	try {
 		m = meshes[ meshName ];
-	}
-	catch ( out_of_range e )
-	{
+	} catch ( out_of_range e ) {
 		m = 0;
 	}
 	return m;
 }
 
-ID3DX11Effect* ResourceManager::getEffect( char* effectName )
-{
+ID3DX11Effect* ResourceManager::getEffect( char* effectName ) {
 	Effect* e;
-	try
-	{
+	try {
 		e = effects.at( effectName );
-	}
-	catch ( out_of_range e )
-	{
+	} catch ( out_of_range e ) {
 		return 0;
 	}
 	return e->effect;
 }
 
-ID3D11Buffer* ResourceManager::getCBuffer( char* bufferName )
-{
+ID3D11Buffer* ResourceManager::getCBuffer( char* bufferName ) {
 	ID3D11Buffer* b;
-	try
-	{
+	try {
 		b = cBuffers.at( bufferName );
-	}
-	catch ( out_of_range e )
-	{
+	} catch ( out_of_range e ) {
 		return 0;
 	}
 	return b;
 }
 
-void ResourceManager::updateShaderBuffers()
-{
+void ResourceManager::updateShaderBuffers() {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	//update light buffer if it has changed
-	if(lightChange)
-	{
-		md3dImmediateContext->Map(getCBuffer("Light"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+	if(lightChange) {
+		md3dImmediateContext->Map(getCBuffer("Light"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource);
 
-		for(int i = 0; i < numLights; i++)
-		{
+		for(int i = 0; i < numLights; i++) {
 			memcpy((float*)resource.pData+20*i, lights[i], 80);
 		}
 		memcpy((float*)resource.pData+200, &numLights, 16);
@@ -205,14 +178,13 @@ void ResourceManager::updateShaderBuffers()
 	}
 
 	//update camera buffer if it has changed
-	if(cameraChange)
-	{
-		md3dImmediateContext->Map(getCBuffer("Camera"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+	if(cameraChange) {
+		md3dImmediateContext->Map(getCBuffer("Camera"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource);
 
 		memcpy((float*)resource.pData,    camera.getViewPointer(),  64);
 		memcpy((float*)resource.pData+16, camera.getProjPointer(),  64);
 		memcpy((float*)resource.pData+32, camera.getPosPointer(),    12);
-		
+
 		md3dImmediateContext->Unmap(getCBuffer("Camera"), 0);
 
 		//cameraChange = 0;
@@ -223,29 +195,27 @@ void ResourceManager::updateShaderBuffers()
 //***********************************************
 //Microsofts shader compiler
 //***********************************************
-HRESULT ResourceManager::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut )
-{
-    HRESULT hr = S_OK;
+HRESULT ResourceManager::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut ) {
+	HRESULT hr = S_OK;
 
-    DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+	DWORD dwShaderFlags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined( DEBUG ) || defined( _DEBUG )
-    // Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
-    // Setting this flag improves the shader debugging experience, but still allows 
-    // the shaders to be optimized and to run exactly the way they will run in 
-    // the release configuration of this program.
-    dwShaderFlags |= D3DCOMPILE_DEBUG;
+	// Set the D3DCOMPILE_DEBUG flag to embed debug information in the shaders.
+	// Setting this flag improves the shader debugging experience, but still allows
+	// the shaders to be optimized and to run exactly the way they will run in
+	// the release configuration of this program.
+	dwShaderFlags |= D3DCOMPILE_DEBUG;
 #endif
 
-    ID3DBlob* pErrorBlob;
-    hr = D3DX11CompileFromFile( szFileName, 0, 0, 0, szShaderModel, dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
-    if( FAILED(hr) )
-    {
-        if( pErrorBlob != NULL )
-            OutputDebugStringA( (char*)pErrorBlob->GetBufferPointer() );
-        if( pErrorBlob ) pErrorBlob->Release();
-        return hr;
-    }
-    if( pErrorBlob ) pErrorBlob->Release();
+	ID3DBlob* pErrorBlob;
+	hr = D3DX11CompileFromFile( szFileName, 0, 0, 0, szShaderModel, dwShaderFlags, 0, NULL, ppBlobOut, &pErrorBlob, NULL );
+	if( FAILED(hr) ) {
+		if( pErrorBlob != NULL )
+			OutputDebugStringA( (char*)pErrorBlob->GetBufferPointer() );
+		if( pErrorBlob ) pErrorBlob->Release();
+		return hr;
+	}
+	if( pErrorBlob ) pErrorBlob->Release();
 
-    return S_OK;
+	return S_OK;
 }

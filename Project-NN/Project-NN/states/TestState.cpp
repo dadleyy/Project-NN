@@ -17,12 +17,11 @@ using namespace std;
 
 TestState TestState::instance;
 
-void TestState::Init(StateManager* manager)
-{
+void TestState::Init(StateManager* manager) {
 	GameState::Init(manager);
 
-    currentmouseposition[0] = currentmouseposition[1] = 0;
-    lastmouseposition[0] = lastmouseposition[1] = 0;
+	currentmouseposition[0] = currentmouseposition[1] = 0;
+	lastmouseposition[0] = lastmouseposition[1] = 0;
 
 	spacer = new Spacecraft(resourceMgr->pD3DDevice, resourceMgr->md3dImmediateContext, 0.0, 0.0, 0.0);
 
@@ -30,34 +29,32 @@ void TestState::Init(StateManager* manager)
 
 	for(int i = 0; i < 33; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
-			distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
+		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 
-void TestState::Cleanup()
-{
+void TestState::Cleanup() {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		delete *it;
 	}
-    delete spacer;
+	delete spacer;
 }
 
 
-void TestState::Update(float dt)
-{
+void TestState::Update(float dt) {
 	//spacer->Update(dt);
 
-    //int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
+	//int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
 
 	//int dx = input->getMouseX() - ( screenWidth * 0.5 );
-    //resourceMgr->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
-    
-    //int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
+	//resourceMgr->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
+
+	//int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
 	//int dy = input->getMouseY() - ( screenHeight * 0.5 );
 	//resourceMgr->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
-    
+
 
 
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
@@ -66,50 +63,45 @@ void TestState::Update(float dt)
 
 	//resourceMgr->camera.LookAt(pos, target, up);
 
-    resourceMgr->camera.UpdateViewMatrix();
+	resourceMgr->camera.UpdateViewMatrix();
 
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) 
-	{
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Update(dt);
 	}
 
-    if( spacer != 0 )
-        spacer->Update(dt);
+	if( spacer != 0 )
+		spacer->Update(dt);
 
 	resourceMgr->updateShaderBuffers();
 
-    //lastmouseposition[0] = currentmouseposition[0];
-    //lastmouseposition[1] = currentmouseposition[1];
-	
+	//lastmouseposition[0] = currentmouseposition[0];
+	//lastmouseposition[1] = currentmouseposition[1];
+
 }
 
-void TestState::Draw()
-{
+void TestState::Draw() {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Draw();
 	}
-    
-    if( spacer != 0 )
-        spacer->Draw( );
+
+	if( spacer != 0 )
+		spacer->Draw( );
 }
 
 
-void TestState::OnMouseDown(int x, int y)
-{
+void TestState::OnMouseDown(int x, int y) {
 	/*cout << "mouse down" << endl;
-    mouseDown = true;
+	mouseDown = true;
 
 	cout << resourceMgr->camera.GetPosition().z << endl;*/
 }
 
-void TestState::OnMouseUp(int x, int y)
-{
-    /*cout << "mouse up" << endl;
-    mouseDown = false;*/
+void TestState::OnMouseUp(int x, int y) {
+	/*cout << "mouse up" << endl;
+	mouseDown = false;*/
 }
 
-void TestState::OnMouseMove(int x, int y)
-{
-    //currentmouseposition[0] = x;
-    //currentmouseposition[1] = y;
+void TestState::OnMouseMove(int x, int y) {
+	//currentmouseposition[0] = x;
+	//currentmouseposition[1] = y;
 }
