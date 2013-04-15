@@ -20,7 +20,6 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	acceleration = acc;
 	angularVelocity = angularVel;
 	angularAcceleration = angularAcc;
-	quaternion = Quaternion();
 	forwardAxis = fAxis;
 	sideAxis = sAxis;
 	upAxis = uAxis;

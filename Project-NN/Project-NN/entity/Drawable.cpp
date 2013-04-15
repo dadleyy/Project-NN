@@ -51,14 +51,11 @@ void Drawable::draw()
 	UINT stride = vertexStride;
 	UINT offset = vertexOffset;
 
-	//build world matrix and normal matrix
-	XMMATRIX w = XMLoadFloat4x4( &world );
 	//translate, rotate, and scale matrix
 	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
 	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
 	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
-	w = scale * rotation * translate;
-	//w = translate * rotation * scale;
+	XMMATRIX w = scale * rotation * translate;
 	XMMATRIX wn = w;
 
 	for(auto it = textures.begin(); it != textures.end(); ++it) {
