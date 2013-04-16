@@ -4,6 +4,7 @@
 class Camera;
 class Transform;
 class PhysicsComponent;
+class PlayerControls;
 
 class PlayerCameraComponent :
 	public Component
@@ -20,6 +21,7 @@ public:
 
 	Transform* objectTransform;
 	PhysicsComponent* objectPhysics;
+	PlayerControls* objectControls;
 
 	GameObject* object;
 	Camera* camera;

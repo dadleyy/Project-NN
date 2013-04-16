@@ -3,10 +3,8 @@
 #include "..\framework\Camera.h"
 #include "GameObject.h"
 #include "PhysicsComponent.h"
+#include "PlayerControls.h"
 #include "Transform.h"
-
-#include <iostream>
-using namespace std;
 
 XMFLOAT3 normalize(XMFLOAT3 v);
 float vecmag( XMFLOAT3 v );
@@ -27,6 +25,7 @@ void PlayerCameraComponent::Init(GameObject* go)
 	object = go;
 	objectTransform = object->GetComponent<Transform>();
 	objectPhysics = object->GetComponent<PhysicsComponent>();
+	objectControls = object->GetComponent<PlayerControls>();
 }
 
 void PlayerCameraComponent::Update(float dt) 
@@ -42,15 +41,22 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	float totalAngle = abs(angleForw) + abs(angleUp);
 
 	camera->SetLook(objectPhysics->forwardAxis);
-	camera->SetUp(objectPhysics->upAxis);
-	camera->SetRight(objectPhysics->sideAxis);
+	// camera->SetUp(objectPhysics->upAxis);
+	// camera->SetRight(objectPhysics->sideAxis);
 	
 	float ld = lagDistance + ( vecmag( objectPhysics->velocity ) * 0.333f );
+
 	if( ld < lagDistance )
 		ld = lagDistance;
 
-	XMFLOAT3 pos = XMFLOAT3( camera->GetLook().x * ld, camera->GetLook().y * ld, camera->GetLook().z * ld );
-	camera->SetPosition( XMFLOAT3(objectTransform->position.x - pos.x, objectTransform->position.y - pos.y, objectTransform->position.z - pos.z ) );
+	XMFLOAT3 pos = XMFLOAT3( 
+							camera->GetLook().x * ( ld + (objectControls->relMouseX * 0.05f) ), 
+							camera->GetLook().y * ( ld + (objectControls->relMouseY * 0.05f), 
+							camera->GetLook().z * ld );
+	camera->SetPosition( 
+		XMFLOAT3 (	objectTransform->position.x - pos.x, 
+					objectTransform->position.y - pos.y, 
+					objectTransform->position.z - pos.z ) );
 
 	//float anglePercent = totalAngle/PI;
 	//camera->SetLook( normalize(add(scale(camera->GetLook(),anglePercent*dt) , scale(objectPhysics->forwardAxis,(1-anglePercent)*dt))) );
