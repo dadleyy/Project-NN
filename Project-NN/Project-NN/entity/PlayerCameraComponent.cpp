@@ -50,8 +50,8 @@ void PlayerCameraComponent::smoothFollow(float dt)
 		ld = lagDistance;
 
 	XMFLOAT3 pos = XMFLOAT3( 
-							camera->GetLook().x * ( ld + (objectControls->relMouseX * 0.05f) ), 
-							camera->GetLook().y * ( ld + (objectControls->relMouseY * 0.05f), 
+							camera->GetLook().x * ( ld + (objectControls->relMouseX * 0.0025f) ), 
+							camera->GetLook().y * ( ld + (objectControls->relMouseY * 0.0025f) ), 
 							camera->GetLook().z * ld );
 	camera->SetPosition( 
 		XMFLOAT3 (	objectTransform->position.x - pos.x, 
