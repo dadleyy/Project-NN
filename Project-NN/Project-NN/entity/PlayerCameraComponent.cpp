@@ -5,12 +5,16 @@
 #include "PhysicsComponent.h"
 #include "Transform.h"
 
+#include <iostream>
+using namespace std;
+
 XMFLOAT3 normalize(XMFLOAT3 v);
+float vecmag( XMFLOAT3 v );
 
 PlayerCameraComponent::PlayerCameraComponent(Camera* cam)
 {
 	camera = cam;
-	lagDistance = 10;
+	lagDistance = 8;
 }
 
 
@@ -27,8 +31,6 @@ void PlayerCameraComponent::Init(GameObject* go)
 
 void PlayerCameraComponent::Update(float dt) 
 {
-	XMFLOAT3 pos = XMFLOAT3( objectPhysics->forwardAxis.x * lagDistance, objectPhysics->forwardAxis.y * lagDistance, objectPhysics->forwardAxis.z * lagDistance );
-	camera->SetPosition( XMFLOAT3(objectTransform->position.x - pos.x, objectTransform->position.y - pos.y, objectTransform->position.z - pos.z ) );
 	smoothFollow(dt);
 	//camera->LookAt( camera->GetPosition(), objectPhysics->position, objectPhysics->upAxis );
 }
@@ -39,19 +41,29 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	float angleForw = acos( abs(objectPhysics->forwardAxis.x*camera->GetLook().x + objectPhysics->forwardAxis.y*camera->GetLook().y + objectPhysics->forwardAxis.z*camera->GetLook().z) -.001 );
 	float totalAngle = abs(angleForw) + abs(angleUp);
 
-	if(totalAngle < PI/100.0)
-	{
-		camera->SetLook(objectPhysics->forwardAxis);
-		camera->SetUp(objectPhysics->upAxis);
-		camera->SetRight(objectPhysics->sideAxis);
-		return;
-	}
+	camera->SetLook(objectPhysics->forwardAxis);
+	camera->SetUp(objectPhysics->upAxis);
+	camera->SetRight(objectPhysics->sideAxis);
 	
+	float ld = lagDistance + ( vecmag( objectPhysics->velocity ) * 0.333f );
+	if( ld < lagDistance )
+		ld = lagDistance;
+
+	XMFLOAT3 pos = XMFLOAT3( camera->GetLook().x * ld, camera->GetLook().y * ld, camera->GetLook().z * ld );
+	camera->SetPosition( XMFLOAT3(objectTransform->position.x - pos.x, objectTransform->position.y - pos.y, objectTransform->position.z - pos.z ) );
+
 	//float anglePercent = totalAngle/PI;
 	//camera->SetLook( normalize(add(scale(camera->GetLook(),anglePercent*dt) , scale(objectPhysics->forwardAxis,(1-anglePercent)*dt))) );
 	//camera->SetUp( normalize(add(scale(camera->GetUp(),anglePercent*dt) , scale(objectPhysics->upAxis,(1-anglePercent)*dt))) );
 	//camera->SetRight( normalize(add(scale(camera->GetRight(),anglePercent*dt) , scale(objectPhysics->sideAxis,(1-anglePercent)*dt))) );
 
+}
+
+float vecmag(  XMFLOAT3 v )
+{
+	float k = v.x*v.x + v.y*v.y + v.z*v.z;
+	k = sqrt( k );
+	return k;
 }
 
 XMFLOAT3 normalize(XMFLOAT3 v)

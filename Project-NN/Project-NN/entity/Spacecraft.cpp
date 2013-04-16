@@ -27,7 +27,7 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
     components.push_back(playerControls);
 
 	physics->setLinVDamp( .98 );
-	physics->setLinADamp( .9 );
+	physics->setLinADamp( .9975 );
 
 	GameObject::InitComponents();
 }
