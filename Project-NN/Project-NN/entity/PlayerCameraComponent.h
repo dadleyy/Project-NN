@@ -5,6 +5,7 @@ class Camera;
 class Transform;
 class PhysicsComponent;
 class PlayerControls;
+class float3LERP;
 
 class PlayerCameraComponent :
 	public Component
@@ -22,6 +23,10 @@ public:
 	Transform* objectTransform;
 	PhysicsComponent* objectPhysics;
 	PlayerControls* objectControls;
+
+	float3LERP *lerpUp;
+	float3LERP *lerpFor;
+	float3LERP *lerpPos;
 
 	GameObject* object;
 	Camera* camera;

@@ -5,9 +5,13 @@
 #include "PhysicsComponent.h"
 #include "PlayerControls.h"
 #include "Transform.h"
+#include "..\framework\LERP.h"
 
 XMFLOAT3 normalize(XMFLOAT3 v);
 float vecmag( XMFLOAT3 v );
+
+extern int screenWidth;
+extern int screenHeight;
 
 PlayerCameraComponent::PlayerCameraComponent(Camera* cam)
 {
@@ -23,6 +27,8 @@ PlayerCameraComponent::~PlayerCameraComponent(void)
 void PlayerCameraComponent::Init(GameObject* go)
 {
 	object = go;
+	lerpFor = new float3LERP();
+	lerpPos = new float3LERP();
 	objectTransform = object->GetComponent<Transform>();
 	objectPhysics = object->GetComponent<PhysicsComponent>();
 	objectControls = object->GetComponent<PlayerControls>();
@@ -40,29 +46,52 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	float angleForw = acos( abs(objectPhysics->forwardAxis.x*camera->GetLook().x + objectPhysics->forwardAxis.y*camera->GetLook().y + objectPhysics->forwardAxis.z*camera->GetLook().z) -.001 );
 	float totalAngle = abs(angleForw) + abs(angleUp);
 
-	camera->SetLook(objectPhysics->forwardAxis);
+	//camera->SetLook(objectPhysics->forwardAxis);
 	// camera->SetUp(objectPhysics->upAxis);
 	// camera->SetRight(objectPhysics->sideAxis);
-	
+	lerpFor->goal = objectPhysics->forwardAxis;
+	lerpFor->start = camera->GetLook();
+	float change = acos(dotProduct(lerpFor->goal, lerpFor->start))/(PI/2);
+
+	camera->SetUp(objectPhysics->upAxis);
+	camera->SetRight(objectPhysics->sideAxis);
+	camera->SetLook(objectPhysics->forwardAxis);
+
+	//camera->SetLook( normalize(scale(lerpFor->lerp(  dt , change), -1)) );
+
 	float ld = lagDistance + ( vecmag( objectPhysics->velocity ) * 0.333f );
 
 	if( ld < lagDistance )
 		ld = lagDistance;
 
-	XMFLOAT3 pos = XMFLOAT3( 
-							camera->GetLook().x * ( ld + (objectControls->relMouseX * 0.0025f) ), 
-							camera->GetLook().y * ( ld + (objectControls->relMouseY * 0.0025f) ), 
-							camera->GetLook().z * ld );
-	camera->SetPosition( 
-		XMFLOAT3 (	objectTransform->position.x - pos.x, 
-					objectTransform->position.y - pos.y, 
-					objectTransform->position.z - pos.z ) );
+	//lerpPos->start = camera->GetPosition();
 
-	//float anglePercent = totalAngle/PI;
-	//camera->SetLook( normalize(add(scale(camera->GetLook(),anglePercent*dt) , scale(objectPhysics->forwardAxis,(1-anglePercent)*dt))) );
-	//camera->SetUp( normalize(add(scale(camera->GetUp(),anglePercent*dt) , scale(objectPhysics->upAxis,(1-anglePercent)*dt))) );
-	//camera->SetRight( normalize(add(scale(camera->GetRight(),anglePercent*dt) , scale(objectPhysics->sideAxis,(1-anglePercent)*dt))) );
+	XMFLOAT3 pos = add(objectPhysics->position, scale(objectPhysics->forwardAxis, -ld));
+	
 
+
+	//XMFLOAT3 reflectAxis = scale(normalize(objectPhysics->forwardAxis), -1);
+	//XMFLOAT3 cameraRelPosition = add( objectPhysics->position, scale(camera->GetPosition(), -1));
+	//XMFLOAT3 reflectedVector = add(cameraRelPosition, scale(reflectAxis, -2*dotProduct(reflectAxis, cameraRelPosition)));
+	//lerpPos->start = add( objectPhysics->position, reflectedVector);
+
+	//lerpPos->goal = add(objectTransform->position, scale(pos, -1));
+
+	//pos = lerpPos->lerp( dt, 10);
+	
+	XMFLOAT3 offset( objectControls->relMouseX, objectControls->relMouseY, 0.0 );
+	offset = offset;
+
+	XMFLOAT3 sideChange = scale(objectPhysics->sideAxis, 3*2*offset.x/screenWidth);
+	XMFLOAT3 upChange = scale(objectPhysics->upAxis,   3*2*offset.y/screenHeight);
+
+	pos.x += sideChange.x + upChange.x;
+	pos.y += sideChange.y + upChange.y;
+	pos.z += sideChange.z + upChange.z;
+
+	//camera->LookAt(pos, objectPhysics->position, objectPhysics->upAxis);
+
+	camera->SetPosition( pos );
 }
 
 float vecmag(  XMFLOAT3 v )
