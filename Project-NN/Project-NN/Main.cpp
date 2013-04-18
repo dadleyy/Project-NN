@@ -191,6 +191,7 @@ void addResources() {
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
 	resourceMgr->addMesh("res/models/Dodecahedron.obj", "dodeca");
 	resourceMgr->addMesh("res/models/pinnace.obj", "cool");
+	resourceMgr->addMesh("res/models/cool.obj", "enemy");
 
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );

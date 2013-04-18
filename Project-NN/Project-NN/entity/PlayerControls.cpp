@@ -28,6 +28,19 @@ void PlayerControls::Update(float dt) {
 	relMouseX = screenWidth/2.0 - input->getMouseX();
 	relMouseY = screenHeight/2.0 - input->getMouseY();
 
+	//update the rotation
+	float rotAngle = -relMouseY/1.5;
+	Quaternion q( rotAngle*dt, physics->sideAxis );
+
+	rotAngle = -relMouseX/1.5;
+	q = mult( q, Quaternion( rotAngle*dt, physics->upAxis ) );
+
+	physics->quaternion = mult( q, physics->quaternion );
+
+	physics->forwardAxis = transformVector(q, physics->forwardAxis);
+	physics->upAxis = transformVector(q, physics->upAxis);
+	physics->sideAxis = transformVector(q, physics->sideAxis);
+
 	for( int i = 0; i < 256; i++ ) {
 		if(// manager->keystates[i]
 		    input->getKeyDown(i)) {

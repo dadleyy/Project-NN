@@ -3,6 +3,7 @@
 #include "StateManager.h"
 #include "entity/Drawable.h"
 #include "entity/Asteroid.h"
+#include "entity/Enemy.h"
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
 #include "input.h"
@@ -32,11 +33,18 @@ void TestState::Init(StateManager* manager) {
 		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
+	for(int i = 0; i < 10; i++){
+		enemies.push_back(new Enemy( manager->GetDevice(), manager->GetContext(), 0, 0, 0 ) );
+	}
+
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 
 void TestState::Cleanup() {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+		delete *it;
+	}
+	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		delete *it;
 	}
 	delete spacer;
@@ -69,6 +77,11 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
+	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
+		(*it)->Update(dt);
+	}
+
+
 	if( spacer != 0 )
 		spacer->Update(dt);
 
@@ -82,6 +95,10 @@ void TestState::Update(float dt) {
 void TestState::Draw() {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Draw();
+	}
+
+	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
+		(*it)->Draw( );
 	}
 
 	if( spacer != 0 )

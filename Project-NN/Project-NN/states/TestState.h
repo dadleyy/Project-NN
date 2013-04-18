@@ -7,6 +7,7 @@
 class StateManager;
 class Asteroid;
 class Spacecraft;
+class Enemy;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -32,6 +33,7 @@ private:
 
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
+	std::vector<Enemy*> enemies;
 	Spacecraft* spacer;
 
 	bool mouseDown;
