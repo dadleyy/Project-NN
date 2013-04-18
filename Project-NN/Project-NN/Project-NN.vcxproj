@@ -96,6 +96,7 @@
     <ClCompile Include="framework\d3dUtil.cpp" />
     <ClCompile Include="framework\GameTimer.cpp" />
     <ClCompile Include="framework\GeometryGenerator.cpp" />
+    <ClCompile Include="framework\LERP.cpp" />
     <ClCompile Include="framework\LightHelper.cpp" />
     <ClCompile Include="framework\quaternionMath.cpp" />
     <ClCompile Include="framework\MathHelper.cpp" />
@@ -132,6 +133,7 @@
     <ClInclude Include="framework\d3dx11effect.h" />
     <ClInclude Include="framework\GameTimer.h" />
     <ClInclude Include="framework\GeometryGenerator.h" />
+    <ClInclude Include="framework\LERP.h" />
     <ClInclude Include="framework\LightHelper.h" />
     <ClInclude Include="framework\quaternionMath.h" />
     <ClInclude Include="framework\MathHelper.h" />

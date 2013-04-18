@@ -74,10 +74,10 @@ void PhysicsComponent::Update(float dt) {
 
 
 	//update the rotation
-	float rotAngle = -control->relMouseY;
+	float rotAngle = -control->relMouseY/1.5;
 	Quaternion q(rotAngle*dt, sideAxis);
 
-	rotAngle = -control->relMouseX;
+	rotAngle = -control->relMouseX/1.5;
 	q = mult(q, Quaternion(rotAngle*dt, upAxis));
 
 	quaternion = mult(q, quaternion);

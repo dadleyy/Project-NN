@@ -5,6 +5,7 @@ class Camera;
 class Transform;
 class PhysicsComponent;
 class PlayerControls;
+class float3LERP;
 
 class PlayerCameraComponent :
 	public Component
@@ -17,7 +18,7 @@ public:
 	void smoothFollow(float dt);
 
 	float lagDistance;
-
+	float baseFOV;		//the fov of the camera with no velocity
 
 	Transform* objectTransform;
 	PhysicsComponent* objectPhysics;

@@ -119,8 +119,12 @@ Quaternion mult(Quaternion q1, Quaternion q2)
 //Dot Product and Cross Product
 //*******************************
 //***********************
+float dotProduct(XMFLOAT3 q1, XMFLOAT3 q2)
+{ return q1.x*q2.x + q1.y*q2.y + q1.z*q2.z; }
+
 float dotProduct(Quaternion q1, Quaternion q2)
 { return q1.x*q2.x + q1.y*q2.y + q1.z*q2.z + q1.w*q2.w; }
+
 
 
 

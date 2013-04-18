@@ -91,7 +91,7 @@ XMFLOAT3 scale(XMFLOAT3 v, float s);
 //Dot Product and Cross Product*
 //*******************************
 float dotProduct(Quaternion q1, Quaternion q2);
-
+float dotProduct(XMFLOAT3 q1, XMFLOAT3 q2);
 
 //***************************
 //Normalization*

@@ -5,13 +5,18 @@
 #include "PhysicsComponent.h"
 #include "PlayerControls.h"
 #include "Transform.h"
+#include "..\framework\LERP.h"
 
 XMFLOAT3 normalize(XMFLOAT3 v);
 float vecmag( XMFLOAT3 v );
 
+extern int screenWidth;
+extern int screenHeight;
+
 PlayerCameraComponent::PlayerCameraComponent(Camera* cam)
 {
 	camera = cam;
+	baseFOV = cam->GetFovY();
 	lagDistance = 8;
 }
 
@@ -31,38 +36,36 @@ void PlayerCameraComponent::Init(GameObject* go)
 void PlayerCameraComponent::Update(float dt) 
 {
 	smoothFollow(dt);
-	//camera->LookAt( camera->GetPosition(), objectPhysics->position, objectPhysics->upAxis );
 }
 
 void PlayerCameraComponent::smoothFollow(float dt)
 {
-	float angleUp = acos( abs(objectPhysics->upAxis.x*camera->GetUp().x + objectPhysics->upAxis.y*camera->GetUp().y + objectPhysics->upAxis.z*camera->GetUp().z) -.001 ); 
-	float angleForw = acos( abs(objectPhysics->forwardAxis.x*camera->GetLook().x + objectPhysics->forwardAxis.y*camera->GetLook().y + objectPhysics->forwardAxis.z*camera->GetLook().z) -.001 );
-	float totalAngle = abs(angleForw) + abs(angleUp);
-
+	camera->SetUp(objectPhysics->upAxis);
+	camera->SetRight(objectPhysics->sideAxis);
 	camera->SetLook(objectPhysics->forwardAxis);
-	// camera->SetUp(objectPhysics->upAxis);
-	// camera->SetRight(objectPhysics->sideAxis);
+
+	//float ld = lagDistance + ( objectPhysics->speed * 0.333f );
+	float fovD = objectPhysics->speed * 2*(PI/180);
+	if(fovD > 45*(PI/180))
+		fovD = 45*(PI/180);
+	//if( ld < lagDistance )
+	//	ld = lagDistance;
+
+	camera->SetLens(baseFOV+fovD, camera->GetAspect(), camera->GetNearZ(), camera->GetFarZ());
+
+	XMFLOAT3 pos = add(objectPhysics->position, scale(objectPhysics->forwardAxis, -lagDistance));
 	
-	float ld = lagDistance + ( vecmag( objectPhysics->velocity ) * 0.333f );
+	XMFLOAT3 offset( objectControls->relMouseX, objectControls->relMouseY, 0.0 );
+	offset = offset;
 
-	if( ld < lagDistance )
-		ld = lagDistance;
+	XMFLOAT3 sideChange = scale(objectPhysics->sideAxis, 5*pow(2*offset.x/screenWidth, 2));
+	XMFLOAT3 upChange = scale(objectPhysics->upAxis,     4*pow(2*offset.y/screenHeight, 2));
 
-	XMFLOAT3 pos = XMFLOAT3( 
-							camera->GetLook().x * ( ld + (objectControls->relMouseX * 0.0025f) ), 
-							camera->GetLook().y * ( ld + (objectControls->relMouseY * 0.0025f) ), 
-							camera->GetLook().z * ld );
-	camera->SetPosition( 
-		XMFLOAT3 (	objectTransform->position.x - pos.x, 
-					objectTransform->position.y - pos.y, 
-					objectTransform->position.z - pos.z ) );
+	pos.x += sideChange.x + upChange.x;
+	pos.y += sideChange.y + upChange.y;
+	pos.z += sideChange.z + upChange.z;
 
-	//float anglePercent = totalAngle/PI;
-	//camera->SetLook( normalize(add(scale(camera->GetLook(),anglePercent*dt) , scale(objectPhysics->forwardAxis,(1-anglePercent)*dt))) );
-	//camera->SetUp( normalize(add(scale(camera->GetUp(),anglePercent*dt) , scale(objectPhysics->upAxis,(1-anglePercent)*dt))) );
-	//camera->SetRight( normalize(add(scale(camera->GetRight(),anglePercent*dt) , scale(objectPhysics->sideAxis,(1-anglePercent)*dt))) );
-
+	camera->SetPosition( pos );
 }
 
 float vecmag(  XMFLOAT3 v )
