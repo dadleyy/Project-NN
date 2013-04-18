@@ -3,13 +3,14 @@
 #include <algorithm>
 using namespace std;
 
-#include "entity/BoundingVolume.h"
+#include "entity/Collider.h"
 #include "entity/GameObject.h"
 
 
 void PhysicsManager::AddObject(GameObject* go) {
 	//TODO: Check if gameobject is in vector before adding it.
-	//TODO: Ensure that the gameobject has the required components.
+	if(go->collider == nullptr)
+		return;
 	objects.push_back(go);
 }
 
@@ -19,7 +20,7 @@ void PhysicsManager::RemoveObject(GameObject* go) {
 
 void PhysicsManager::CheckForCollisions() {
 	for(auto it = objects.begin(); it != objects.end(); ++it) {
-		auto collider1 = (*it)->GetComponent<BoundingVolume>();
+		auto collider1 = (*it)->collider;
 		for(auto otherIt = it; otherIt != objects.end(); ++otherIt) {
 			if(it == otherIt)
 				continue;

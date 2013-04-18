@@ -3,6 +3,9 @@
 #include <vector>
 
 class Component;
+class Drawable;
+class Transform;
+class Collider;
 
 
 class GameObject {
@@ -19,6 +22,9 @@ public:
 
 	void Update(float dt);
 	void HandleCollision(GameObject* other);
+
+	Transform* transform;
+	Collider* collider;
 
 protected:
 	std::vector<Component*> components;

@@ -1,4 +1,4 @@
-#include "BoundingVolume.h"
+#include "Collider.h"
 
 #include <Windows.h>
 #include <xnamath.h>
@@ -7,20 +7,20 @@
 #include "Transform.h"
 #include "PhysicsManager.h"
 
-BoundingVolume::BoundingVolume() {
+Collider::Collider() {
 }
 
-void BoundingVolume::Init(GameObject* go) {
+void Collider::Init(GameObject* go) {
 	//TODO: Error checking
 	transform = go->GetComponent<Transform>();
 	physicsMgr->AddObject(go);
 }
 
-void BoundingVolume::Update(float dt) {
+void Collider::Update(float dt) {
 }
 
-bool BoundingVolume::IsColliding(GameObject* other) {
-	auto otherTransform = other->GetComponent<Transform>();
+bool Collider::IsColliding(GameObject* other) {
+	auto otherTransform = other->transform;
 	auto v1 = XMLoadFloat3(&transform->position);
 	auto v2 = XMLoadFloat3(&otherTransform->position);
 	auto vectorDiff = XMVectorSubtract(v1, v2);

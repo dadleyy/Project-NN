@@ -8,7 +8,7 @@ using namespace std;
 #include "Wobble.h"
 #include "Transform.h"
 #include "PrintUponCollision.h"
-#include "BoundingVolume.h"
+#include "Collider.h"
 
 
 Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, float xPos, float yPos, float zPos) {
@@ -16,7 +16,7 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	wobble = new Wobble();
 	sphere = new Drawable(device, immediateContext);
 	print = new PrintUponCollision();
-	bv = new BoundingVolume();
+	collider = new Collider();
 
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
 	transform->rotation = XMFLOAT4(0.707f, 0, 0, 0.707f);
@@ -32,7 +32,7 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	components.push_back(sphere);
 	components.push_back(print);
 	components.push_back(wobble);
-	components.push_back(bv);
+	components.push_back(collider);
 	components.push_back(transform);
 	GameObject::InitComponents();
 }
@@ -41,6 +41,7 @@ Asteroid::~Asteroid() {
 	sphere->destroy();
 	delete transform;
 	delete sphere;
+	delete collider;
 	delete wobble;
 	delete print;
 }

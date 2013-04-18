@@ -108,10 +108,10 @@
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entity\BoundingVolume.cpp">
+    <ClCompile Include="entity\PrintUponCollision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="entity\PrintUponCollision.cpp">
+    <ClCompile Include="entity\Collider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="framework\LERP.cpp">
@@ -212,7 +212,10 @@
     <ClInclude Include="PhysicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="entity\BoundingVolume.h">
+    <ClInclude Include="entity\PrintUponCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\Collider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="entity\PrintUponCollision.h">

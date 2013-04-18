@@ -2,7 +2,7 @@
 
 #include "GameObject.h"
 
-class BoundingVolume;
+class Collider;
 class Drawable;
 class PrintUponCollision;
 class Transform;
@@ -19,7 +19,7 @@ public:
 private:
 	Drawable* sphere;
 	Wobble* wobble;
-	BoundingVolume* bv;
+	Collider* collider;
 	PrintUponCollision* print;
 	Transform* transform;
 };

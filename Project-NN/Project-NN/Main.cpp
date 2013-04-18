@@ -128,7 +128,7 @@ void Game::OnResize() {
 
 void Game::UpdateScene(float dt) {
 	//TODO: Commented because of performance issues.
-	//physicsMgr->CheckForCollisions();
+	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
 }
 
