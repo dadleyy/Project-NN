@@ -4,6 +4,8 @@
 #include "PlayerControls.h"
 
 void normalize(XMFLOAT3* v);
+XMFLOAT3 norm( XMFLOAT3 v );
+
 void damp(float* s, float damp, float minDamp);
 void damp(XMFLOAT3* v, float damp, float minDamp);
 float magnitude(XMFLOAT3 v );
@@ -14,6 +16,7 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	mass = m;
 	speed = sp;
 	MAX_SPEED = m_sp;
+	MAX_ACCEL = 10000;
 	position = pos;
 	velocity = vel;
 	acceleration = acc;
@@ -56,8 +59,11 @@ void PhysicsComponent::Update(float dt) {
 	//artificially dampen the speed
 	damp(&speed, velocityDamp, MIN_DAMP);
 
-	if(acceleration.x > 0)
-		int kjsdl = 1;
+	
+	if( magnitude( acceleration ) > MAX_ACCEL ){
+		acceleration = scale( norm( acceleration ), MAX_ACCEL );
+	}
+		
 
 	//normalize the velocity, multiply by speed, and add the acceleration from the last frame
 	normalize( &velocity );
@@ -118,4 +124,19 @@ void normalize(XMFLOAT3* v) {
 		v->y /= k;
 		v->z /= k;
 	}
+}
+
+XMFLOAT3 norm( XMFLOAT3 v ){
+	XMFLOAT3 result( v.x, v.y, v.z );
+
+	float k = v.x*v.x + v.y*v.y + v.z*v.z;
+
+	if( (k <= .99 || k >= 1.01) && k != 0) {
+		k = sqrt(k);
+		result.x /= k;
+		result.y /= k;
+		result.z /= k;
+	}
+
+	return result;
 }

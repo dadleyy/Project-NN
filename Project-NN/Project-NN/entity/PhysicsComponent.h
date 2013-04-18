@@ -45,7 +45,10 @@ public:
 
 	float mass;
 	float speed;
+	
 	float MAX_SPEED;
+	float MAX_ACCEL;
+
 	float friction;
 	float velocityDamp;
 	float accelerationDamp;
