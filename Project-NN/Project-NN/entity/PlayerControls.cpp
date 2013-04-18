@@ -41,19 +41,19 @@ void PlayerControls::handleKey( int keycode, float dt ) {
 	switch(keycode) {
 	case 'A':
 		//drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x, physics->acceleration.y - 5, physics->acceleration.z));
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x, physics->acceleration.y - .5, physics->acceleration.z));
 		break;
 	case 'D':
 		//drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x, physics->acceleration.y + 5, physics->acceleration.z));
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x, physics->acceleration.y + .5, physics->acceleration.z));
 		break;
 	case 'S':
 		//drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x - 5, physics->acceleration.y, physics->acceleration.z) );
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x - .5, physics->acceleration.y, physics->acceleration.z) );
 		break;
 	case 'W':
 		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + 5, physics->acceleration.y, physics->acceleration.z) );
+		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .5, physics->acceleration.y, physics->acceleration.z) );
 		break;
 		/*
 	case 'Q':
