@@ -78,7 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="entity\Asteroid.cpp" />
-    <ClCompile Include="entity\BoundingVolume.cpp" />
+    <ClCompile Include="entity\Collider.cpp" />
     <ClCompile Include="entity\Component.cpp" />
     <ClCompile Include="entity\Drawable.cpp" />
     <ClCompile Include="entity\GameObject.cpp" />
@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="entity\Asteroid.h" />
-    <ClInclude Include="entity\BoundingVolume.h" />
+    <ClInclude Include="entity\Collider.h" />
     <ClInclude Include="entity\Component.h" />
     <ClInclude Include="entity\Drawable.h" />
     <ClInclude Include="entity\GameObject.h" />

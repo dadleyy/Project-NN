@@ -5,9 +5,9 @@
 class GameObject;
 class Transform;
 
-class BoundingVolume : public Component {
+class Collider : public Component {
 public:
-	BoundingVolume();
+	Collider();
 	void Init(GameObject* go);
 	void Update(float dt);
 
