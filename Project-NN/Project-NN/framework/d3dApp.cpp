@@ -149,8 +149,49 @@ void D3DApp::OnResize()
 	HR(md3dDevice->CreateRenderTargetView(backBuffer, 0, &mRenderTargetView));
 	ReleaseCOM(backBuffer);
 
-	// Create the depth/stencil buffer and view.
 
+	//describe the textures
+	D3D11_TEXTURE2D_DESC textureDesc;
+	ZeroMemory(&textureDesc, sizeof(textureDesc));
+
+	// Setup the texture description.
+	textureDesc.Width = mClientWidth;
+	textureDesc.Height = mClientHeight;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
+
+	// Create the texture
+	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTexture1);
+	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTexture2);
+
+	//describe the render target view
+	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+	renderTargetViewDesc.Format = textureDesc.Format;
+	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	//describe the shader resource view
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	//Create render targets pointint to these textures
+	HR(md3dDevice->CreateRenderTargetView(targetTexture1, &renderTargetViewDesc, &targetView1));
+	HR(md3dDevice->CreateRenderTargetView(targetTexture2, &renderTargetViewDesc, &targetView2));
+
+	// Create the shader resource view.
+	md3dDevice->CreateShaderResourceView(targetTexture1, &shaderResourceViewDesc, &targetTextureResourceView1);
+	md3dDevice->CreateShaderResourceView(targetTexture2, &shaderResourceViewDesc, &targetTextureResourceView2);
+
+	// Create the depth/stencil buffer and view.
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 	
 	depthStencilDesc.Width     = mClientWidth;

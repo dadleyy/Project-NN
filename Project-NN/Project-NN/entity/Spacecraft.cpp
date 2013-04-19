@@ -34,6 +34,8 @@ Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateConte
 
 void Spacecraft::Draw()
 {
+	drawable->setEffectVariables();
+	drawable->setEffectTextures();
     drawable->draw();
 }
 

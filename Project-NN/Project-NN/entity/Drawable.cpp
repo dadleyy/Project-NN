@@ -46,11 +46,8 @@ UINT* Drawable::getIndicies()
 	return 0;
 }
 
-void Drawable::draw()
+void Drawable::setEffectVariables()
 {
-	UINT stride = vertexStride;
-	UINT offset = vertexOffset;
-
 	//translate, rotate, and scale matrix
 	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
 	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
@@ -58,23 +55,31 @@ void Drawable::draw()
 	XMMATRIX w = scale * rotation * translate;
 	XMMATRIX wn = w;
 
-	for(auto it = textures.begin(); it != textures.end(); ++it) {
-		it->first->SetResource(it->second);
-	}
-
 	//update the world matrix in the shader
 	D3D11_MAPPED_SUBRESOURCE resource;
-	
+
 	HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
 	memcpy((float*)resource.pData,    &w._11,  64);
 	memcpy((float*)resource.pData+16, &wn._11, 64);
 	deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
+}
+
+void Drawable::setEffectTextures()
+{
+	for(auto it = textures.begin(); it != textures.end(); ++it) {
+		it->first->SetResource(it->second);
+	}
+}
+
+void Drawable::draw()
+{
+	UINT stride = vertexStride;
+	UINT offset = vertexOffset;
 
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
-	deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
     technique->GetDesc( &techDesc );

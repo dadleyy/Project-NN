@@ -47,5 +47,7 @@ Asteroid::~Asteroid() {
 }
 
 void Asteroid::Draw() {
+	sphere->setEffectVariables();
+	sphere->setEffectTextures();
 	sphere->draw();
 }

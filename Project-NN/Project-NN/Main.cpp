@@ -10,13 +10,11 @@
 #include "states/TestState.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
-#include "AudioManager.h"
 #include "input.h"
+#include "entity\Drawable.h"
 
 ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
-AudioManager* audioMgr;
-
 Input* input;
 
 int screenWidth;
@@ -92,9 +90,6 @@ Game::Game(HINSTANCE hInstance) : D3DApp(hInstance), manager() {
 }
 
 Game::~Game() {
-	delete physicsMgr;
-	delete resourceMgr;
-	delete audioMgr;
 }
 
 bool Game::Init() {
@@ -109,11 +104,16 @@ bool Game::Init() {
 	manager.Init(md3dDevice, md3dImmediateContext);
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
-	audioMgr = new AudioManager( );
-	physicsMgr = new PhysicsManager();
-
-	audioMgr->Initialize( );
 	addResources();
+	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
+	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));
+
+	postRect = new Drawable(md3dDevice, md3dImmediateContext);
+	postRect->getEffectVariables("genericPost", "Render");
+	postRect->createBuffer("rectangle");
+	postRect->addTexture("Pass1", "tex");
+
+	physicsMgr = new PhysicsManager();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
@@ -140,11 +140,25 @@ void Game::UpdateScene(float dt) {
 	manager.Update(dt);
 }
 
-void Game::DrawScene() {
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
+void Game::DrawScene() 
+{
+	// Clear the back buffer 
+	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Green));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
+	//render the scene
+	resourceMgr->getEffect("genericPost")->GetVariableByName("tex")->AsShaderResource()->SetResource(NULL);
+
+	md3dImmediateContext->OMSetRenderTargets(1, &targetView1, mDepthStencilView);
+	md3dImmediateContext->ClearRenderTargetView(targetView1, reinterpret_cast<const float*>(&Colors::Cyan));
 	manager.Draw();
+
+	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, 0);
+
+	postRect->getEffectVariables("genericPost", "Render");
+	//postRect->setEffectTextures();
+	resourceMgr->getEffect("genericPost")->GetVariableByName("tex")->AsShaderResource()->SetResource(targetTextureResourceView1);
+	postRect->draw();
 
 	HR(mSwapChain->Present(0, 0));
 }
@@ -194,24 +208,22 @@ void addResources() {
 	//textures
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
-	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 
 	//meshes
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
 	resourceMgr->addMesh("res/models/Dodecahedron.obj", "dodeca");
 	resourceMgr->addMesh("res/models/pinnace.obj", "cool");
+	resourceMgr->addMesh("res/models/rect.obj", "rectangle");
 	resourceMgr->addMesh("res/models/cool.obj", "enemy");
 
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
 	resourceMgr->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
 	resourceMgr->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
-
-	audioMgr->LoadSound( L"res/sounds/test.wav", "test", BACKGROUND );
-	audioMgr->PlaySound( "test" );
 }
 

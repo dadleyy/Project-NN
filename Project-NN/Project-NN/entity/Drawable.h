@@ -29,9 +29,11 @@ public:
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
+	void setEffectVariables();
+	void setEffectTextures();
 	XMFLOAT3 getPosition();
 	void setPosition(XMFLOAT3 pos);
-
+	std::unordered_map<ID3DX11EffectShaderResourceVariable*, ID3D11ShaderResourceView*> textures;
 protected:
 	UINT vertexStride; //the size of an individual vertex in bytes
 	UINT vertexOffset; //the offset for each vertex in bytes
@@ -39,7 +41,7 @@ protected:
 	ID3D11Device*			pD3DDevice;    //reference to the DX device being used
 	ID3D11DeviceContext*    deviceContext; //reference DX device context being used
 
-	std::unordered_map<ID3DX11EffectShaderResourceVariable*, ID3D11ShaderResourceView*> textures;
+	
 
 	//pointers to compiles shader data, the effect and the technique
 	char* effectID;

@@ -14,6 +14,7 @@
 #include "d3dUtil.h"
 #include "GameTimer.h"
 #include <string>
+class Drawable;
 
 class D3DApp
 {
@@ -69,6 +70,19 @@ protected:
 	ID3D11DeviceContext* md3dImmediateContext;
 	IDXGISwapChain* mSwapChain;
 	ID3D11Texture2D* mDepthStencilBuffer;
+
+	Drawable* postRect;
+
+	//set up 2 additional render targets for post processing effects
+	ID3D11Texture2D* targetTexture1;
+	ID3D11Texture2D* targetTexture2;
+
+	ID3D11RenderTargetView* targetView1;
+	ID3D11RenderTargetView* targetView2;
+
+	ID3D11ShaderResourceView* targetTextureResourceView1;
+	ID3D11ShaderResourceView* targetTextureResourceView2;
+
 	ID3D11RenderTargetView* mRenderTargetView;
 	ID3D11DepthStencilView* mDepthStencilView;
 	D3D11_VIEWPORT mScreenViewport;
