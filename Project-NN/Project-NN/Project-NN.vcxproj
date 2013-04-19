@@ -77,6 +77,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="entity\AIComponent.cpp" />
     <ClCompile Include="entity\Asteroid.cpp" />
     <ClCompile Include="entity\Collider.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="framework\quaternionMath.cpp" />
     <ClCompile Include="framework\MathHelper.cpp" />
     <ClCompile Include="framework\OBJLoader.cpp" />
+    <ClCompile Include="framework\SDKwavefile.cpp" />
     <ClCompile Include="framework\TextureMgr.cpp" />
     <ClCompile Include="framework\Waves.cpp" />
     <ClCompile Include="framework\xnacollision.cpp" />
@@ -115,6 +117,7 @@
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="entity\AIComponent.h" />
     <ClInclude Include="entity\Asteroid.h" />
     <ClInclude Include="entity\Collider.h" />
@@ -142,6 +145,7 @@
     <ClInclude Include="framework\quaternionMath.h" />
     <ClInclude Include="framework\MathHelper.h" />
     <ClInclude Include="framework\OBJLoader.h" />
+    <ClInclude Include="framework\SDKwavefile.h" />
     <ClInclude Include="framework\TextureMgr.h" />
     <ClInclude Include="framework\Waves.h" />
     <ClInclude Include="framework\xnacollision.h" />

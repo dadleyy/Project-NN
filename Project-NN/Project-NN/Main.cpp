@@ -10,10 +10,13 @@
 #include "states/TestState.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
+#include "AudioManager.h"
 #include "input.h"
 
 ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
+AudioManager* audioMgr;
+
 Input* input;
 
 int screenWidth;
@@ -89,6 +92,9 @@ Game::Game(HINSTANCE hInstance) : D3DApp(hInstance), manager() {
 }
 
 Game::~Game() {
+	delete physicsMgr;
+	delete resourceMgr;
+	delete audioMgr;
 }
 
 bool Game::Init() {
@@ -103,9 +109,11 @@ bool Game::Init() {
 	manager.Init(md3dDevice, md3dImmediateContext);
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
-	addResources();
-
+	audioMgr = new AudioManager( );
 	physicsMgr = new PhysicsManager();
+
+	audioMgr->Initialize( );
+	addResources();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
@@ -202,5 +210,8 @@ void addResources() {
 	resourceMgr->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
 	resourceMgr->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
+
+	audioMgr->LoadSound( L"res/sounds/test.wav", "test", BACKGROUND );
+	audioMgr->PlaySound( "test" );
 }
 
