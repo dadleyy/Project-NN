@@ -78,7 +78,32 @@ void PhysicsComponent::Update(float dt) {
 	if(speed > MAX_SPEED) speed = MAX_SPEED;
 	if( speed < 0 ) speed = 0;
 
-	transform->rotation = XMFLOAT4(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+	// recalculate orientation from axis
+	XMMATRIX rotation;
+
+	rotation._11 = sideAxis.x;
+	rotation._12 = sideAxis.y;
+	rotation._13 = sideAxis.z;
+	rotation._14 = 0.0f;
+
+	rotation._21 = upAxis.x;
+	rotation._22 = upAxis.y;
+	rotation._23 = upAxis.z;
+	rotation._24 = 0.0f;
+
+	rotation._31 = forwardAxis.x;
+	rotation._32 = forwardAxis.y;
+	rotation._33 = forwardAxis.z;
+	rotation._34 = 0.0f;
+
+	rotation._41 = 0.0f;
+	rotation._42 = 0.0f;
+	rotation._43 = 0.0f;
+	rotation._44 = 1.0f;
+
+	//XMMATRIX rotation = XMMatrixLookAtLH( mpos, tpos, up );
+	XMVECTOR quat = XMQuaternionRotationMatrix( rotation );
+	XMStoreFloat4( &transform->rotation, quat );
 
 	//update the position
 	position = XMFLOAT3( position.x + (velocity.x*forwardAxis.x + velocity.y*sideAxis.x + velocity.z*upAxis.x)*dt,

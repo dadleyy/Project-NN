@@ -33,8 +33,13 @@ void TestState::Init(StateManager* manager) {
 		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
-	for(int i = 0; i < 10; i++){
-		enemies.push_back(new Enemy( manager->GetDevice(), manager->GetContext(), 0, 0, 0 ) );
+	for(int i = 0; i < 1; i++){
+		enemies.push_back(new Enemy( 
+			manager->GetDevice(), 
+			manager->GetContext(),
+			spacer,
+			XMFLOAT3(0,0,0)
+		));
 	}
 
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));

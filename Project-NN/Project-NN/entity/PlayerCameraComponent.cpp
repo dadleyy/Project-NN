@@ -17,7 +17,7 @@ PlayerCameraComponent::PlayerCameraComponent(Camera* cam)
 {
 	camera = cam;
 	baseFOV = cam->GetFovY();
-	lagDistance = 8;
+	lagDistance = 15;
 }
 
 
@@ -44,16 +44,17 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	camera->SetRight(objectPhysics->sideAxis);
 	camera->SetLook(objectPhysics->forwardAxis);
 
-	//float ld = lagDistance + ( objectPhysics->speed * 0.333f );
+	float ld = lagDistance + ( objectPhysics->speed * 0.333f );
 	float fovD = objectPhysics->speed * 2*(PI/180);
 	if(fovD > 45*(PI/180))
 		fovD = 45*(PI/180);
-	//if( ld < lagDistance )
-	//	ld = lagDistance;
+	
+	if( ld < lagDistance )
+		ld = lagDistance;
 
 	camera->SetLens(baseFOV+fovD, camera->GetAspect(), camera->GetNearZ(), camera->GetFarZ());
 
-	XMFLOAT3 pos = add(objectPhysics->position, scale(objectPhysics->forwardAxis, -lagDistance));
+	XMFLOAT3 pos = add(objectPhysics->position, scale(objectPhysics->forwardAxis, -ld));
 	
 	XMFLOAT3 offset( objectControls->relMouseX, objectControls->relMouseY, 0.0 );
 	offset = offset;
