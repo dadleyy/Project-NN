@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="res\post processes\Contrast.cpp" />
     <ClCompile Include="entity\AIComponent.cpp" />
     <ClCompile Include="entity\Asteroid.cpp" />
     <ClCompile Include="entity\Collider.cpp" />
@@ -118,6 +119,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="res\post processes\Contrast.h" />
     <ClInclude Include="entity\AIComponent.h" />
     <ClInclude Include="entity\Asteroid.h" />
     <ClInclude Include="entity\Collider.h" />

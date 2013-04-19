@@ -67,7 +67,7 @@ void Drawable::setEffectVariables()
 void Drawable::setEffectTextures()
 {
 	for(auto it = textures.begin(); it != textures.end(); ++it) {
-		it->first->SetResource(it->second);
+		it->first->AsShaderResource()->SetResource(it->second);
 	}
 }
 

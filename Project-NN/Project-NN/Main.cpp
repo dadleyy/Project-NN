@@ -21,6 +21,9 @@ int screenWidth;
 int screenHeight;
 void addResources();
 
+float threshold = 0;
+float brightness = 1;
+
 class Game : public D3DApp {
 public:
 	Game(HINSTANCE hInstance);
@@ -105,18 +108,19 @@ bool Game::Init() {
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources();
-	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
-	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));
-
-	postRect = new Drawable(md3dDevice, md3dImmediateContext);
-	postRect->getEffectVariables("genericPost", "Render");
-	postRect->createBuffer("rectangle");
-	postRect->addTexture("Pass1", "tex");
-
+	
 	physicsMgr = new PhysicsManager();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
+
+	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
+	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));	
+
+	postRect = new Drawable(md3dDevice, md3dImmediateContext);
+	postRect->getEffectVariables("contrast", "Render");
+	postRect->createBuffer("rectangle");
+	postRect->addTexture("Pass1", "tex");
 
 	resourceMgr->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
@@ -143,21 +147,31 @@ void Game::UpdateScene(float dt) {
 void Game::DrawScene() 
 {
 	// Clear the back buffer 
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Green));
+	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	//render the scene
-	resourceMgr->getEffect("genericPost")->GetVariableByName("tex")->AsShaderResource()->SetResource(NULL);
+	if(input->getKeyDown('B'))
+		threshold+= .001;
+	if(input->getKeyDown('G'))
+		threshold-= .001;
+	if(input->getKeyDown('H'))
+		brightness+= .001;
+	if(input->getKeyDown('N'))
+		brightness-= .001;
 
+	resourceMgr->getEffect("contrast")->GetVariableByName("tex")->AsShaderResource()->SetResource(NULL);
+	resourceMgr->getEffect("contrast")->GetVariableByName("threshold")->AsScalar()->SetFloat(threshold);
+	resourceMgr->getEffect("contrast")->GetVariableByName("brightness")->AsScalar()->SetFloat(brightness);
+
+	//render the scene
 	md3dImmediateContext->OMSetRenderTargets(1, &targetView1, mDepthStencilView);
-	md3dImmediateContext->ClearRenderTargetView(targetView1, reinterpret_cast<const float*>(&Colors::Cyan));
+	md3dImmediateContext->ClearRenderTargetView(targetView1, reinterpret_cast<const float*>(&Colors::Black));
 	manager.Draw();
 
 	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, 0);
 
-	postRect->getEffectVariables("genericPost", "Render");
-	//postRect->setEffectTextures();
-	resourceMgr->getEffect("genericPost")->GetVariableByName("tex")->AsShaderResource()->SetResource(targetTextureResourceView1);
+	//postRect->getEffectVariables("contrast", "Render");
+	postRect->setEffectTextures();
 	postRect->draw();
 
 	HR(mSwapChain->Present(0, 0));
@@ -219,6 +233,7 @@ void addResources() {
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
+	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);

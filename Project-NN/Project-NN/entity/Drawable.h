@@ -29,8 +29,8 @@ public:
 	virtual XMFLOAT3* getVerts(float radius, int divisions);
 	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
-	void setEffectVariables();
-	void setEffectTextures();
+	virtual void setEffectVariables();
+	virtual void setEffectTextures();
 	XMFLOAT3 getPosition();
 	void setPosition(XMFLOAT3 pos);
 	std::unordered_map<ID3DX11EffectShaderResourceVariable*, ID3D11ShaderResourceView*> textures;
