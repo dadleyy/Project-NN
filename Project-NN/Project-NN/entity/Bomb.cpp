@@ -14,5 +14,6 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 }
 
 Bomb::~Bomb() {
-	drawable->destroy();
+	delete transform;
+	delete drawable;
 }
