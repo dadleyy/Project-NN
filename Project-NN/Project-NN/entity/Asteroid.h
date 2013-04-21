@@ -7,9 +7,7 @@ class Drawable;
 class PrintUponCollision;
 class Transform;
 class Wobble;
-//TODO: Remove -- we have this in resourceMgr
-struct ID3D11Device;
-struct ID3D11DeviceContext;
+
 
 class Asteroid : public GameObject {
 public:

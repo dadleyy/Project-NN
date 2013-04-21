@@ -8,7 +8,6 @@ using namespace std;
 
 
 void PhysicsManager::AddObject(GameObject* go) {
-	//TODO: Check if gameobject is in vector before adding it.
 	if(go->collider == nullptr)
 		return;
 	objects.push_back(go);
