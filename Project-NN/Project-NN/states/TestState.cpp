@@ -3,6 +3,7 @@
 #include "StateManager.h"
 #include "entity/Drawable.h"
 #include "entity/Asteroid.h"
+#include "entity/Bomb.h"
 #include "entity/Enemy.h"
 #include "entity/Bullet.h"
 #include "entity/Spacecraft.h"
@@ -32,6 +33,15 @@ void TestState::Init(StateManager* manager) {
 
 	for(int i = 0; i < 33; i++) {
 		asteroids.push_back(new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
+	}
+
+	uniform_real_distribution<float> bombDistribution(-30, 30);
+
+	for(int i = 0; i < 20; i++) {
+		bombs.push_back(new Bomb(
+			bombDistribution(resourceMgr->randomEngine),
+			bombDistribution(resourceMgr->randomEngine),
+			bombDistribution(resourceMgr->randomEngine)));
 	}
 
 	for (int i = 0; i < 100; i++) {
@@ -94,6 +104,10 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
+	for(auto it = bombs.begin(); it != bombs.end(); ++it) {
+		(*it)->Update(dt);
+	}
+
 	/*for(auto it = fired.begin(); it != fired.end(); ++it){
 		(*it)->Update(dt);
 	}*/
@@ -118,8 +132,12 @@ void TestState::Draw() {
 		(*it)->Draw();
 	}
 
+	for(auto it = bombs.begin(); it != bombs.end(); ++it) {
+		(*it)->Draw();
+	}
+
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		(*it)->Draw( );
+		(*it)->Draw();
 	}
 
 	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
@@ -127,7 +145,7 @@ void TestState::Draw() {
 	}*/
 
 	if( spacer != 0 )
-		spacer->Draw( );
+		spacer->Draw();
 }
 
 

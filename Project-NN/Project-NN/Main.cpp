@@ -216,6 +216,7 @@ void addResources() {
 	//textures
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
+	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 
 	//meshes
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");

@@ -45,6 +45,8 @@ Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 
 void Enemy::Draw()
 {
+	drawable->setEffectVariables();
+	drawable->setEffectTextures();
 	drawable->draw();
 }
 
