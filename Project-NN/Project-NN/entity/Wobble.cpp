@@ -1,6 +1,5 @@
 #include "Wobble.h"
 
-#include <cstdlib>
 #include <iostream>
 #include <cmath>
 #include <random>
@@ -13,14 +12,12 @@ using namespace std;
 
 bool Wobble::Init(GameObject* go) {
 	transform = go->GetComponent<Transform>();
-	if(transform == nullptr) {
-		cerr << "ERROR: Transform not found!" << endl;
-		exit(1);
-	}
 	basePosition = transform->position;
 
 	uniform_real_distribution<float> distribution(-1000, 1000);
 	totalTime = distribution(resourceMgr->randomEngine);
+
+	return transform != nullptr;
 }
 
 void Wobble::Update(float dt) {
