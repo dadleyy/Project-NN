@@ -4,10 +4,12 @@
 
 #include "GameState.h"
 
+
 class StateManager;
 class Asteroid;
 class Spacecraft;
 class Enemy;
+class Bullet;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -34,6 +36,8 @@ private:
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
 	std::vector<Enemy*> enemies;
+	std::vector<Bullet*> bullets;
+	std::vector<Bullet*> fired;
 	Spacecraft* spacer;
 
 	bool mouseDown;

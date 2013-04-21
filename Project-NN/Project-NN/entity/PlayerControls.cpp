@@ -14,15 +14,19 @@ using namespace std;
 
 void PlayerControls::Init(GameObject* go) {
 	physics = go->GetComponent<PhysicsComponent>();
+	fired = false;
 }
 
 void PlayerControls::Update(float dt) {
+	fired = false;
+
 	if( input->getLMouseButton() && !input->getRMouseButton()) {
-		float rotAngle = -(1 * dt);
-		resourceMgr->camera.RotateY(rotAngle);
+		//float rotAngle = -(1 * dt);
+		//resourceMgr->camera.RotateY(rotAngle);
+		fired = true;
 	} else if(!input->getLMouseButton() && input->getRMouseButton()) {
-		float rotAngle = (1 * dt);
-		resourceMgr->camera.RotateY(rotAngle);
+		//float rotAngle = (1 * dt);
+		//resourceMgr->camera.RotateY(rotAngle);
 	}
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();

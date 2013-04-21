@@ -16,6 +16,9 @@ public:
     virtual ~Spacecraft();
     void Draw();
 
+	PlayerControls* getPlayerControls(){
+		return playerControls;
+	}
 private:
 	Transform* transform;
     Drawable* drawable;
