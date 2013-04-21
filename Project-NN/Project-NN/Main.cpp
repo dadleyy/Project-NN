@@ -111,15 +111,6 @@ bool Game::Init() {
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
 
-	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Original", originalImageResourceView));
-	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
-	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));	
-
-	finalDraw = new Drawable(md3dDevice, md3dImmediateContext);
-	finalDraw->getEffectVariables("genericPost", "Render");
-	finalDraw->createBuffer("rectangle");
-	finalDraw->addTexture("Original", "tex");
-
 	resourceMgr->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
 	return true;
@@ -127,13 +118,26 @@ bool Game::Init() {
 
 void Game::OnResize() {
 	D3DApp::OnResize();
+
+	if(resourceMgr == nullptr)
+		return;
+
+	resourceMgr->textures["Original"] = originalImageResourceView;
+	resourceMgr->textures["Pass1"] = targetTextureResourceView1;
+	resourceMgr->textures["Pass2"] = targetTextureResourceView2;	
+
+	finalDraw = new Drawable(md3dDevice, md3dImmediateContext);
+	finalDraw->getEffectVariables("genericPost", "Render");
+	finalDraw->createBuffer("rectangle");
+	finalDraw->addTexture("Original", "tex");
+
 	screenWidth = mClientWidth;
 	screenHeight = mClientHeight;
-	if(resourceMgr != nullptr)
-		resourceMgr->camera.SetLens(resourceMgr->camera.GetFovY(),
-		                            ((float)screenWidth)/screenHeight,
-		                            resourceMgr->camera.GetNearZ(),
-		                            resourceMgr->camera.GetFarZ());
+
+	resourceMgr->camera.SetLens(resourceMgr->camera.GetFovY(),
+								((float)screenWidth)/screenHeight,
+								resourceMgr->camera.GetNearZ(),
+								resourceMgr->camera.GetFarZ());
 }
 
 void Game::UpdateScene(float dt) {
