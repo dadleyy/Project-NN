@@ -71,15 +71,18 @@ protected:
 	IDXGISwapChain* mSwapChain;
 	ID3D11Texture2D* mDepthStencilBuffer;
 
-	Drawable* postRect;
+	Drawable* finalDraw;
 
 	//set up 2 additional render targets for post processing effects
+	ID3D11Texture2D* originalImage;
 	ID3D11Texture2D* targetTexture1;
 	ID3D11Texture2D* targetTexture2;
 
+	ID3D11RenderTargetView* originalView;
 	ID3D11RenderTargetView* targetView1;
 	ID3D11RenderTargetView* targetView2;
 
+	ID3D11ShaderResourceView* originalImageResourceView;
 	ID3D11ShaderResourceView* targetTextureResourceView1;
 	ID3D11ShaderResourceView* targetTextureResourceView2;
 

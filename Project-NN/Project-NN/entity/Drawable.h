@@ -45,6 +45,7 @@ protected:
 
 	//pointers to compiles shader data, the effect and the technique
 	char* effectID;
+	ID3DX11Effect* shader;
 	ID3DX11EffectTechnique*	technique;
 
 	//vertex buffer

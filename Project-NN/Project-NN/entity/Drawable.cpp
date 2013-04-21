@@ -125,7 +125,8 @@ HRESULT Drawable::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint,
 void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 {
 	this->effectID = effectID;
-    technique = resourceMgr->effects.at( effectID )->effect->GetTechniqueByName( fxTechniqueName );
+	shader = resourceMgr->effects.at( effectID )->effect;
+    technique = shader->GetTechniqueByName( fxTechniqueName );
 }
 
 //****************************************************************

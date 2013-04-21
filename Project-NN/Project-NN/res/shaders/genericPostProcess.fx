@@ -45,7 +45,7 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	return float4(0, 1,0,0)*tex.Sample(textureSampler, input.UV);
+	return tex.Sample(textureSampler, input.UV);
 }
 
 

@@ -21,9 +21,6 @@ int screenWidth;
 int screenHeight;
 void addResources();
 
-float threshold = 0;
-float brightness = 1;
-
 class Game : public D3DApp {
 public:
 	Game(HINSTANCE hInstance);
@@ -114,13 +111,14 @@ bool Game::Init() {
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
 
+	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Original", originalImageResourceView));
 	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
 	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));	
 
-	postRect = new Drawable(md3dDevice, md3dImmediateContext);
-	postRect->getEffectVariables("contrast", "Render");
-	postRect->createBuffer("rectangle");
-	postRect->addTexture("Pass1", "tex");
+	finalDraw = new Drawable(md3dDevice, md3dImmediateContext);
+	finalDraw->getEffectVariables("genericPost", "Render");
+	finalDraw->createBuffer("rectangle");
+	finalDraw->addTexture("Original", "tex");
 
 	resourceMgr->camera.UpdateViewMatrix();
 	manager.PushState(TestState::Instance());
@@ -150,29 +148,22 @@ void Game::DrawScene()
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	if(input->getKeyDown('B'))
-		threshold+= .001;
-	if(input->getKeyDown('G'))
-		threshold-= .001;
-	if(input->getKeyDown('H'))
-		brightness+= .001;
-	if(input->getKeyDown('N'))
-		brightness-= .001;
-
-	resourceMgr->getEffect("contrast")->GetVariableByName("tex")->AsShaderResource()->SetResource(NULL);
-	resourceMgr->getEffect("contrast")->GetVariableByName("threshold")->AsScalar()->SetFloat(threshold);
-	resourceMgr->getEffect("contrast")->GetVariableByName("brightness")->AsScalar()->SetFloat(brightness);
-
 	//render the scene
-	md3dImmediateContext->OMSetRenderTargets(1, &targetView1, mDepthStencilView);
-	md3dImmediateContext->ClearRenderTargetView(targetView1, reinterpret_cast<const float*>(&Colors::Black));
+	md3dImmediateContext->OMSetRenderTargets(1, &originalView, mDepthStencilView);
+	md3dImmediateContext->ClearRenderTargetView(originalView, reinterpret_cast<const float*>(&Colors::Black));
 	manager.Draw();
+	
 
+	//post Processing
+	//*******************
+
+
+	//*******************
+
+	//draw final image
 	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, 0);
-
-	//postRect->getEffectVariables("contrast", "Render");
-	postRect->setEffectTextures();
-	postRect->draw();
+	finalDraw->setEffectTextures();
+	finalDraw->draw();
 
 	HR(mSwapChain->Present(0, 0));
 }

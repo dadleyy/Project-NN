@@ -8,7 +8,7 @@ public:
 	~Contrast(void);
 
 	float threshold;
+	float brightness;
 	virtual void setEffectVariables();
-	virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
 };
 

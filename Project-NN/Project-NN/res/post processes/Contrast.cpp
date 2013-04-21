@@ -13,10 +13,6 @@ Contrast::~Contrast(void)
 
 void Contrast::setEffectVariables()
 {
-
-}
-
-void Contrast::getEffectVariables(char* fxFilename, char* fxTechniqueName)
-{
-
+	shader->GetVariableByName("threshold")->AsScalar()->SetFloat(threshold);
+	shader->GetVariableByName("brightness")->AsScalar()->SetFloat(brightness);
 }

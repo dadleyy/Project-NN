@@ -167,6 +167,7 @@ void D3DApp::OnResize()
 	textureDesc.MiscFlags = 0;
 
 	// Create the texture
+	md3dDevice->CreateTexture2D(&textureDesc, NULL, &originalImage);
 	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTexture1);
 	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTexture2);
 
@@ -184,10 +185,12 @@ void D3DApp::OnResize()
 	shaderResourceViewDesc.Texture2D.MipLevels = 1;
 
 	//Create render targets pointint to these textures
+	HR(md3dDevice->CreateRenderTargetView(originalImage, &renderTargetViewDesc, &originalView));
 	HR(md3dDevice->CreateRenderTargetView(targetTexture1, &renderTargetViewDesc, &targetView1));
 	HR(md3dDevice->CreateRenderTargetView(targetTexture2, &renderTargetViewDesc, &targetView2));
 
 	// Create the shader resource view.
+	md3dDevice->CreateShaderResourceView(originalImage,  &shaderResourceViewDesc, &originalImageResourceView);
 	md3dDevice->CreateShaderResourceView(targetTexture1, &shaderResourceViewDesc, &targetTextureResourceView1);
 	md3dDevice->CreateShaderResourceView(targetTexture2, &shaderResourceViewDesc, &targetTextureResourceView2);
 
