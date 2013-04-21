@@ -22,8 +22,12 @@ public:
 	float relMouseX;
 	float relMouseY;
 
+	bool getFired(){
+		return fired;
+	}
+
 private:
 	PhysicsComponent* physics;
-
+	bool fired;
 	void handleKey( int keycode, float dt );
 };

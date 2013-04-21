@@ -4,10 +4,12 @@
 #include "entity/Drawable.h"
 #include "entity/Asteroid.h"
 #include "entity/Enemy.h"
+#include "entity/Bullet.h"
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
 #include "input.h"
 #include "entity/PlayerControls.h"
+#include "entity/Transform.h"
 
 #include <iostream>
 #include <random>
@@ -33,6 +35,10 @@ void TestState::Init(StateManager* manager) {
 		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
+	for (int i = 0; i < 100; i++) {
+		bullets.push_back(new Bullet(manager->GetDevice(), manager->GetContext(),
+		                               -10.0, -10.0, -10.0));
+	}
 	for(int i = 0; i < 1; i++){
 		enemies.push_back(new Enemy( 
 			manager->GetDevice(), 
@@ -52,6 +58,9 @@ void TestState::Cleanup() {
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		delete *it;
 	}
+	for(auto it = bullets.begin(); it != bullets.end(); ++it){
+		delete *it;
+	}
 	delete spacer;
 }
 
@@ -67,8 +76,15 @@ void TestState::Update(float dt) {
 	//int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
 	//int dy = input->getMouseY() - ( screenHeight * 0.5 );
 	//resourceMgr->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
-
-
+	/*if (spacer->getPlayerControls()->getFired())
+	{
+		if(bullets.size() > 0)
+		{
+			fired.push_back(bullets.back());
+			fired.back()->getTransform()->position = XMFLOAT3(0.0, 0.0, 0.0);
+			bullets.pop_back();
+		}
+	}*/
 
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
@@ -81,6 +97,10 @@ void TestState::Update(float dt) {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Update(dt);
 	}
+
+	/*for(auto it = fired.begin(); it != fired.end(); ++it){
+		(*it)->Update(dt);
+	}*/
 
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		(*it)->Update(dt);
@@ -105,6 +125,10 @@ void TestState::Draw() {
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		(*it)->Draw( );
 	}
+
+	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
+		(*it)->Draw();
+	}*/
 
 	if( spacer != 0 )
 		spacer->Draw( );
