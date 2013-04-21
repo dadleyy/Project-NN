@@ -24,10 +24,11 @@ void AIComponent::SetTarget(GameObject* t) {
 
 void AIComponent::SetState(int s){ state = state; }
 
-void AIComponent::Init(GameObject* go)
+bool AIComponent::Init(GameObject* go)
 {
 	objPhysics = go->GetComponent<PhysicsComponent>( );
 	objTransform = go->GetComponent<Transform>( );
+	return objTransform != nullptr && objPhysics != nullptr;
 }
 
 void AIComponent::Update( float dt )

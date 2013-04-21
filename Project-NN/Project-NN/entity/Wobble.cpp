@@ -11,7 +11,7 @@ using namespace std;
 #include "Transform.h"
 
 
-void Wobble::Init(GameObject* go) {
+bool Wobble::Init(GameObject* go) {
 	transform = go->GetComponent<Transform>();
 	if(transform == nullptr) {
 		cerr << "ERROR: Transform not found!" << endl;

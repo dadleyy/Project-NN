@@ -16,7 +16,7 @@ extern int screenHeight;
  */
 class PlayerControls : public Component {
 public:
-	void Init(GameObject* go);
+	bool Init(GameObject* go);
 	void Update(float dt);
 
 	float relMouseX;

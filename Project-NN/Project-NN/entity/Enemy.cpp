@@ -7,11 +7,11 @@
 #include "..\ResourceManager.h"
 
 
-Enemy::Enemy(ID3D11Device* device, ID3D11DeviceContext* immediateContext, GameObject* initialTarget, XMFLOAT3 initialPosition )
+Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 {
 	
 	transform = new Transform();
-	drawable = new Drawable(device, immediateContext);
+	drawable = new Drawable();
 	ai = new AIComponent( );	
 	physics = new PhysicsComponent( 
 		resourceMgr->camera.GetLook(), 

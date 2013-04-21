@@ -8,7 +8,7 @@ class Transform;
 class Collider : public Component {
 public:
 	Collider();
-	void Init(GameObject* go);
+	bool Init(GameObject* go);
 	void Update(float dt);
 
 	virtual bool IsColliding(GameObject* other);

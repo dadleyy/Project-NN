@@ -7,13 +7,9 @@
 
 Drawable::Drawable(void)
 {
-}
-
-Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : world()
-{
 	numVerts = 0;
-	pD3DDevice = device;
-	deviceContext = immediateContext;
+	pD3DDevice = resourceMgr->pD3DDevice;
+	deviceContext = resourceMgr->md3dImmediateContext;
 	pVertexBuffer = 0;
 	pVertexLayout = 0;
 	vertexStride = 0;
@@ -24,15 +20,11 @@ Drawable::Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext) 
 
 Drawable::~Drawable(void)
 {
-	delete transform;	
 }
 
-void Drawable::Init(GameObject* go) {
+bool Drawable::Init(GameObject* go) {
 	transform = go->GetComponent<Transform>();
-	//TODO: Check to make sure that transform is not null.
-	if(transform == nullptr) {
-		exit(1);
-	}
+	return transform != nullptr;
 }
 
 XMFLOAT3* Drawable::getVerts(float radius, int divisions)

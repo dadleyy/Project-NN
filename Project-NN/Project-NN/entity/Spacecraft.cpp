@@ -8,10 +8,10 @@
 #include "..\ResourceManager.h"
 
 
-Spacecraft::Spacecraft(ID3D11Device* device, ID3D11DeviceContext* immediateContext, float xPos, float yPos, float zPos)
+Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
 	transform = new Transform();
-    drawable = new Drawable(device, immediateContext);
+    drawable = new Drawable();
 	transform->position = XMFLOAT3(xPos, yPos, zPos); 
     drawable->getEffectVariables("betterPhong", "Render");
     drawable->createBuffer("cool");

@@ -1,5 +1,7 @@
 #include "entity/GameObject.h"
 
+#include <iostream>
+
 #include "Component.h"
 #include "Transform.h"
 #include "Collider.h"
@@ -7,7 +9,11 @@
 
 void GameObject::InitComponents() {
 	for(auto it = components.begin(); it != components.end(); ++it) {
-		(*it)->Init(this);
+		bool successful = (*it)->Init(this);
+		if(!successful) {
+			std::cerr << "A component could not initialize properly! (" << (*it) << ")" << std::endl;
+			exit(1);
+		}
 		//TODO: Refactor
 		auto asTransform = dynamic_cast<Transform*>(*it);
 		transform = asTransform == nullptr ? transform : asTransform;

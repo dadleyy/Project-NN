@@ -11,7 +11,7 @@ public:
 	 * If a component has no component dependencies and does not need any special initialization,
 	 * it doesn't need to override this.
 	 */
-	virtual void Init(GameObject* go);
+	virtual bool Init(GameObject* go);
 
 	/**
 	 * Called every frame.

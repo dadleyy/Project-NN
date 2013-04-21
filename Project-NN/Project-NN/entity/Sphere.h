@@ -6,7 +6,7 @@
 class Sphere : public Drawable
 {
 public:
-	Sphere(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
+	Sphere();
 	~Sphere();
 
 	virtual void createBuffer();

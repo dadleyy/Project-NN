@@ -1,7 +1,8 @@
 #include "Component.h"
 #include "GameObject.h"
 
-void Component::Init(GameObject* go) {
+bool Component::Init(GameObject* go) {
+	return true;
 }
 
 void Component::Update(float dt) {

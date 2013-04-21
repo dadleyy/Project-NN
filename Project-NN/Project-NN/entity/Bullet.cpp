@@ -10,9 +10,9 @@ using namespace std;
 #include "Collider.h"
 
 
-Bullet::Bullet(ID3D11Device* device, ID3D11DeviceContext* immediateContext, float xPos, float yPos, float zPos) {
+Bullet::Bullet(float xPos, float yPos, float zPos) {
 	transform = new Transform();
-	sphere = new Drawable(device, immediateContext);
+	sphere = new Drawable();
 	print = new PrintUponCollision();
 	//collider = new Collider();
 

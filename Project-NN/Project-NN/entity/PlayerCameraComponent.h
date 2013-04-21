@@ -13,7 +13,7 @@ class PlayerCameraComponent :
 public:
 	PlayerCameraComponent(Camera* cam);
 	~PlayerCameraComponent(void);
-	void Init( GameObject* go );
+	bool Init( GameObject* go );
 	void Update(float dt);
 	void smoothFollow(float dt);
 

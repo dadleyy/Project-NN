@@ -26,23 +26,19 @@ void TestState::Init(StateManager* manager) {
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	spacer = new Spacecraft(resourceMgr->pD3DDevice, resourceMgr->md3dImmediateContext, 0.0, 0.0, 0.0);
+	spacer = new Spacecraft(0.0, 0.0, 0.0);
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
 	for(int i = 0; i < 33; i++) {
-		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
-		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
+		asteroids.push_back(new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
 	for (int i = 0; i < 100; i++) {
-		bullets.push_back(new Bullet(manager->GetDevice(), manager->GetContext(),
-		                               -10.0, -10.0, -10.0));
+		bullets.push_back(new Bullet(-10.0, -10.0, -10.0));
 	}
 	for(int i = 0; i < 1; i++){
 		enemies.push_back(new Enemy( 
-			manager->GetDevice(), 
-			manager->GetContext(),
 			spacer,
 			XMFLOAT3(0,0,0)
 		));

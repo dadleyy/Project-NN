@@ -126,7 +126,7 @@ void Game::OnResize() {
 	resourceMgr->textures["Pass1"] = targetTextureResourceView1;
 	resourceMgr->textures["Pass2"] = targetTextureResourceView2;	
 
-	finalDraw = new Drawable(md3dDevice, md3dImmediateContext);
+	finalDraw = new Drawable();
 	finalDraw->getEffectVariables("genericPost", "Render");
 	finalDraw->createBuffer("rectangle");
 	finalDraw->addTexture("Original", "tex");

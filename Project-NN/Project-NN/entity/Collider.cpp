@@ -10,10 +10,10 @@
 Collider::Collider() {
 }
 
-void Collider::Init(GameObject* go) {
-	//TODO: Error checking
+bool Collider::Init(GameObject* go) {
 	transform = go->GetComponent<Transform>();
 	physicsMgr->AddObject(go);
+	return transform != nullptr;
 }
 
 void Collider::Update(float dt) {

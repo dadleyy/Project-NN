@@ -12,9 +12,10 @@ using namespace std;
 #define CAMERA_VELOCITY 3.0
 
 
-void PlayerControls::Init(GameObject* go) {
+bool PlayerControls::Init(GameObject* go) {
 	physics = go->GetComponent<PhysicsComponent>();
 	fired = false;
+	return physics != nullptr;
 }
 
 void PlayerControls::Update(float dt) {

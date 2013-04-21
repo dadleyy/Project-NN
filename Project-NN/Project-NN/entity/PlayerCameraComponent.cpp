@@ -25,12 +25,15 @@ PlayerCameraComponent::~PlayerCameraComponent(void)
 {
 }
 
-void PlayerCameraComponent::Init(GameObject* go)
+bool PlayerCameraComponent::Init(GameObject* go)
 {
 	object = go;
 	objectTransform = object->GetComponent<Transform>();
 	objectPhysics = object->GetComponent<PhysicsComponent>();
 	objectControls = object->GetComponent<PlayerControls>();
+	return objectPhysics != nullptr
+		&& objectTransform != nullptr
+		&& objectControls != nullptr;
 }
 
 void PlayerCameraComponent::Update(float dt) 

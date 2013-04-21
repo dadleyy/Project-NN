@@ -47,10 +47,10 @@ void PhysicsComponent::setAxis( XMFLOAT3 f, XMFLOAT3 u, XMFLOAT3 s ) {
 	sideAxis = s;
 }
 
-void PhysicsComponent::Init(GameObject* go) {
+bool PhysicsComponent::Init(GameObject* go) {
 	object = go;
 	transform = object->GetComponent<Transform>();
-	control = object->GetComponent<PlayerControls>();
+	return transform != nullptr;
 }
 
 void PhysicsComponent::Update(float dt) {

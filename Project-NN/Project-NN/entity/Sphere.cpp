@@ -3,7 +3,7 @@
 #include "ResourceManager.h"
 
 
-Sphere::Sphere(ID3D11Device* device, ID3D11DeviceContext* immediateContext) : Drawable(device, immediateContext)
+Sphere::Sphere() : Drawable()
 {
 }
 
@@ -60,8 +60,8 @@ XMFLOAT3* Sphere::getVerts(float radius, int divisions)
         divisions = 6;
     }
 	
-	float trigDelta = (360.0/divisions) * (3.1415926536/180);
-	numVerts = divisions*ceil(divisions/2.0)*6;
+	float trigDelta = (360.0f/divisions) * (3.1415926536f/180);
+	numVerts = (int)(divisions*ceil(divisions/2.0)*6);
 	XMFLOAT3* verts = new XMFLOAT3[numVerts];
 	int counter = 0;
 	for(int k = 0; k < divisions; k++)
@@ -71,10 +71,10 @@ XMFLOAT3* Sphere::getVerts(float radius, int divisions)
 			float angle1 = trigDelta * k;
 			float angle2 = trigDelta * i;
 
-			float X1 = radius*sin(angle2)*cos(angle1) - .5;
-			float X2 = radius*cos(angle1+trigDelta)*sin(angle2)- .5;
-			float X3 = radius*sin(angle2+trigDelta)*cos(angle1)- .5;
-			float X4 = radius*cos(angle1+trigDelta)*sin(angle2+trigDelta)- .5;
+			float X1 = radius*sin(angle2)*cos(angle1) - .5f;
+			float X2 = radius*cos(angle1+trigDelta)*sin(angle2)- .5f;
+			float X3 = radius*sin(angle2+trigDelta)*cos(angle1)- .5f;
+			float X4 = radius*cos(angle1+trigDelta)*sin(angle2+trigDelta)- .5f;
 
 			float Y1 = radius*sin(angle1)*sin(angle2);
 			float Y2 = radius*sin(angle2+trigDelta)*sin(angle1);

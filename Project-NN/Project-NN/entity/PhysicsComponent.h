@@ -18,7 +18,7 @@ public:
 				XMFLOAT3 acceleration, float angularVelocity, float angularAcceleration);
 	~PhysicsComponent(void);
 
-	void Init( GameObject* go );
+	bool Init( GameObject* go );
 	void Update(float dt);
 	void Impulse( XMFLOAT3 vector, float magnitude );
 
@@ -39,7 +39,6 @@ public:
 
 	GameObject* object;
 	Transform* transform;
-	PlayerControls* control;
 
 	const float MIN_DAMP;
 

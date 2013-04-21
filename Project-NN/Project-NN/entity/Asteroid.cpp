@@ -11,10 +11,10 @@ using namespace std;
 #include "Collider.h"
 
 
-Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, float xPos, float yPos, float zPos) {
+Asteroid::Asteroid(float xPos, float yPos, float zPos) {
 	transform = new Transform();
 	wobble = new Wobble();
-	sphere = new Drawable(device, immediateContext);
+	sphere = new Drawable();
 	print = new PrintUponCollision();
 	collider = new Collider();
 

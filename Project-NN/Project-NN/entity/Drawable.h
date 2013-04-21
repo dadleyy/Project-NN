@@ -17,10 +17,9 @@ class Drawable : public Component
 public:
 	Drawable(void);
 	~Drawable(void);
-	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
 	void destroy(); //releases all buffers and deletes all pointers. Call before deleting this object.
 
-	void Init(GameObject* go);
+	bool Init(GameObject* go);
 
 	void draw();	
 	virtual void createBuffer(); 

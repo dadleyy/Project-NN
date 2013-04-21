@@ -19,7 +19,7 @@ class AIComponent : public Component {
 
 public:
 	AIComponent( );
-	void Init(GameObject* go);
+	bool Init(GameObject* go);
 	void Update( float dt );
 
 	void SetTarget(GameObject* t);
