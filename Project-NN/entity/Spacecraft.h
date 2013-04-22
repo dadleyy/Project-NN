@@ -20,6 +20,7 @@ public:
 private:
 	Transform* transform;
     Drawable* drawable;
+	Collider* collider;
 	PlayerCameraComponent* playerCamera;
 	PlayerControls* playerControls;
 	PhysicsComponent* physics;

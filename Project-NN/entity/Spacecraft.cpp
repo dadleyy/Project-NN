@@ -2,16 +2,18 @@
 
 #include "Transform.h"
 #include "Drawable.h"
+#include "Collider.h"
 #include "PlayerControls.h"
 #include "PhysicsComponent.h"
 #include "PlayerCameraComponent.h"
-#include "..\ResourceManager.h"
+#include "ResourceManager.h"
 
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
 	transform = new Transform();
     drawable = new Drawable();
+	collider = new Collider();
 	transform->position = XMFLOAT3(xPos, yPos, zPos); 
     drawable->getEffectVariables("betterPhong", "Render");
     drawable->createBuffer("cool");
@@ -22,6 +24,7 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 
     components.push_back(transform);
     components.push_back(drawable);
+    components.push_back(collider);
 	components.push_back(physics);
 	components.push_back(playerCamera);
     components.push_back(playerControls);
@@ -42,7 +45,10 @@ void Spacecraft::Draw()
 Spacecraft::~Spacecraft(void)
 {
     drawable->destroy();
-    delete drawable;
-    delete playerControls;
 	delete transform;
+    delete drawable;
+	delete collider;
+	delete playerCamera;
+    delete playerControls;
+	delete physics;
 }

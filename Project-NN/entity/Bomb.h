@@ -2,6 +2,11 @@
 
 #include "GameObject.h"
 
+class Transform;
+class Drawable;
+class Collider;
+class ExplodeOnContact;
+
 class Bomb : public GameObject {
 public:
 	Bomb(float xPos, float yPos, float zPos);
@@ -11,4 +16,6 @@ public:
 private:
 	Transform* transform;
 	Drawable* drawable;
+	Collider* collider;
+	ExplodeOnContact* explodeOnContact;
 };
