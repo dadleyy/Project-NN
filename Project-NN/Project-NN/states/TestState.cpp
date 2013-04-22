@@ -2,6 +2,7 @@
 
 #include "StateManager.h"
 #include "entity/Drawable.h"
+#include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
 #include "entity/Enemy.h"
 #include "entity/Spacecraft.h"
@@ -26,12 +27,19 @@ void TestState::Init(StateManager* manager) {
 
 	spacer = new Spacecraft(resourceMgr->pD3DDevice, resourceMgr->md3dImmediateContext, 0.0, 0.0, 0.0);
 
+	asteroidDraw = new DrawableInstancedModel();
+	asteroidDraw->getEffectVariables("instancedPhong", "Render");
+	asteroidDraw->createBuffer("Sphere");
+	asteroidDraw->addTexture("Test", "diffuseMap");
+
 	uniform_real_distribution<float> distribution(-10, 10);
 
-	for(int i = 0; i < 33; i++) {
+	for(int i = 0; i < 1000; i++) {
 		asteroids.push_back(new Asteroid(manager->GetDevice(), manager->GetContext(),
 		                                 distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
+
+	
 
 	for(int i = 0; i < 1; i++){
 		enemies.push_back(new Enemy( 
@@ -78,7 +86,7 @@ void TestState::Update(float dt) {
 
 	resourceMgr->camera.UpdateViewMatrix();
 
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+	for(std::vector<Asteroid*>::iterator it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->Update(dt);
 	}
 
@@ -98,9 +106,12 @@ void TestState::Update(float dt) {
 }
 
 void TestState::Draw() {
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
-		(*it)->Draw();
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) 
+	{
+		(*it)->fillInstanceData(asteroidDraw->instances);
 	}
+	asteroidDraw->setEffectTextures();
+	asteroidDraw->drawInstanced(asteroids.size());
 
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		(*it)->Draw( );

@@ -10,8 +10,8 @@
 Enemy::Enemy(ID3D11Device* device, ID3D11DeviceContext* immediateContext, GameObject* initialTarget, XMFLOAT3 initialPosition )
 {
 	
-	transform = new Transform();
-	drawable = new Drawable(device, immediateContext);
+	transform = new Transform( );
+	drawable = new Drawable( );
 	ai = new AIComponent( );	
 	physics = new PhysicsComponent( 
 		resourceMgr->camera.GetLook(), 
@@ -50,7 +50,6 @@ void Enemy::Draw()
 
 Enemy::~Enemy(void)
 {
-	drawable->destroy();
 	delete drawable;
 	delete transform;
 	delete ai;

@@ -8,6 +8,7 @@ class StateManager;
 class Asteroid;
 class Spacecraft;
 class Enemy;
+class DrawableInstancedModel;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -35,6 +36,8 @@ private:
 	std::vector<Asteroid*> asteroids;
 	std::vector<Enemy*> enemies;
 	Spacecraft* spacer;
+
+	DrawableInstancedModel* asteroidDraw;
 
 	bool mouseDown;
 

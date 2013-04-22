@@ -115,7 +115,7 @@ bool Game::Init() {
 	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass1", targetTextureResourceView1));
 	resourceMgr->textures.insert(make_pair<char*, ID3D11ShaderResourceView*>("Pass2", targetTextureResourceView2));	
 
-	finalDraw = new Drawable(md3dDevice, md3dImmediateContext);
+	finalDraw = new Drawable();
 	finalDraw->getEffectVariables("genericPost", "Render");
 	finalDraw->createBuffer("rectangle");
 	finalDraw->addTexture("Original", "tex");
@@ -138,7 +138,7 @@ void Game::OnResize() {
 
 void Game::UpdateScene(float dt) {
 	//TODO: Commented because of performance issues.
-	physicsMgr->CheckForCollisions();
+	//physicsMgr->CheckForCollisions();
 	manager.Update(dt);
 }
 
@@ -153,9 +153,10 @@ void Game::DrawScene()
 	md3dImmediateContext->ClearRenderTargetView(originalView, reinterpret_cast<const float*>(&Colors::Black));
 	manager.Draw();
 	
-
 	//post Processing
 	//*******************
+
+
 
 
 	//*******************
@@ -164,6 +165,9 @@ void Game::DrawScene()
 	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, 0);
 	finalDraw->setEffectTextures();
 	finalDraw->draw();
+
+	ID3D11ShaderResourceView* k[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+	md3dImmediateContext->PSSetShaderResources(0, 16, k);
 
 	HR(mSwapChain->Present(0, 0));
 }
@@ -223,6 +227,7 @@ void addResources() {
 
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
 

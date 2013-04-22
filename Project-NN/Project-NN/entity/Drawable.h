@@ -18,16 +18,12 @@ public:
 	Drawable(void);
 	~Drawable(void);
 	Drawable(ID3D11Device* device, ID3D11DeviceContext* immediateContext);
-	void destroy(); //releases all buffers and deletes all pointers. Call before deleting this object.
 
 	void Init(GameObject* go);
 
 	void draw();	
-	virtual void createBuffer(); 
 	virtual void createBuffer(char* mesh);
 	virtual void addTexture(char* id, char* textureVariable);
-	virtual XMFLOAT3* getVerts(float radius, int divisions);
-	virtual UINT* getIndicies();
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
 	virtual void setEffectVariables();
 	virtual void setEffectTextures();
@@ -57,10 +53,6 @@ protected:
 	int numVerts;
 	int numIndicies;
 
-
-	//Microsofts method that compiles shaders from inside a file
-	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );
-  
     // world matrix
     XMFLOAT4X4 world;
 	Transform* transform;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <Windows.h>
+#include <xnamath.h>
 
 class Component;
 class Drawable;

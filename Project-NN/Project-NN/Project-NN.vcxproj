@@ -78,6 +78,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
+    <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="res\post processes\Contrast.cpp" />
     <ClCompile Include="entity\AIComponent.cpp" />
     <ClCompile Include="entity\Asteroid.cpp" />
@@ -92,7 +94,6 @@
     <ClCompile Include="entity\PlayerControls.cpp" />
     <ClCompile Include="entity\PrintUponCollision.cpp" />
     <ClCompile Include="entity\Spacecraft.cpp" />
-    <ClCompile Include="entity\Sphere.cpp" />
     <ClCompile Include="entity\Transform.cpp" />
     <ClCompile Include="entity\Wobble.cpp" />
     <ClCompile Include="framework\Camera.cpp" />
@@ -119,6 +120,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
+    <ClInclude Include="OctTree.h" />
     <ClInclude Include="res\post processes\Contrast.h" />
     <ClInclude Include="entity\AIComponent.h" />
     <ClInclude Include="entity\Asteroid.h" />
@@ -133,7 +136,6 @@
     <ClInclude Include="entity\PlayerControls.h" />
     <ClInclude Include="entity\PrintUponCollision.h" />
     <ClInclude Include="entity\Spacecraft.h" />
-    <ClInclude Include="entity\Sphere.h" />
     <ClInclude Include="entity\Transform.h" />
     <ClInclude Include="entity\Wobble.h" />
     <ClInclude Include="framework\Camera.h" />

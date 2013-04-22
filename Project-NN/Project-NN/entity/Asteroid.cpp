@@ -14,7 +14,7 @@ using namespace std;
 Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, float xPos, float yPos, float zPos) {
 	transform = new Transform();
 	wobble = new Wobble();
-	sphere = new Drawable(device, immediateContext);
+	sphere = new Drawable();
 	print = new PrintUponCollision();
 	collider = new Collider();
 
@@ -37,8 +37,24 @@ Asteroid::Asteroid(ID3D11Device* device, ID3D11DeviceContext* immediateContext, 
 	GameObject::InitComponents();
 }
 
+void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
+{
+	//translate, rotate, and scale matrix
+	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
+	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
+	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
+	XMMATRIX w = scale * rotation * translate;
+
+	XMFLOAT4X4 stupid;
+	XMFLOAT4X4 pieceOfshit;
+	XMStoreFloat4x4(&stupid, w);
+	XMStoreFloat4x4(&pieceOfshit, rotation);
+
+	data->push_back(stupid); 
+	data->push_back(pieceOfshit);
+}
+
 Asteroid::~Asteroid() {
-	sphere->destroy();
 	delete transform;
 	delete sphere;
 	delete collider;

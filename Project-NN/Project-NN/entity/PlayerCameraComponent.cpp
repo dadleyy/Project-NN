@@ -59,8 +59,8 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	XMFLOAT3 offset( objectControls->relMouseX, objectControls->relMouseY, 0.0 );
 	offset = offset;
 
-	XMFLOAT3 sideChange = scale(objectPhysics->sideAxis, 5*sign(offset.x)*pow(2*offset.x/screenWidth, 2));
-	XMFLOAT3 upChange = scale(objectPhysics->upAxis,     4*sign(offset.y)*pow(2*offset.y/screenHeight, 2));
+	XMFLOAT3 sideChange = scale(objectPhysics->sideAxis, -2.5*sign(offset.x)*pow(2*offset.x/screenWidth, 2));
+	XMFLOAT3 upChange = scale(objectPhysics->upAxis,     2*sign(offset.y)*pow(2*offset.y/screenHeight, 2));
 
 	pos.x += sideChange.x + upChange.x;
 	pos.y += sideChange.y + upChange.y;

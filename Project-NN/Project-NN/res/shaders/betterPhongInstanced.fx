@@ -14,13 +14,6 @@ struct Light
 	float2	Lpad;
 };
 
-
-cbuffer perObject
-{
-	float4x4 worldMatrix;
-	float4x4 normalTransform;
-};
-
 cbuffer CameraBuffer
 {
 	float4x4 viewMatrix;
@@ -52,6 +45,8 @@ struct VERTEX
 	float4 Pos : POSITION;    
 	float3 Norm : NORMAL;
 	float2 UV: TEXCOORD;
+	float4x4 worldMatrix : WORLD;
+	float4x4 normalMatrix : WORLDNORMAL;
 };
 
 struct PIXEL
@@ -175,15 +170,15 @@ PIXEL VS( VERTEX input )
 {
     PIXEL output = (PIXEL)0;
 
-	float4 i = mul(worldMatrix, input.Pos);
+	float4 i = mul(input.worldMatrix, input.Pos);
 	float4 worldPos = i;
-	i =		   mul(viewMatrix, i);
-	i =        mul(fovScaling, i);
+	i  =  mul(viewMatrix, i);
+	i  =  mul(fovScaling, i);
 
 	output.Pos = i;
 	output.Col = 1;
 	output.worldPosition = worldPos.xyz;
-	output.worldNormal   = mul(normalTransform, float4(input.Norm, 1.0)).xyz;
+	output.worldNormal   = mul(input.normalMatrix, float4(input.Norm, 1.0)).xyz;
 
 	output.UV = input.UV;
 
