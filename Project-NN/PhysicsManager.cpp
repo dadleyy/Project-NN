@@ -30,3 +30,11 @@ void PhysicsManager::CheckForCollisions() {
 		}
 	}
 }
+
+std::vector<GameObject*>::iterator PhysicsManager::Begin() {
+	return objects.begin();
+}
+
+std::vector<GameObject*>::iterator PhysicsManager::End() {
+	return objects.end();
+}
