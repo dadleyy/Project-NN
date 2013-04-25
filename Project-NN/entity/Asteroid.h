@@ -15,10 +15,8 @@ class Asteroid : public GameObject {
 public:
 	Asteroid(float xPos, float yPos, float zPos);
 	virtual ~Asteroid();
-	void Draw();
 	void fillInstanceData(vector<XMFLOAT4X4>* data);
 private:
-	Drawable* sphere;
 	Wobble* wobble;
 	Collider* collider;
 	PrintUponCollision* print;

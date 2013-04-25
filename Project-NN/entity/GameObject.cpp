@@ -28,6 +28,9 @@ void GameObject::Update(float dt) {
 	}
 }
 
+void GameObject::Draw() {
+}
+
 void GameObject::HandleCollision(GameObject* other) {
 	for(auto it = components.begin(); it != components.end(); ++it) {
 		(*it)->HandleCollision(other);

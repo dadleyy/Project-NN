@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <random>
+#include <unordered_set>
 
 #define CAMERA_VELOCITY 3.0
 
@@ -23,35 +24,39 @@ using namespace std;
 
 TestState TestState::instance;
 
+extern std::unordered_set<GameObject*> sceneObjects;
+
 void TestState::Init(StateManager* manager) {
 	GameState::Init(manager);
 
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	spacer = new Spacecraft(0.0, 0.0, 0.0);
+	sceneObjects.insert(new Spacecraft(0.0, 0.0, 0.0));
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("instancedPhong", "Render");
 	asteroidDraw->createBuffer("Sphere");
 	asteroidDraw->addTexture("Test", "diffuseMap");
 
-	uniform_real_distribution<float> distribution(-10, 10);
+	uniform_real_distribution<float> distribution(-100, 100);
 
-	for(int i = 0; i < 10; i++) {
-		asteroids.push_back(new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
+	for(int i = 0; i < 200; i++) {
+		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine));
+		sceneObjects.insert(asteroid);
+		asteroids.push_back(asteroid);
 	}
-
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
 	for(int i = 0; i < 20; i++) {
-		bombs.push_back(new Bomb(
+		sceneObjects.insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine)));
 	}
 
+	/*
 	for (int i = 0; i < 100; i++) {
 		bullets.push_back(new Bullet(-10.0, -10.0, -10.0));
 	}
@@ -62,8 +67,10 @@ void TestState::Init(StateManager* manager) {
 			XMFLOAT3(0,0,0)
 		));
 	}
-
+	*/
 	skybox = new Skybox();
+	sceneObjects.insert(skybox);
+
 
 	resourceMgr->md3dImmediateContext->RSSetState(0);
 
@@ -71,16 +78,9 @@ void TestState::Init(StateManager* manager) {
 }
 
 void TestState::Cleanup() {
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 		delete *it;
 	}
-	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		delete *it;
-	}
-	for(auto it = bullets.begin(); it != bullets.end(); ++it){
-		delete *it;
-	}
-	delete spacer;
 }
 
 
@@ -113,25 +113,9 @@ void TestState::Update(float dt) {
 
 	resourceMgr->camera.UpdateViewMatrix();
 
-	for(std::vector<Asteroid*>::iterator it = asteroids.begin(); it != asteroids.end(); ++it) {
+	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 		(*it)->Update(dt);
 	}
-
-	for(auto it = bombs.begin(); it != bombs.end(); ++it) {
-		(*it)->Update(dt);
-	}
-
-	/*for(auto it = fired.begin(); it != fired.end(); ++it){
-		(*it)->Update(dt);
-	}*/
-
-	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		(*it)->Update(dt);
-	}
-
-
-	if( spacer != 0 )
-		spacer->Update(dt);
 
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
 
@@ -143,29 +127,15 @@ void TestState::Update(float dt) {
 }
 
 void TestState::Draw() {
-	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) 
-	{
+	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		(*it)->fillInstanceData(asteroidDraw->instances);
 	}
 	asteroidDraw->setEffectTextures();
 	asteroidDraw->drawInstanced(asteroids.size());
 
-	for(auto it = bombs.begin(); it != bombs.end(); ++it) {
+	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
 		(*it)->Draw();
 	}
-
-	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		(*it)->Draw();
-	}
-
-	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
-		(*it)->Draw();
-	}*/
-
-	if( spacer != 0 )
-		spacer->Draw();
-
-	skybox->Draw();
 }
 
 

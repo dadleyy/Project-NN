@@ -38,14 +38,10 @@ private:
 
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
-	std::vector<Enemy*> enemies;
-	std::vector<Bomb*> bombs;
-	std::vector<Bullet*> bullets;
-	std::vector<Bullet*> fired;
-	Spacecraft* spacer;
-	Skybox* skybox;
 
 	DrawableInstancedModel* asteroidDraw;
+
+	Skybox* skybox;
 
 	bool mouseDown;
 

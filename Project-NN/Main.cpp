@@ -3,6 +3,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <iostream>
+#include <unordered_set>
 
 #include "framework/d3dApp.h"
 
@@ -16,6 +17,7 @@
 ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
 Input* input;
+std::unordered_set<GameObject*> sceneObjects;
 
 int screenWidth;
 int screenHeight;
@@ -142,7 +144,7 @@ void Game::OnResize() {
 
 void Game::UpdateScene(float dt) {
 	//TODO: Commented because of performance issues.
-	//physicsMgr->CheckForCollisions();
+	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
 }
 
