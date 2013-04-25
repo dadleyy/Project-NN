@@ -12,6 +12,7 @@ class Enemy;
 class DrawableInstancedModel;
 class Bomb;
 class Bullet;
+class Skybox;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -42,6 +43,7 @@ private:
 	std::vector<Bullet*> bullets;
 	std::vector<Bullet*> fired;
 	Spacecraft* spacer;
+	Skybox* skybox;
 
 	DrawableInstancedModel* asteroidDraw;
 

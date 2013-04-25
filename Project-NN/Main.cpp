@@ -222,6 +222,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
+	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
 
 	//meshes
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
@@ -235,11 +236,12 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
+	resourceMgr->addEffect(L"res/shaders/skyboxShader.fx", "skyShader" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
 	resourceMgr->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
-	resourceMgr->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
+	resourceMgr->addLight(30, 10, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 0, 1, 1, NONE, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
 }
 

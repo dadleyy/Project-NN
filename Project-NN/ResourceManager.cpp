@@ -45,6 +45,21 @@ void ResourceManager::addTexture(WCHAR* file, char* name) {
 	}
 }
 
+void ResourceManager::addCubeMap(WCHAR* file, char* name) 
+{
+	HRESULT hr;
+	ID3D11ShaderResourceView* view;
+
+	D3DX11_IMAGE_LOAD_INFO loadInfo;
+	loadInfo.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	hr = D3DX11CreateShaderResourceViewFromFile(pD3DDevice, file, &loadInfo, 0, &view, 0 );
+
+	if(hr == S_OK) {
+		textures.insert(std::make_pair<char*, ID3D11ShaderResourceView*>(name, view));
+	}
+}
+
 bool ResourceManager::addMesh(char* objFile, char* name) {
 	HRESULT hr;
 

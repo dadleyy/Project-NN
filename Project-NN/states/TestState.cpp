@@ -12,6 +12,7 @@
 #include "input.h"
 #include "entity/PlayerControls.h"
 #include "entity/Transform.h"
+#include "entity/Skybox.h"
 
 #include <iostream>
 #include <random>
@@ -37,7 +38,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> distribution(-10, 10);
 
-	for(int i = 0; i < 1000; i++) {
+	for(int i = 0; i < 10; i++) {
 		asteroids.push_back(new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine)));
 	}
 
@@ -61,6 +62,10 @@ void TestState::Init(StateManager* manager) {
 			XMFLOAT3(0,0,0)
 		));
 	}
+
+	skybox = new Skybox();
+
+	resourceMgr->md3dImmediateContext->RSSetState(0);
 
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
@@ -128,6 +133,8 @@ void TestState::Update(float dt) {
 	if( spacer != 0 )
 		spacer->Update(dt);
 
+	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
+
 	resourceMgr->updateShaderBuffers();
 
 	//lastmouseposition[0] = currentmouseposition[0];
@@ -157,6 +164,8 @@ void TestState::Draw() {
 
 	if( spacer != 0 )
 		spacer->Draw();
+
+	skybox->Draw();
 }
 
 

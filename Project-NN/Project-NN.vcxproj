@@ -118,6 +118,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="entity\Skybox.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
@@ -163,6 +164,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="entity\Skybox.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="states\TestState.h" />
   </ItemGroup>

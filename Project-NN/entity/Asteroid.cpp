@@ -45,13 +45,13 @@ void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
 	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
 	XMMATRIX w = scale * rotation * translate;
 
-	XMFLOAT4X4 stupid;
-	XMFLOAT4X4 pieceOfshit;
-	XMStoreFloat4x4(&stupid, w);
-	XMStoreFloat4x4(&pieceOfshit, rotation);
+	XMFLOAT4X4 world;
+	XMFLOAT4X4 normalWorld;
+	XMStoreFloat4x4(&world, w);
+	XMStoreFloat4x4(&normalWorld, rotation);
 
-	data->push_back(stupid); 
-	data->push_back(pieceOfshit);
+	data->push_back(world); 
+	data->push_back(normalWorld);
 }
 
 Asteroid::~Asteroid() {
