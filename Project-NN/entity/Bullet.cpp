@@ -5,6 +5,7 @@ using namespace std;
 
 #include "ResourceManager.h"
 #include "Drawable.h"
+#include "BulletFiring.h"
 #include "Transform.h"
 #include "PrintUponCollision.h"
 #include "Collider.h"

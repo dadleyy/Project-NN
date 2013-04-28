@@ -78,11 +78,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="BulletFiring.cpp" />
-=======
+    <ClCompile Include="entity\BulletFiring.cpp" />
     <ClCompile Include="entity\DivideOnContact.cpp" />
->>>>>>> 48d7ca35c3fe04628cb439286fce3a319352d417
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="entity\Health.cpp" />
     <ClCompile Include="OctTree.cpp" />
@@ -131,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="entity\BulletFiring.h" />
     <ClInclude Include="entity\DivideOnContact.h" />
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
     <ClInclude Include="entity\Health.h" />

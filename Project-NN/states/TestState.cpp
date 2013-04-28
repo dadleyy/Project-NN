@@ -94,7 +94,7 @@ void TestState::Update(float dt) {
 	//int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
 	//int dy = input->getMouseY() - ( screenHeight * 0.5 );
 	//resourceMgr->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
-	if (spacer->getPlayerControls()->getFired())
+	/*if (spacer->getPlayerControls()->getFired())
 	{
 		if(bullets.size() > 0)
 		{
@@ -105,7 +105,7 @@ void TestState::Update(float dt) {
 			spacer->getPlayerControls()->setFired(false);
 			spacer->getPlayerControls()->setFireDelay(1.0);
 		}
-	}
+	}*/
 
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
@@ -121,21 +121,18 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
-<<<<<<< HEAD
-	for(auto it = fired.begin(); it != fired.end(); ++it){
+	/*for(auto it = fired.begin(); it != fired.end(); ++it){
 		(*it)->Update(dt);
 	}
 
 	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
 		(*it)->Update(dt);
-	}
+	}*/
 
 
-	if( spacer != 0 )
-		spacer->Update(dt);
-=======
+	/*if( spacer != 0 )
+		spacer->Update(dt);*/
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
->>>>>>> 48d7ca35c3fe04628cb439286fce3a319352d417
 
 	resourceMgr->updateShaderBuffers();
 
@@ -158,16 +155,14 @@ void TestState::Draw() {
 			continue;
 		(*it)->Draw();
 	}
-<<<<<<< HEAD
 
-	for(auto it = fired.begin(); it != fired.end(); ++it) {
+	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
 		(*it)->Draw();
 	}
 
 	if( spacer != 0 )
 		spacer->Draw();
-=======
->>>>>>> 48d7ca35c3fe04628cb439286fce3a319352d417
+	*/
 }
 
 

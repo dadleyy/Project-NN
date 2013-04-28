@@ -5,6 +5,7 @@
 class Collider;
 class Drawable;
 class PrintUponCollision;
+class BulletFiring;
 class Transform;
 
 class Bullet : public GameObject {
@@ -28,4 +29,5 @@ private:
 	XMFLOAT3 forward;
 	PrintUponCollision* print;
 	Transform* transform;
+	BulletFiring* fireBullet;
 };
