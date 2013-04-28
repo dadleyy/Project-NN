@@ -14,7 +14,6 @@ using namespace std;
 
 Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* asteroids) {
 	transform = new Transform();
-	wobble = new Wobble();
 	collider = new Collider();
 	divide = new DivideOnContact(3);
 
@@ -30,7 +29,6 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
 	components.push_back(divide);
-	components.push_back(wobble);
 	components.push_back(collider);
 	components.push_back(transform);
 	GameObject::InitComponents();
@@ -64,7 +62,6 @@ GameObject* Asteroid::Clone() {
 Asteroid::~Asteroid() {
 	delete transform;
 	delete collider;
-	delete wobble;
 	delete divide;
 	asteroids->erase(std::remove(asteroids->begin(), asteroids->end(), this));
 }
