@@ -34,9 +34,10 @@ void TestState::Init(StateManager* manager) {
 	sceneMgr->Insert(new Spacecraft(0.0, 0.0, 0.0));
 
 	asteroidDraw = new DrawableInstancedModel();
-	asteroidDraw->getEffectVariables("instancedPhong", "Render");
-	asteroidDraw->createBuffer("Sphere");
-	asteroidDraw->addTexture("Test", "diffuseMap");
+	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
+	asteroidDraw->createBuffer("Asteroid");
+	asteroidDraw->addTexture("asteroid", "diffuseMap");
+	asteroidDraw->addTexture("asteroidBump", "bumpMap");
 
 	uniform_real_distribution<float> distribution(-100, 100);
 
