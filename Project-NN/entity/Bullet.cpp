@@ -5,22 +5,25 @@ using namespace std;
 
 #include "ResourceManager.h"
 #include "Drawable.h"
+#include "BulletFiring.h"
 #include "Transform.h"
 #include "PrintUponCollision.h"
 #include "Collider.h"
 
 
-Bullet::Bullet(float xPos, float yPos, float zPos) {
+Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	transform = new Transform();
 	sphere = new Drawable();
 	print = new PrintUponCollision();
+	fireBullet = new BulletFiring();
+	forward = gForward;
 	//collider = new Collider();
 
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
 	transform->rotation = XMFLOAT4(0.707f, 0, 0, 0.707f);
 	
 	uniform_real_distribution<float> distribution(0.5f, 3.0f);
-	float scale = distribution(resourceMgr->randomEngine);
+	float scale = 0.25;
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
     sphere->getEffectVariables("betterPhong", "Render");
@@ -29,6 +32,7 @@ Bullet::Bullet(float xPos, float yPos, float zPos) {
 
 	components.push_back(sphere);
 	components.push_back(print);
+	components.push_back(fireBullet);
 	//components.push_back(collider);
 	components.push_back(transform);
 	GameObject::InitComponents();
@@ -37,6 +41,7 @@ Bullet::Bullet(float xPos, float yPos, float zPos) {
 Bullet::~Bullet() {
 	delete transform;
 	delete sphere;
+	delete fireBullet;
 	delete collider;
 	delete print;
 }

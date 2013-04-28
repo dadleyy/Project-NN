@@ -17,8 +17,11 @@ public:
 	PlayerControls* getPlayerControls(){
 		return playerControls;
 	}
+	PhysicsComponent* getPhysics(){
+		return physics;
+	}
 private:
-	Transform* transform;
+	//Transform* transform;
     Drawable* drawable;
 	Collider* collider;
 	PlayerCameraComponent* playerCamera;

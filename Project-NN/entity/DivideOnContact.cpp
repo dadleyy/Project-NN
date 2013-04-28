@@ -26,15 +26,15 @@ void DivideOnContact::HandleCollision(GameObject* other) {
 		auto obj2 = go->Clone();
 		auto obj3 = go->Clone();
 
-		obj1->GetComponent<DivideOnContact>()->divisionsRemaining -= 1;
-		obj2->GetComponent<DivideOnContact>()->divisionsRemaining -= 1;
-		obj3->GetComponent<DivideOnContact>()->divisionsRemaining -= 1;
+		obj1->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
+		obj2->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
+		obj3->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
 
-		obj1->transform->position.x += 50;
+		obj1->transform->position.x += 5;
 		obj1->transform->scale = scale(obj1->transform->scale, 0.7f);
-		obj2->transform->position.x -= 50;
+		obj2->transform->position.x -= 5;
 		obj2->transform->scale = scale(obj2->transform->scale, 0.7f);
-		obj3->transform->position.y -= 50;
+		obj3->transform->position.y -= 5;
 		obj3->transform->scale = scale(obj3->transform->scale, 0.7f);
 
 		sceneMgr->Insert(obj1);

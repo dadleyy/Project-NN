@@ -16,19 +16,24 @@ bool PlayerControls::Init(GameObject* go) {
 	physics = go->GetComponent<PhysicsComponent>();
 	fired = false;
 	return physics != nullptr;
+	fireDelay = 0.0;
 }
 
 void PlayerControls::Update(float dt) {
-	fired = false;
+	//fired = false;
 
-	if( input->getLMouseButton() && !input->getRMouseButton()) {
+	if(fireDelay > 0)
+	{
+		fireDelay -= dt;
+	}
+	else if( input->getLMouseButton() && !input->getRMouseButton()) {
 		//float rotAngle = -(1 * dt);
 		//resourceMgr->camera.RotateY(rotAngle);
 		fired = true;
-	} else if(!input->getLMouseButton() && input->getRMouseButton()) {
+	}/* else if(!input->getLMouseButton() && input->getRMouseButton()) {
 		//float rotAngle = (1 * dt);
 		//resourceMgr->camera.RotateY(rotAngle);
-	}
+	}*/
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();
 	relMouseY = screenHeight/2.0 - input->getMouseY();
