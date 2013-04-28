@@ -15,6 +15,7 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	transform = new Transform();
 	sphere = new Drawable();
 	print = new PrintUponCollision();
+	fireBullet = new BulletFiring();
 	forward = gForward;
 	//collider = new Collider();
 
@@ -31,6 +32,7 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 
 	components.push_back(sphere);
 	components.push_back(print);
+	components.push_back(fireBullet);
 	//components.push_back(collider);
 	components.push_back(transform);
 	GameObject::InitComponents();
@@ -39,6 +41,7 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 Bullet::~Bullet() {
 	delete transform;
 	delete sphere;
+	delete fireBullet;
 	delete collider;
 	delete print;
 }
