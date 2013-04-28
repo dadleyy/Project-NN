@@ -144,6 +144,9 @@
     <ClCompile Include="entity\ExplodeOnContact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BulletFiring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework\Camera.h">

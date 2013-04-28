@@ -78,6 +78,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BulletFiring.cpp" />
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="entity\Bomb.cpp" />
