@@ -7,12 +7,13 @@ class Transform;
 
 class Collider : public Component {
 public:
-	Collider();
+	~Collider();
 	bool Init(GameObject* go);
 	void Update(float dt);
 
 	virtual bool IsColliding(GameObject* other);
 
 private:
+	GameObject* go;
 	Transform* transform;
 };

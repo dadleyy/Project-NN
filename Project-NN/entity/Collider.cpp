@@ -7,10 +7,13 @@
 #include "Transform.h"
 #include "PhysicsManager.h"
 
-Collider::Collider() {
+
+Collider::~Collider() {
+	physicsMgr->RemoveObject(go);
 }
 
 bool Collider::Init(GameObject* go) {
+	this->go = go;
 	transform = go->GetComponent<Transform>();
 	physicsMgr->AddObject(go);
 	return transform != nullptr;

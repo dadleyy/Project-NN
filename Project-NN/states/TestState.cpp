@@ -1,5 +1,9 @@
 #include "TestState.h"
 
+#include <iostream>
+#include <random>
+#include <unordered_set>
+
 #include "StateManager.h"
 #include "entity/Drawable.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
@@ -9,22 +13,17 @@
 #include "entity/Bullet.h"
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
 #include "input.h"
 #include "entity/PlayerControls.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
 
-#include <iostream>
-#include <random>
-#include <unordered_set>
-
-#define CAMERA_VELOCITY 3.0
 
 using namespace std;
 
 TestState TestState::instance;
 
-extern std::unordered_set<GameObject*> sceneObjects;
 
 void TestState::Init(StateManager* manager) {
 	GameState::Init(manager);
@@ -32,7 +31,7 @@ void TestState::Init(StateManager* manager) {
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	sceneObjects.insert(new Spacecraft(0.0, 0.0, 0.0));
+	sceneMgr->Insert(new Spacecraft(0.0, 0.0, 0.0));
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("instancedPhong", "Render");
@@ -42,15 +41,15 @@ void TestState::Init(StateManager* manager) {
 	uniform_real_distribution<float> distribution(-100, 100);
 
 	for(int i = 0; i < 200; i++) {
-		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine));
-		sceneObjects.insert(asteroid);
+		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
+		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
 	}
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
 	for(int i = 0; i < 20; i++) {
-		sceneObjects.insert(new Bomb(
+		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine)));
@@ -69,7 +68,7 @@ void TestState::Init(StateManager* manager) {
 	}
 	*/
 	skybox = new Skybox();
-	sceneObjects.insert(skybox);
+	sceneMgr->Insert(skybox);
 
 
 	resourceMgr->md3dImmediateContext->RSSetState(0);
@@ -78,7 +77,7 @@ void TestState::Init(StateManager* manager) {
 }
 
 void TestState::Cleanup() {
-	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
 		delete *it;
 	}
 }
@@ -113,7 +112,9 @@ void TestState::Update(float dt) {
 
 	resourceMgr->camera.UpdateViewMatrix();
 
-	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
+		if(!(*it)->active)
+			continue;
 		(*it)->Update(dt);
 	}
 
@@ -128,12 +129,16 @@ void TestState::Update(float dt) {
 
 void TestState::Draw() {
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
+		if(!(*it)->active)
+			continue;
 		(*it)->fillInstanceData(asteroidDraw->instances);
 	}
 	asteroidDraw->setEffectTextures();
 	asteroidDraw->drawInstanced(asteroids.size());
 
-	for(auto it = sceneObjects.begin(); it != sceneObjects.end(); ++it) {
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
+		if(!(*it)->active)
+			continue;
 		(*it)->Draw();
 	}
 }
