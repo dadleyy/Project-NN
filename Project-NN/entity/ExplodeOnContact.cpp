@@ -4,8 +4,7 @@
 #include <unordered_set>
 
 #include "GameObject.h"
-
-extern std::unordered_set<GameObject*> sceneObjects;
+#include "SceneManager.h"
 
 ExplodeOnContact::ExplodeOnContact(float power) {
 	this->power = power;
@@ -18,5 +17,5 @@ bool ExplodeOnContact::Init(GameObject* go) {
 
 void ExplodeOnContact::HandleCollision(GameObject* other) {
 	//TODO: Explode
-	sceneObjects.erase(go);
+	sceneMgr->Remove(go);
 }

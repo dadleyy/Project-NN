@@ -1,24 +1,26 @@
 #pragma once
 
+#include <vector>
 #include "GameObject.h"
 
-using std::vector;
 
 class Collider;
 class Drawable;
-class PrintUponCollision;
+class DivideOnContact;
 class Transform;
 class Wobble;
 
 
 class Asteroid : public GameObject {
 public:
-	Asteroid(float xPos, float yPos, float zPos);
+	Asteroid(float xPos, float yPos, float zPos, std::vector<Asteroid*>* asteroids);
 	virtual ~Asteroid();
-	void fillInstanceData(vector<XMFLOAT4X4>* data);
+	GameObject* Clone();
+	void fillInstanceData(std::vector<XMFLOAT4X4>* data);
 private:
 	Wobble* wobble;
 	Collider* collider;
-	PrintUponCollision* print;
+	DivideOnContact* divide;
 	Transform* transform;
+	std::vector<Asteroid*>* asteroids;
 };

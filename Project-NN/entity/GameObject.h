@@ -22,6 +22,9 @@ public:
 		return nullptr;
 	}
 
+	GameObject();
+	virtual ~GameObject();
+	virtual GameObject* Clone();
 	void Update(float dt);
 	void HandleCollision(GameObject* other);
 
@@ -30,6 +33,7 @@ public:
 
 	Transform* transform;
 	Collider* collider;
+	bool active;
 
 protected:
 	std::vector<Component*> components;

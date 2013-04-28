@@ -11,13 +11,14 @@
 #include "states/TestState.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
+#include "SceneManager.h"
 #include "input.h"
 #include "entity\Drawable.h"
 
 ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
 Input* input;
-std::unordered_set<GameObject*> sceneObjects;
+SceneManager* sceneMgr;
 
 int screenWidth;
 int screenHeight;
@@ -109,6 +110,7 @@ bool Game::Init() {
 	addResources();
 	
 	physicsMgr = new PhysicsManager();
+	sceneMgr = new SceneManager();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
@@ -146,6 +148,7 @@ void Game::UpdateScene(float dt) {
 	//TODO: Commented because of performance issues.
 	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
+	sceneMgr->Process();
 }
 
 void Game::DrawScene() 

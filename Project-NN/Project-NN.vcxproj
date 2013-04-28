@@ -78,7 +78,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="entity\DivideOnContact.cpp" />
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
+    <ClCompile Include="entity\Health.cpp" />
     <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="entity\Bomb.cpp" />
     <ClCompile Include="entity\Bullet.cpp" />
@@ -119,12 +121,15 @@
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="entity\Skybox.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="entity\DivideOnContact.h" />
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
+    <ClInclude Include="entity\Health.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="entity\Bomb.h" />
     <ClInclude Include="entity\Bullet.h" />
@@ -165,6 +170,7 @@
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="entity\Skybox.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="states\TestState.h" />
   </ItemGroup>

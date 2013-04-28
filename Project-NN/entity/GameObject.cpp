@@ -1,11 +1,18 @@
 #include "entity/GameObject.h"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "Component.h"
 #include "Transform.h"
 #include "Collider.h"
 
+
+GameObject::GameObject() : active(false) {
+}
+
+GameObject::~GameObject() {
+}
 
 void GameObject::InitComponents() {
 	for(auto it = components.begin(); it != components.end(); ++it) {
@@ -35,4 +42,10 @@ void GameObject::HandleCollision(GameObject* other) {
 	for(auto it = components.begin(); it != components.end(); ++it) {
 		(*it)->HandleCollision(other);
 	}
+}
+
+GameObject* GameObject::Clone() {
+	//If a subclass doesn't override this, it shouldn't be able to clone itself.
+	throw std::runtime_error("GameObject::Clone must be overridden if you want to clone!");
+	return nullptr;
 }
