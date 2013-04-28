@@ -4,10 +4,10 @@
 #include <Windows.h>
 #include <xnamath.h>
 
-#define PI		 3.1415926535899
-#define PI2		 6.2831853071796
-#define RADDEG	  .0174562925199
-#define DEGRAD	57.2957795130823
+#define PI		 3.1415926535899f
+#define PI2		 6.2831853071796f
+#define RADDEG	  .0174562925199f
+#define DEGRAD	57.2957795130823f
 
 //***************************************
 //Commonly used linear constructs

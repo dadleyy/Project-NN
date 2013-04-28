@@ -15,7 +15,6 @@ void SceneManager::Remove(GameObject* go) {
 void SceneManager::Process() {
 	while(!inserted.empty()) {
 		sceneObjects.insert(inserted.front());
-		inserted.front()->active = true;
 		inserted.pop();
 	}
 	while(!deleted.empty()) {

@@ -4,6 +4,7 @@
 #include "Collider.h"
 #include "Drawable.h"
 #include "ExplodeOnContact.h"
+#include "Wobble.h"
 
 Bomb::Bomb(float xPos, float yPos, float zPos) {
 	transform = new Transform();
@@ -21,6 +22,7 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 	components.push_back(drawable);
 	components.push_back(explodeOnContact);
 	components.push_back(collider);
+	components.push_back(new Wobble());
 	GameObject::InitComponents();
 }
 

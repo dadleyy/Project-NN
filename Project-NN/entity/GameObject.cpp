@@ -8,7 +8,7 @@
 #include "Collider.h"
 
 
-GameObject::GameObject() : active(false) {
+GameObject::GameObject() : active(true) {
 }
 
 GameObject::~GameObject() {

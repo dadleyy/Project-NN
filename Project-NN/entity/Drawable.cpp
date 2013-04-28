@@ -87,8 +87,6 @@ void Drawable::createBuffer(char* mesh)
 {
 	HRESULT hr;
 
-    cout << "creating buffer for: " << mesh << endl;
-
 	//VERTEX BUFFER
 	//describe the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] = { 
