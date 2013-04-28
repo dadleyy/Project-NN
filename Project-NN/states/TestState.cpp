@@ -57,7 +57,7 @@ void TestState::Init(StateManager* manager) {
 
 	/*
 	for (int i = 0; i < 100; i++) {
-		bullets.push_back(new Bullet(-10.0, -10.0, -10.0));
+		bullets.push_back(new Bullet(-10.0, -10.0, -10.0, new XMFLOAT3(0,0,0)));
 	}
 
 	for(int i = 0; i < 1; i++){
@@ -99,8 +99,11 @@ void TestState::Update(float dt) {
 		if(bullets.size() > 0)
 		{
 			fired.push_back(bullets.back());
-			fired.back()->getTransform()->position = XMFLOAT3(0.0, 0.0, 0.0);
+			fired.back()->getTransform()->position = spacer->transform->position;
+			fired.back()->setForward(spacer->getPhysics()->forwardAxis);
 			bullets.pop_back();
+			spacer->getPlayerControls()->setFired(false);
+			spacer->getPlayerControls()->setFireDelay(1.0);
 		}
 	}*/
 
@@ -118,6 +121,17 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
+	/*for(auto it = fired.begin(); it != fired.end(); ++it){
+		(*it)->Update(dt);
+	}
+
+	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
+		(*it)->Update(dt);
+	}*/
+
+
+	/*if( spacer != 0 )
+		spacer->Update(dt);*/
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
 
 	resourceMgr->updateShaderBuffers();
@@ -141,6 +155,14 @@ void TestState::Draw() {
 			continue;
 		(*it)->Draw();
 	}
+
+	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
+		(*it)->Draw();
+	}
+
+	if( spacer != 0 )
+		spacer->Draw();
+	*/
 }
 
 

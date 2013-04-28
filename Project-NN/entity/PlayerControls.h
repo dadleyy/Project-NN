@@ -22,12 +22,21 @@ public:
 	float relMouseX;
 	float relMouseY;
 
+	void setFireDelay(float gDelay)
+	{
+		fireDelay = gDelay;
+	}
 	bool getFired(){
 		return fired;
+	}
+
+	void setFired(bool gFired){
+		fired = gFired;
 	}
 
 private:
 	PhysicsComponent* physics;
 	bool fired;
 	void handleKey( int keycode, float dt );
+	float fireDelay;
 };
