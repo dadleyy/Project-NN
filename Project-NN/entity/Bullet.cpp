@@ -43,16 +43,6 @@ Bullet::~Bullet() {
 	delete print;
 }
 
-void Bullet::Update(float dt){
-	transform->position = XMFLOAT3( transform->position.x + (SPEED*forward.x)*dt,
-	                     transform->position.y + (SPEED*forward.y)*dt,
-	                     transform->position.z + (SPEED*forward.z)*dt);
-	for(auto it = components.begin(); it != components.end(); ++it) {
-		(*it)->Update(dt);
-	}
-}
-
-
 void Bullet::Draw() {
 	sphere->setEffectVariables();
 	sphere->setEffectTextures();
