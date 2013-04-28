@@ -8,7 +8,6 @@ class Collider;
 class Drawable;
 class DivideOnContact;
 class Transform;
-class Wobble;
 
 
 class Asteroid : public GameObject {
@@ -18,7 +17,6 @@ public:
 	GameObject* Clone();
 	void fillInstanceData(std::vector<XMFLOAT4X4>* data);
 private:
-	Wobble* wobble;
 	Collider* collider;
 	DivideOnContact* divide;
 	Transform* transform;
