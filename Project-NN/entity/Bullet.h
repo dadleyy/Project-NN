@@ -21,6 +21,9 @@ public:
 	{
 		forward = gForward;
 	}
+	int getSpeed(){
+		return SPEED;
+	}
 	void Update(float dt);
 private:
 	Drawable* sphere;

@@ -12,8 +12,9 @@ BulletFiring::~BulletFiring() {
 	physicsMgr->RemoveObject(go);
 }
 
-bool BulletFiring::Init(GameObject* go, XMFLOAT3* forward) {
+bool BulletFiring::Init(GameObject* go, XMFLOAT3* forward, int speed) {
 	this->go = go;
+	this->speed = speed;
 	this->forward = forward;
 	transform = go->GetComponent<Transform>();
 	physicsMgr->AddObject(go);
@@ -21,4 +22,7 @@ bool BulletFiring::Init(GameObject* go, XMFLOAT3* forward) {
 }
 
 void BulletFiring::Update(float dt) {
+	transform->position = XMFLOAT3(transform->position.x + (speed*forward->x)*dt,
+	                     transform->position.y + (speed*forward->y)*dt,
+	                     transform->position.z + (speed*forward->z)*dt);
 }
