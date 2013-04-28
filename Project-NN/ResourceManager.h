@@ -51,6 +51,7 @@ public:
 
 	void addEffect(WCHAR* file, char* name);
 	void addTexture(WCHAR* file, char* name);
+	void addCubeMap(WCHAR* file, char* name);
 	bool addMesh(char* objFile, char* name);
 	void addCBuffer(unsigned int byteWidth, char* name);
 	void addCamera( );

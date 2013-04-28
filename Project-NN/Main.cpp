@@ -3,6 +3,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <iostream>
+#include <unordered_set>
 
 #include "framework/d3dApp.h"
 
@@ -10,12 +11,14 @@
 #include "states/TestState.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
+#include "SceneManager.h"
 #include "input.h"
 #include "entity\Drawable.h"
 
 ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
 Input* input;
+SceneManager* sceneMgr;
 
 int screenWidth;
 int screenHeight;
@@ -107,6 +110,7 @@ bool Game::Init() {
 	addResources();
 	
 	physicsMgr = new PhysicsManager();
+	sceneMgr = new SceneManager();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
@@ -142,8 +146,9 @@ void Game::OnResize() {
 
 void Game::UpdateScene(float dt) {
 	//TODO: Commented because of performance issues.
-	//physicsMgr->CheckForCollisions();
+	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
+	sceneMgr->Process();
 }
 
 void Game::DrawScene() 
@@ -222,6 +227,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
+	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
 
 	//meshes
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
@@ -235,11 +241,12 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
+	resourceMgr->addEffect(L"res/shaders/skyboxShader.fx", "skyShader" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
 	resourceMgr->addLight(0, 1,  0, 1, 1, 0, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
-	resourceMgr->addLight(-4, 0, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 15, 1, 1, LINEAR, 1, POINT_LIGHT);
+	resourceMgr->addLight(30, 10, 3.5, .6, .4, .2, 1.0,  0, 0, 0, 0, 1, 1, NONE, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
 }
 

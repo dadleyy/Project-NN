@@ -12,6 +12,7 @@ class Enemy;
 class DrawableInstancedModel;
 class Bomb;
 class Bullet;
+class Skybox;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -37,13 +38,10 @@ private:
 
 	static TestState instance;
 	std::vector<Asteroid*> asteroids;
-	std::vector<Enemy*> enemies;
-	std::vector<Bomb*> bombs;
-	std::vector<Bullet*> bullets;
-	std::vector<Bullet*> fired;
-	Spacecraft* spacer;
 
 	DrawableInstancedModel* asteroidDraw;
+
+	Skybox* skybox;
 
 	bool mouseDown;
 

@@ -22,11 +22,18 @@ public:
 		return nullptr;
 	}
 
+	GameObject();
+	virtual ~GameObject();
+	virtual GameObject* Clone();
 	void Update(float dt);
 	void HandleCollision(GameObject* other);
 
+	//If a game object isn't drawn, it doesn't need to override this.
+	virtual void Draw();
+
 	Transform* transform;
 	Collider* collider;
+	bool active;
 
 protected:
 	std::vector<Component*> components;

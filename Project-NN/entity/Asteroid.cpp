@@ -1,5 +1,6 @@
 #include "Asteroid.h"
 
+#include <algorithm>
 #include <random>
 using namespace std;
 
@@ -7,30 +8,28 @@ using namespace std;
 #include "Drawable.h"
 #include "Wobble.h"
 #include "Transform.h"
-#include "PrintUponCollision.h"
+#include "DivideOnContact.h"
 #include "Collider.h"
 
 
-Asteroid::Asteroid(float xPos, float yPos, float zPos) {
+Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* asteroids) {
 	transform = new Transform();
 	wobble = new Wobble();
-	sphere = new Drawable();
-	print = new PrintUponCollision();
 	collider = new Collider();
+	divide = new DivideOnContact(3);
+
+	this->asteroids = asteroids;
 
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
+	//TODO: set randomly
 	transform->rotation = XMFLOAT4(0.707f, 0, 0, 0.707f);
 	
-	uniform_real_distribution<float> distribution(0.5f, 3.0f);
+	//TODO: accept as a parameter
+	uniform_real_distribution<float> distribution(1.0f, 13.0f);
 	float scale = distribution(resourceMgr->randomEngine);
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
-    sphere->getEffectVariables("betterPhong", "Render");
-	sphere->createBuffer("Sphere");
-	sphere->addTexture("Test", "diffuseMap");
-
-	components.push_back(sphere);
-	components.push_back(print);
+	components.push_back(divide);
 	components.push_back(wobble);
 	components.push_back(collider);
 	components.push_back(transform);
@@ -45,25 +44,27 @@ void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
 	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
 	XMMATRIX w = scale * rotation * translate;
 
-	XMFLOAT4X4 stupid;
-	XMFLOAT4X4 pieceOfshit;
-	XMStoreFloat4x4(&stupid, w);
-	XMStoreFloat4x4(&pieceOfshit, rotation);
+	XMFLOAT4X4 world;
+	XMFLOAT4X4 normalWorld;
+	XMStoreFloat4x4(&world, w);
+	XMStoreFloat4x4(&normalWorld, rotation);
 
-	data->push_back(stupid); 
-	data->push_back(pieceOfshit);
+	data->push_back(world); 
+	data->push_back(normalWorld);
+}
+
+GameObject* Asteroid::Clone() {
+	auto asteroid = new Asteroid(transform->position.x, transform->position.y, transform->position.z, asteroids);
+	asteroid->transform->rotation = transform->rotation;
+	asteroid->transform->scale = transform->scale;
+	asteroids->push_back(asteroid);
+	return asteroid;
 }
 
 Asteroid::~Asteroid() {
 	delete transform;
-	delete sphere;
 	delete collider;
 	delete wobble;
-	delete print;
-}
-
-void Asteroid::Draw() {
-	sphere->setEffectVariables();
-	sphere->setEffectTextures();
-	sphere->draw();
+	delete divide;
+	asteroids->erase(std::remove(asteroids->begin(), asteroids->end(), this));
 }

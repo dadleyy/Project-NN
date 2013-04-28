@@ -19,9 +19,11 @@ void PhysicsManager::RemoveObject(GameObject* go) {
 
 void PhysicsManager::CheckForCollisions() {
 	for(auto it = objects.begin(); it != objects.end(); ++it) {
+		if(!(*it)->active)
+			continue;
 		auto collider1 = (*it)->collider;
 		for(auto otherIt = it; otherIt != objects.end(); ++otherIt) {
-			if(it == otherIt)
+			if(it == otherIt || !(*otherIt)->active)
 				continue;
 			if(collider1->IsColliding(*otherIt)) {
 				(*it)->HandleCollision(*otherIt);
@@ -29,4 +31,12 @@ void PhysicsManager::CheckForCollisions() {
 			}
 		}
 	}
+}
+
+std::vector<GameObject*>::iterator PhysicsManager::Begin() {
+	return objects.begin();
+}
+
+std::vector<GameObject*>::iterator PhysicsManager::End() {
+	return objects.end();
 }
