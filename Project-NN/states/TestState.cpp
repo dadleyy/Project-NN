@@ -41,7 +41,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> distribution(-100, 100);
 
-	for(int i = 0; i < 200; i++) {
+	for(int i = 0; i < 1; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);

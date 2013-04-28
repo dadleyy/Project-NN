@@ -6,8 +6,8 @@
 void normalize(XMFLOAT3* v);
 XMFLOAT3 norm( XMFLOAT3 v );
 
-void damp(float* s, float damp, float minDamp);
-void damp(XMFLOAT3* v, float damp, float minDamp);
+void damp(float* s, float damp, float minDamp, float dt);
+void damp(XMFLOAT3* v, float damp, float minDamp, float dt);
 float magnitude(XMFLOAT3 v );
 
 PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAxis,
@@ -55,9 +55,9 @@ bool PhysicsComponent::Init(GameObject* go) {
 
 void PhysicsComponent::Update(float dt) {
 	//artificially dampen the acceleration
-	damp(&acceleration, accelerationDamp, MIN_DAMP);
+	damp(&acceleration, accelerationDamp, MIN_DAMP, dt);
 	//artificially dampen the speed
-	damp(&speed, velocityDamp, MIN_DAMP);
+	damp(&speed, velocityDamp, MIN_DAMP, dt);
 
 	
 	if( magnitude( acceleration ) > MAX_ACCEL ){
@@ -113,14 +113,18 @@ void PhysicsComponent::Update(float dt) {
 	transform->position = position;
 }
 
-void damp(XMFLOAT3* v, float damp, float minDamp) {
-	v->x = v->x*damp; if(abs(v->x) < minDamp) v->x = 0;
-	v->y = v->y*damp; if(abs(v->y) < minDamp) v->y = 0;
-	v->z = v->z*damp; if(abs(v->z) < minDamp) v->z = 0;
+void damp(XMFLOAT3* v, float damp, float minDamp, float dt) 
+{
+	float dampFrame = 1-damp*dt;
+	v->x = v->x*dampFrame; if(abs(v->x) < minDamp) v->x = 0;
+	v->y = v->y*dampFrame; if(abs(v->y) < minDamp) v->y = 0;
+	v->z = v->z*dampFrame; if(abs(v->z) < minDamp) v->z = 0;
 }
 
-void damp(float* s, float damp, float minDamp) {
-	(*s) = (*s)*damp; if((*s) < minDamp) (*s) = 0;
+void damp(float* s, float damp, float minDamp, float dt) 
+{
+	float dampFrame = 1-damp*dt;
+	(*s) = (*s)*dampFrame; if((*s) < minDamp) (*s) = 0;
 }
 
 float magnitude( XMFLOAT3 v ) {

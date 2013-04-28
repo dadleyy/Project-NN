@@ -30,8 +30,8 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	components.push_back(playerCamera);
     components.push_back(playerControls);
 
-	physics->setLinVDamp( .98 );
-	physics->setLinADamp( .9975 );
+	physics->setLinVDamp( .90 );
+	physics->setLinADamp( .90 );
 
 	GameObject::InitComponents();
 }
