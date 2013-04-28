@@ -39,9 +39,9 @@ void TestState::Init(StateManager* manager) {
 	asteroidDraw->addTexture("asteroid", "diffuseMap");
 	asteroidDraw->addTexture("asteroidBump", "bumpMap");
 
-	uniform_real_distribution<float> distribution(-100, 100);
+	uniform_real_distribution<float> distribution(-10, -9);
 
-	for(int i = 0; i < 200; i++) {
+	for(int i = 0; i < 1; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
@@ -56,24 +56,10 @@ void TestState::Init(StateManager* manager) {
 			bombDistribution(resourceMgr->randomEngine)));
 	}
 
-	/*
-	for (int i = 0; i < 100; i++) {
-		bullets.push_back(new Bullet(-10.0, -10.0, -10.0, new XMFLOAT3(0,0,0)));
-	}
-
-	for(int i = 0; i < 1; i++){
-		enemies.push_back(new Enemy( 
-			spacer,
-			XMFLOAT3(0,0,0)
-		));
-	}
-	*/
 	skybox = new Skybox();
 	sceneMgr->Insert(skybox);
 
-
 	resourceMgr->md3dImmediateContext->RSSetState(0);
-
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 
@@ -81,38 +67,14 @@ void TestState::Cleanup() {
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
 		delete *it;
 	}
+	delete asteroidDraw;
 }
 
 
 void TestState::Update(float dt) {
-	//spacer->Update(dt);
-
-	//int dx = currentmouseposition[0] - ( screenWidth * 0.5 );
-
-	//int dx = input->getMouseX() - ( screenWidth * 0.5 );
-	//resourceMgr->camera.RotateY( (dx / ( screenWidth * 0.5 )) * dt );
-
-	//int dy = currentmouseposition[1] - ( screenHeight * 0.5 );
-	//int dy = input->getMouseY() - ( screenHeight * 0.5 );
-	//resourceMgr->camera.Pitch( (dy / ( screenHeight * 0.5 )) * dt);
-	/*if (spacer->getPlayerControls()->getFired())
-	{
-		if(bullets.size() > 0)
-		{
-			fired.push_back(bullets.back());
-			fired.back()->getTransform()->position = spacer->transform->position;
-			fired.back()->setForward(spacer->getPhysics()->forwardAxis);
-			bullets.pop_back();
-			spacer->getPlayerControls()->setFired(false);
-			spacer->getPlayerControls()->setFireDelay(1.0);
-		}
-	}*/
-
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 up     = XMFLOAT3(0.0f, 1.0f, 0.0f);
-
-	//resourceMgr->camera.LookAt(pos, target, up);
 
 	resourceMgr->camera.UpdateViewMatrix();
 
@@ -136,10 +98,6 @@ void TestState::Update(float dt) {
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
 
 	resourceMgr->updateShaderBuffers();
-
-	//lastmouseposition[0] = currentmouseposition[0];
-	//lastmouseposition[1] = currentmouseposition[1];
-
 }
 
 void TestState::Draw() {

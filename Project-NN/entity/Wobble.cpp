@@ -23,5 +23,5 @@ bool Wobble::Init(GameObject* go) {
 void Wobble::Update(float dt) {
 	totalTime += dt;
 	//TODO: We should accept the wobble amount and the speed as parameters.
-	transform->position = XMFLOAT3(basePosition.x, basePosition.y + (sin(totalTime / 1.5f) * 0.4f), basePosition.z);
+	transform->position = XMFLOAT3(basePosition.x, basePosition.y + (sin(totalTime) * 4.0f), basePosition.z);
 }

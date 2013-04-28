@@ -54,7 +54,6 @@ void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
 GameObject* Asteroid::Clone() {
 	auto asteroid = new Asteroid(transform->position.x, transform->position.y, transform->position.z, asteroids);
 	asteroid->transform->rotation = transform->rotation;
-	asteroid->transform->scale = transform->scale;
 	asteroids->push_back(asteroid);
 	return asteroid;
 }
@@ -63,5 +62,5 @@ Asteroid::~Asteroid() {
 	delete transform;
 	delete collider;
 	delete divide;
-	asteroids->erase(std::remove(asteroids->begin(), asteroids->end(), this));
+	asteroids->erase(std::remove(asteroids->begin(), asteroids->end(), this), asteroids->end());
 }
