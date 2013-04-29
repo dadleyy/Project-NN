@@ -39,9 +39,9 @@ void TestState::Init(StateManager* manager) {
 	asteroidDraw->addTexture("asteroid", "diffuseMap");
 	asteroidDraw->addTexture("asteroidBump", "bumpMap");
 
-	uniform_real_distribution<float> distribution(-10, -9);
+	uniform_real_distribution<float> distribution(-50, 50);
 
-	for(int i = 0; i < 1; i++) {
+	for(int i = 0; i < 50; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
@@ -49,7 +49,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 0; i++) {
+	for(int i = 0; i < 5; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
