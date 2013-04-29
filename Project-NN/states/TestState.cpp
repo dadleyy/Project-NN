@@ -49,7 +49,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 0; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
@@ -101,13 +101,17 @@ void TestState::Update(float dt) {
 }
 
 void TestState::Draw() {
+	int activeAsteroids = 0;
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		if(!(*it)->active)
 			continue;
+		activeAsteroids++;
 		(*it)->fillInstanceData(asteroidDraw->instances);
 	}
-	asteroidDraw->setEffectTextures();
-	asteroidDraw->drawInstanced(asteroids.size());
+	if(activeAsteroids > 0) {
+		asteroidDraw->setEffectTextures();
+		asteroidDraw->drawInstanced(activeAsteroids);
+	}
 
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
 		if(!(*it)->active)

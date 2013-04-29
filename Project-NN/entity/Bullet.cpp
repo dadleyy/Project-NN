@@ -38,14 +38,6 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	GameObject::InitComponents();
 }
 
-Bullet::~Bullet() {
-	delete transform;
-	delete sphere;
-	delete fireBullet;
-	delete collider;
-	delete print;
-}
-
 void Bullet::Draw() {
 	sphere->setEffectVariables();
 	sphere->setEffectTextures();

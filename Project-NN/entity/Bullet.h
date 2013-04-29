@@ -11,7 +11,6 @@ class Transform;
 class Bullet : public GameObject {
 public:
 	Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward);
-	virtual ~Bullet();
 	void Draw();
 
 	Transform* getTransform(){

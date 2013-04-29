@@ -4,6 +4,7 @@ class GameObject;
 
 class Component {
 public:
+	virtual ~Component();
 	/**
 	 * Use this method to make sure the GameObject has the right
 	 * components. This method will be called after all components have been constructed.

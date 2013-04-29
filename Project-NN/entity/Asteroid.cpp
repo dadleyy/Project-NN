@@ -59,8 +59,5 @@ GameObject* Asteroid::Clone() {
 }
 
 Asteroid::~Asteroid() {
-	delete transform;
-	delete collider;
-	delete divide;
 	asteroids->erase(std::remove(asteroids->begin(), asteroids->end(), this), asteroids->end());
 }

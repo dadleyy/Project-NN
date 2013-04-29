@@ -26,13 +26,6 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 	GameObject::InitComponents();
 }
 
-Bomb::~Bomb() {
-	delete transform;
-	delete drawable;
-	delete collider;
-	delete explodeOnContact;
-}
-
 void Bomb::Draw() {
 	drawable->setEffectVariables();
 	drawable->setEffectTextures();
