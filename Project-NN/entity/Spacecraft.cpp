@@ -18,7 +18,7 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	transform->position = XMFLOAT3(xPos, yPos, zPos); 
     drawable->getEffectVariables("betterPhong", "Render");
     drawable->createBuffer("cool");
-	drawable->addTexture("Test2", "diffuseMap");
+	drawable->addTexture("shipTexture", "diffuseMap");
 	physics = new PhysicsComponent(resourceMgr->camera.GetLook(), resourceMgr->camera.GetRight(), resourceMgr->camera.GetUp(), 0, 10, 15, XMFLOAT3(0, 0,0), XMFLOAT3(0,0,0), XMFLOAT3(0,0,0), 0, 0);
 	playerControls = new PlayerControls();
 	playerCamera = new PlayerCameraComponent(&resourceMgr->camera);
@@ -30,8 +30,8 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	components.push_back(playerCamera);
     components.push_back(playerControls);
 
-	physics->setLinVDamp( .90 );
-	physics->setLinADamp( .90 );
+	physics->setLinVDamp( .95 );
+	physics->setLinADamp( .95 );
 
 	GameObject::InitComponents();
 }

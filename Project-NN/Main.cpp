@@ -127,8 +127,12 @@ void Game::OnResize() {
 		return;
 
 	resourceMgr->textures["Original"] = originalImageResourceView;
-	resourceMgr->textures["Pass1"] = targetTextureResourceView1;
-	resourceMgr->textures["Pass2"] = targetTextureResourceView2;	
+	resourceMgr->textures["Pass1"]    = targetTextureResourceView1;
+	resourceMgr->textures["Pass2"]    = targetTextureResourceView2;	
+
+	resourceMgr->renderTargets["Original"] = originalView;
+	resourceMgr->renderTargets["Pass1"]    = targetView1;
+	resourceMgr->renderTargets["Pass2"]    = targetView2;
 
 	finalDraw = new Drawable();
 	finalDraw->getEffectVariables("genericPost", "Render");
@@ -230,6 +234,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 	resourceMgr->addTexture(L"res/textures/asteroidTexture.jpg", "asteroid");
 	resourceMgr->addTexture(L"res/textures/asteroidBump.jpg", "asteroidBump");
+	resourceMgr->addTexture(L"res/textures/shiphullTexture.jpg", "shipTexture");
 	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
 
 	//meshes

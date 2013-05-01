@@ -202,7 +202,8 @@ void D3DApp::OnResize()
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
 	depthStencilDesc.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
+	
+	
 	// Use 4X MSAA? --must match swap chain MSAA values.
 	if( mEnable4xMsaa )
 	{
@@ -255,6 +256,17 @@ void D3DApp::OnResize()
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 	md3dImmediateContext->RSSetState(rasterState);*/
+
+	D3D11_DEPTH_STENCIL_DESC dStencilDesc;
+	ZeroMemory(&dStencilDesc, sizeof(dStencilDesc));
+	dStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dStencilDesc.DepthEnable = true;
+	dStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+
+	
+	ID3D11DepthStencilState* dState = 0;
+	md3dDevice->CreateDepthStencilState(&dStencilDesc, &dState);
+	md3dImmediateContext->OMSetDepthStencilState(dState, 0);
 }
  
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

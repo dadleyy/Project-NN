@@ -42,7 +42,8 @@ public:
 	unordered_map<char*, Effect*> effects;
 	unordered_map<char*, ID3D11Buffer*> cBuffers;
 	vector<LightStruct*> lights;
-	std::unordered_map<char*, ID3D11ShaderResourceView*> textures;
+	unordered_map<char*, ID3D11ShaderResourceView*> textures;
+	unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
 
 	bool lightChange;
 	unsigned int numLights;

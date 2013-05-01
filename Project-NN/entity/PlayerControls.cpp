@@ -38,6 +38,9 @@ void PlayerControls::Update(float dt) {
 	relMouseX = screenWidth/2.0 - input->getMouseX();
 	relMouseY = screenHeight/2.0 - input->getMouseY();
 
+	relMouseX = sign(relMouseX)*(max(0,abs(relMouseX) - 40));
+	relMouseY = sign(relMouseY)*(max(0,abs(relMouseY) - 25));
+
 	//update the rotation
 	float rotAngle = -180 * ( relMouseY / ( screenHeight / 2.0 ) );
 	Quaternion q( rotAngle*dt, physics->sideAxis );

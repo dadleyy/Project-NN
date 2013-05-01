@@ -5,6 +5,7 @@
 
 void normalize(XMFLOAT3* v);
 XMFLOAT3 norm( XMFLOAT3 v );
+float magnitudeSq( XMFLOAT3 v );
 
 void damp(float* s, float damp, float minDamp, float dt);
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt);
@@ -59,6 +60,10 @@ void PhysicsComponent::Update(float dt) {
 	//artificially dampen the speed
 	damp(&speed, velocityDamp, MIN_DAMP, dt);
 
+	if(magnitudeSq(acceleration) > MAX_SPEED*MAX_SPEED)
+	{
+		acceleration = scale(norm(acceleration),MAX_SPEED);
+	}
 	
 	if( magnitude( acceleration ) > MAX_ACCEL ){
 		acceleration = scale( norm( acceleration ), MAX_ACCEL );
@@ -129,6 +134,10 @@ void damp(float* s, float damp, float minDamp, float dt)
 
 float magnitude( XMFLOAT3 v ) {
 	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+}
+
+float magnitudeSq( XMFLOAT3 v ) {
+	return v.x*v.x + v.y*v.y + v.z*v.z;
 }
 
 void normalize(XMFLOAT3* v) {

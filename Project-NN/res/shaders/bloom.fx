@@ -1,21 +1,8 @@
 
 //generic post process that draws the texture exactly as it appears
-TextureCube texCube;
+Texture2D tex;
 
 
-cbuffer perObject
-{
-	float4x4 worldMatrix;
-	float4x4 normalTransform;
-};
-
-cbuffer CameraBuffer
-{
-	float4x4 viewMatrix;
-	float4x4 fovScaling;
-	float3 cameraPosition;
-	float Cpad;
-};
 
 SamplerState textureSampler
 {
@@ -35,7 +22,7 @@ struct VERTEX
 struct PIXEL
 {	
 	float4 Pos : SV_POSITION;
-	float3 cubeVector : TEXCOORD2;
+	float2 UV : TEXCOORD2;
 };
 
 
@@ -47,9 +34,9 @@ PIXEL VS( VERTEX input )
 {
     PIXEL output = (PIXEL)0;
 
-	output.Pos = mul(fovScaling, mul(viewMatrix, mul(worldMatrix, input.Pos))).xyww;
-	
-	output.cubeVector = input.Pos.xyz;
+	output.Pos = input.Pos;
+	output.UV = float2(input.UV.x, 1-input.UV.y);
+
 	return output;
 }
 
@@ -58,8 +45,7 @@ PIXEL VS( VERTEX input )
 //*********************************
 float4 PS( PIXEL input ) : SV_Target
 {
-	return texCube.Sample(textureSampler, input.cubeVector);
-	//return float4(1,0,1,1);
+	return tex.Sample(textureSampler, input.UV);
 }
 
 
