@@ -32,9 +32,9 @@ void TestState::Init(StateManager* manager) {
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	Spacecraft spacer = Spacecraft(0.0, 0.0, 0.0);
-	bManager = spacer.getBullets();
-	sceneMgr->Insert(dynamic_cast<GameObject*>(&spacer));
+	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
+	bManager = spacer->getBullets();
+	sceneMgr->Insert(spacer);
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
@@ -94,19 +94,7 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
-	/*for(auto it = fired.begin(); it != fired.end(); ++it){
-		(*it)->Update(dt);
-	}
-
-	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		(*it)->Update(dt);
-	}*/
-
-
-	/*if( spacer != 0 )
-		spacer->Update(dt);*/
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
-
 	resourceMgr->updateShaderBuffers();
 }
 

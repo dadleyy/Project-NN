@@ -44,13 +44,3 @@ void Spacecraft::Draw()
 	drawable->setEffectTextures();
     drawable->draw();
 }
-
-Spacecraft::~Spacecraft(void)
-{
-	delete transform;
-    delete drawable;
-	delete collider;
-	delete playerCamera;
-    delete playerControls;
-	delete physics;
-}

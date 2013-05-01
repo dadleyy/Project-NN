@@ -12,7 +12,6 @@ class BulletManager;
 class Spacecraft : public GameObject {
 public:
     Spacecraft(float xPos, float yPos, float zPos);
-    virtual ~Spacecraft();
     void Draw();
 
 	PlayerControls* getPlayerControls(){
@@ -25,10 +24,8 @@ public:
 		return bManager;
 	}
 private:
-	//Transform* transform;
 	BulletManager* bManager;
     Drawable* drawable;
-	Collider* collider;
 	PlayerCameraComponent* playerCamera;
 	PlayerControls* playerControls;
 	PhysicsComponent* physics;
