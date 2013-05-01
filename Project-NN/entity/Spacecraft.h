@@ -7,6 +7,7 @@ class Drawable;
 class PlayerControls;
 class PhysicsComponent;
 class PlayerCameraComponent;
+class BulletManager;
 
 class Spacecraft : public GameObject {
 public:
@@ -20,8 +21,12 @@ public:
 	PhysicsComponent* getPhysics(){
 		return physics;
 	}
+	BulletManager* getBullets(){
+		return bManager;
+	}
 private:
 	//Transform* transform;
+	BulletManager* bManager;
     Drawable* drawable;
 	Collider* collider;
 	PlayerCameraComponent* playerCamera;

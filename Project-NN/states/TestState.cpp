@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include "StateManager.h"
+#include "entity/BulletManager.h"
 #include "entity/Drawable.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
@@ -31,7 +32,9 @@ void TestState::Init(StateManager* manager) {
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	sceneMgr->Insert(new Spacecraft(0.0, 0.0, 0.0));
+	Spacecraft spacer = Spacecraft(0.0, 0.0, 0.0);
+	bManager = spacer.getBullets();
+	sceneMgr->Insert(dynamic_cast<GameObject*>(&spacer));
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
@@ -40,6 +43,13 @@ void TestState::Init(StateManager* manager) {
 	asteroidDraw->addTexture("asteroidBump", "bumpMap");
 
 	uniform_real_distribution<float> distribution(-50, 50);
+
+	for(int i = 0; i < 100; i++) {
+		auto bullet = new Bullet(bManager);
+		bullet->active = false;
+		sceneMgr->Insert(bullet);
+	}
+
 
 	for(int i = 0; i < 50; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);

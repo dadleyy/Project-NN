@@ -7,13 +7,14 @@
 #include "PhysicsComponent.h"
 #include "PlayerCameraComponent.h"
 #include "ResourceManager.h"
+#include "BulletManager.h"
 
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
 	transform = new Transform();
     drawable = new Drawable();
-
+	bManager = new BulletManager();
 	collider = new Collider();
 	transform->position = XMFLOAT3(xPos, yPos, zPos); 
     drawable->getEffectVariables("betterPhong", "Render");
@@ -25,6 +26,7 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 
     components.push_back(transform);
     components.push_back(drawable);
+	components.push_back(bManager);
     components.push_back(collider);
 	components.push_back(physics);
 	components.push_back(playerCamera);

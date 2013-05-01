@@ -79,6 +79,7 @@
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="entity\BulletFiring.cpp" />
+    <ClCompile Include="entity\BulletManager.cpp" />
     <ClCompile Include="entity\DivideOnContact.cpp" />
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="entity\Health.cpp" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="entity\BulletFiring.h" />
+    <ClInclude Include="entity\BulletManager.h" />
     <ClInclude Include="entity\DivideOnContact.h" />
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
     <ClInclude Include="entity\Health.h" />

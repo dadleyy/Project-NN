@@ -1,15 +1,19 @@
 #pragma once
 
+#include <vector>
 #include "GameObject.h"
+
 
 class Collider;
 class Drawable;
 class PrintUponCollision;
 class BulletFiring;
+class BulletManager;
 class Transform;
 
 class Bullet : public GameObject {
 public:
+	Bullet(BulletManager* gManager);
 	Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward);
 	void Draw();
 
@@ -27,6 +31,7 @@ public:
 private:
 	Drawable* sphere;
 	//Collider* collider;
+	BulletManager* manager;
 	static const int SPEED = 1;
 	XMFLOAT3 forward;
 	PrintUponCollision* print;
