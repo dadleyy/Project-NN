@@ -55,6 +55,7 @@ bool PhysicsComponent::Init(GameObject* go) {
 }
 
 void PhysicsComponent::Update(float dt) {
+	position = transform->position;
 	//artificially dampen the acceleration
 	damp(&acceleration, accelerationDamp, MIN_DAMP, dt);
 	//artificially dampen the speed
