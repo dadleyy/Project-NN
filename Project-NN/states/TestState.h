@@ -8,6 +8,7 @@
 class StateManager;
 class Asteroid;
 class Spacecraft;
+class BulletManager;
 class Enemy;
 class DrawableInstancedModel;
 class Bomb;
@@ -34,6 +35,8 @@ public:
 
 private:
 
+	BulletManager* bManager;
+	
 	void handleKey( int keycode, float dt );
 
 	static TestState instance;

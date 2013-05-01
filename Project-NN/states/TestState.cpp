@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include "StateManager.h"
+#include "entity/BulletManager.h"
 #include "entity/Drawable.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
@@ -31,7 +32,9 @@ void TestState::Init(StateManager* manager) {
 	currentmouseposition[0] = currentmouseposition[1] = 0;
 	lastmouseposition[0] = lastmouseposition[1] = 0;
 
-	sceneMgr->Insert(new Spacecraft(0.0, 0.0, 0.0));
+	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
+	bManager = spacer->getBullets();
+	sceneMgr->Insert(spacer);
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
@@ -41,6 +44,13 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> distribution(-50, 50);
 
+
+	for(int i = 0; i < 100; i++) {
+		auto bullet = new Bullet(bManager);
+		bullet->active = false;
+		sceneMgr->Insert(bullet);
+	}
+
 	for(int i = 0; i < 50; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
@@ -49,7 +59,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 20; i++) {
+	for(int i = 0; i < 5; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
@@ -84,30 +94,22 @@ void TestState::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
-	/*for(auto it = fired.begin(); it != fired.end(); ++it){
-		(*it)->Update(dt);
-	}
-
-	for(auto it = enemies.begin(); it != enemies.end(); ++it) {
-		(*it)->Update(dt);
-	}*/
-
-
-	/*if( spacer != 0 )
-		spacer->Update(dt);*/
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
-
 	resourceMgr->updateShaderBuffers();
 }
 
 void TestState::Draw() {
+	int activeAsteroids = 0;
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		if(!(*it)->active)
 			continue;
+		activeAsteroids++;
 		(*it)->fillInstanceData(asteroidDraw->instances);
 	}
-	asteroidDraw->setEffectTextures();
-	asteroidDraw->drawInstanced(asteroids.size());
+	if(activeAsteroids > 0) {
+		asteroidDraw->setEffectTextures();
+		asteroidDraw->drawInstanced(activeAsteroids);
+	}
 
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
 		if(!(*it)->active)

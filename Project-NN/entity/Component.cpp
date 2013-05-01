@@ -1,6 +1,9 @@
 #include "Component.h"
 #include "GameObject.h"
 
+Component::~Component() {
+}
+
 bool Component::Init(GameObject* go) {
 	return true;
 }

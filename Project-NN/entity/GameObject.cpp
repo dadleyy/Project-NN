@@ -12,6 +12,9 @@ GameObject::GameObject() : active(true) {
 }
 
 GameObject::~GameObject() {
+	for(auto it = components.begin(); it != components.end(); ++it) {
+		delete *it;
+	}
 }
 
 void GameObject::InitComponents() {
