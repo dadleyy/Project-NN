@@ -7,9 +7,6 @@
 #include "Transform.h"
 #include "..\framework\LERP.h"
 
-XMFLOAT3 normalize(XMFLOAT3 v);
-float vecmag( XMFLOAT3 v );
-
 extern int screenWidth;
 extern int screenHeight;
 
@@ -70,26 +67,4 @@ void PlayerCameraComponent::smoothFollow(float dt)
 	pos.z += sideChange.z + upChange.z;
 
 	camera->SetPosition( pos );
-}
-
-float vecmag(  XMFLOAT3 v )
-{
-	float k = v.x*v.x + v.y*v.y + v.z*v.z;
-	k = sqrt( k );
-	return k;
-}
-
-XMFLOAT3 normalize(XMFLOAT3 v)
-{
-	float k = v.x*v.x + v.y*v.y + v.z*v.z;
-
-	if( (k <= .99 || k >= 1.01) && k != 0)
-	{
-		k = sqrt(k);
-		v.x /= k;
-		v.y /= k;
-		v.z /= k;
-	}
-
-	return v;
 }

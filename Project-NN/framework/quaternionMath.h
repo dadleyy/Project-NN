@@ -97,13 +97,17 @@ float dotProduct(XMFLOAT3 q1, XMFLOAT3 q2);
 //Normalization*
 //***************************
 Quaternion normalize(Quaternion q);
-
+XMFLOAT3 normalize(XMFLOAT3 v);
+void normalize(XMFLOAT3* v);
 
 //***************************
 //Magnitudes*
 //***************************
 float magnitude(Quaternion q);
 float magnitudeSq(Quaternion q);
+
+float magnitude(XMFLOAT3 v);
+float magnitudeSq(XMFLOAT3 v);
 
 //****************************
 //Interpolations

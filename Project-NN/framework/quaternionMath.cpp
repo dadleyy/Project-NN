@@ -127,6 +127,33 @@ float dotProduct(Quaternion q1, Quaternion q2)
 
 
 
+void normalize(XMFLOAT3* v)
+{
+	float k = v->x*v->x + v->y*v->y + v->z*v->z;
+
+	if( (k <= .99 || k >= 1.01) && k != 0)
+	{
+		k = sqrt(k);
+		v->x /= k;
+		v->y /= k;
+		v->z /= k;
+	}
+}
+
+XMFLOAT3 normalize(XMFLOAT3 v)
+{
+	float k = v.x*v.x + v.y*v.y + v.z*v.z;
+
+	if( (k <= .99 || k >= 1.01) && k != 0)
+	{
+		k = sqrt(k);
+		v.x /= k;
+		v.y /= k;
+		v.z /= k;
+	}
+
+	return v;
+}
 
 //***********************
 //*******************************
@@ -141,6 +168,12 @@ float magnitude(Quaternion q)
 float magnitudeSq(Quaternion q)
 {	return (pow(q.x, 2) + pow(q.y, 2) + pow(q.z, 2) + pow(q.w, 2)); }
 
+float magnitude(XMFLOAT3 q)
+{	return sqrt( pow(q.x, 2) + pow(q.y, 2) + pow(q.z, 2)); }
+
+//The squared magnitude of a quaternion
+float magnitudeSq(XMFLOAT3 q)
+{	return (pow(q.x, 2) + pow(q.y, 2) + pow(q.z, 2)); }
 
 Quaternion normalize(Quaternion q)
 {

@@ -21,6 +21,7 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
     drawable->createBuffer("cool");
 	drawable->addTexture("shipTexture", "diffuseMap");
 	physics = new PhysicsComponent(resourceMgr->camera.GetLook(), resourceMgr->camera.GetRight(), resourceMgr->camera.GetUp(), 0, 10, 15, XMFLOAT3(0, 0,0), XMFLOAT3(0,0,0), XMFLOAT3(0,0,0), 0, 0);
+	physics->mass = 1000;
 	playerControls = new PlayerControls();
 	playerCamera = new PlayerCameraComponent(&resourceMgr->camera);
 

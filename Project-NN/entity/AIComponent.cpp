@@ -9,9 +9,6 @@
 #include <random>
 using namespace std;
 
-XMFLOAT3 norm( XMFLOAT3 v );
-float vecmag(  XMFLOAT3 v );
-
 AIComponent::AIComponent( )
 {
 	state = AI_FOLLOWING;
@@ -65,7 +62,7 @@ void AIComponent::Follow( float dt )
 	// calculate the differemce, save it
 	XMVECTOR diff = XMVectorSubtract( tpos, mpos );
 	XMStoreFloat3( &distV, diff );
-	distL = vecmag( distV );
+	distL = magnitude( distV );
 
 	// calculate new rotation axis
 	XMVECTOR up = XMLoadFloat3( &objPhysics->upAxis );
