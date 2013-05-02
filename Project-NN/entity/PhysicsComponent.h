@@ -21,6 +21,7 @@ public:
 	bool Init( GameObject* go );
 	void Update(float dt);
 	void Impulse( XMFLOAT3 vector, float magnitude );
+	void HandleCollision(GameObject* other);
 
 	//Properties
 	//**************************************
@@ -60,6 +61,7 @@ public:
 	float angularAcceleration;
 	XMFLOAT3 velocity;
 	XMFLOAT3 acceleration;
+	XMFLOAT3 worldvelocity;
 	//moment of inertia tensor
 
 	//axis for velocity to use to update position

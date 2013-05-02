@@ -30,7 +30,7 @@ void PhysicsManager::CheckForCollisions() {
 				DebugBreak();
 			if(collider1->IsColliding(*otherIt)) {
 				(*it)->HandleCollision(*otherIt);
-				(*otherIt)->HandleCollision(*it);
+				//(*otherIt)->HandleCollision(*it);
 			}
 		}
 		no_longer_active:;

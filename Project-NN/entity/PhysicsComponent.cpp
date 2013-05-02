@@ -1,16 +1,11 @@
 #include "PhysicsComponent.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "PlayerControls.h"
-
-void normalize(XMFLOAT3* v);
-XMFLOAT3 norm( XMFLOAT3 v );
-float magnitudeSq( XMFLOAT3 v );
+#include "..\framework\quaternionMath.h"
 
 void damp(float* s, float damp, float minDamp, float dt);
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt);
-float magnitude(XMFLOAT3 v );
-
+int frameNumber;
 PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAxis,
                                     float m, float sp, float m_sp, XMFLOAT3 pos, XMFLOAT3 vel,
                                     XMFLOAT3 acc, float angularVel, float angularAcc) : MIN_DAMP(.005) {
@@ -26,6 +21,7 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	forwardAxis = fAxis;
 	sideAxis = sAxis;
 	upAxis = uAxis;
+	frameNumber = 0;
 }
 
 
@@ -63,26 +59,29 @@ void PhysicsComponent::Update(float dt) {
 
 	if(magnitudeSq(acceleration) > MAX_SPEED*MAX_SPEED)
 	{
-		acceleration = scale(norm(acceleration),MAX_SPEED);
-	}
+		acceleration = scale(normalize(acceleration),MAX_SPEED);
+	}		
+
 	
-	if( magnitude( acceleration ) > MAX_ACCEL ){
-		acceleration = scale( norm( acceleration ), MAX_ACCEL );
-	}
-		
+
+	velocity = XMFLOAT3( velocity.x + acceleration.x*dt,
+	                     velocity.y + acceleration.y*dt,
+	                     velocity.z + acceleration.z*dt );
 
 	//normalize the velocity, multiply by speed, and add the acceleration from the last frame
-	normalize( &velocity );
-	velocity = XMFLOAT3( velocity.x*speed + acceleration.x*dt,
-	                     velocity.y*speed + acceleration.y*dt,
-	                     velocity.z*speed + acceleration.z*dt );
-
-	//get the new speed from the velocity
 	speed = magnitude( velocity );
 
 	//clamp speed between 0 and max speed
-	if(speed > MAX_SPEED) speed = MAX_SPEED;
-	if( speed < 0 ) speed = 0;
+	if(speed > MAX_SPEED) 
+	{
+		speed = MAX_SPEED;
+		velocity = scale(normalize(velocity), MAX_SPEED);
+	}
+	if( speed < 0 ) 
+	{
+		speed = 0;
+		velocity = scale(velocity, 0);
+	}
 
 	// recalculate orientation from axis
 	XMMATRIX rotation;
@@ -111,12 +110,59 @@ void PhysicsComponent::Update(float dt) {
 	XMVECTOR quat = XMQuaternionRotationMatrix( rotation );
 	XMStoreFloat4( &transform->rotation, quat );
 
+	worldvelocity = XMFLOAT3(velocity.x*forwardAxis.x + velocity.y*sideAxis.x + velocity.z*upAxis.x,
+							 velocity.x*forwardAxis.y + velocity.y*sideAxis.y + velocity.z*upAxis.y,
+							 velocity.x*forwardAxis.z + velocity.y*sideAxis.z + velocity.z*upAxis.z);
+
 	//update the position
-	position = XMFLOAT3( position.x + (velocity.x*forwardAxis.x + velocity.y*sideAxis.x + velocity.z*upAxis.x)*dt,
-	                     position.y + (velocity.x*forwardAxis.y + velocity.y*sideAxis.y + velocity.z*upAxis.y)*dt,
-	                     position.z + (velocity.x*forwardAxis.z + velocity.y*sideAxis.z + velocity.z*upAxis.z)*dt);
+	position = XMFLOAT3( position.x + (worldvelocity.x)*dt,
+	                     position.y + (worldvelocity.y)*dt,
+	                     position.z + (worldvelocity.z)*dt);
 
 	transform->position = position;
+	frameNumber++;
+}
+
+void PhysicsComponent::HandleCollision(GameObject* go)
+{
+	PhysicsComponent* goPC = go->GetComponent<PhysicsComponent>();
+
+	if(goPC == 0) return;
+	if(mass == 0 || goPC->mass == 0) return;
+	float totalMass = mass + goPC->mass;
+
+	//Move these apart to when they were just touching, then move them apart just a little more
+	float distApart = magnitude(XMFLOAT3( position.x - goPC->position.x, position.y - goPC->position.y, position.z - goPC->position.z ));
+	distApart = transform->scale.x + goPC->transform->scale.x - distApart;
+	float delta = distApart/magnitude( add(worldvelocity, scale(goPC->worldvelocity, -1)) ) + .01;
+	position = add( scale(worldvelocity, -delta), position );
+	goPC->position = add( scale(goPC->worldvelocity, -delta), goPC->position );
+
+	float momentum1 = mass*speed;
+	float momentum2 = goPC->mass*goPC->speed;
+
+	XMFLOAT3 collisionNormal = normalize(XMFLOAT3(position.x - goPC->position.x, position.y - goPC->position.y, position.z - goPC->position.z));
+	XMFLOAT3 inverseCollisionNormal = scale(collisionNormal, -1);
+	float proj1 = abs(dotProduct(worldvelocity, inverseCollisionNormal));
+	float proj2 = abs(dotProduct(goPC->worldvelocity, collisionNormal));
+
+	//the magnitude of the collision
+	float impact = proj1*mass + proj2*goPC->mass;
+
+	float impact2 = (impact*mass)/(totalMass*totalMass);
+	float impact1 = (impact*goPC->mass)/(totalMass*totalMass);
+
+	worldvelocity = XMFLOAT3( worldvelocity.z - inverseCollisionNormal.x*impact1, worldvelocity.y - inverseCollisionNormal.y*impact1, worldvelocity.x - inverseCollisionNormal.z*impact1);
+	
+	velocity = XMFLOAT3(worldvelocity.x*forwardAxis.x + worldvelocity.y*forwardAxis.y + worldvelocity.z*forwardAxis.z,
+						worldvelocity.x*sideAxis.x    + worldvelocity.y*sideAxis.y    + worldvelocity.z*sideAxis.z,
+						worldvelocity.x*upAxis.x      + worldvelocity.y*upAxis.y      + worldvelocity.z*upAxis.z);
+
+	goPC->worldvelocity = XMFLOAT3( goPC->worldvelocity.z - collisionNormal.x*impact2, goPC->worldvelocity.y - collisionNormal.y*impact2, goPC->worldvelocity.x - collisionNormal.z*impact2);
+
+	goPC->velocity = XMFLOAT3(goPC->worldvelocity.x*goPC->forwardAxis.x + goPC->worldvelocity.y*goPC->forwardAxis.y + goPC->worldvelocity.z*goPC->forwardAxis.z,
+						      goPC->worldvelocity.x*goPC->sideAxis.x    + goPC->worldvelocity.y*goPC->sideAxis.y    + goPC->worldvelocity.z*goPC->sideAxis.z,
+							  goPC->worldvelocity.x*goPC->upAxis.x      + goPC->worldvelocity.y*goPC->upAxis.y      + goPC->worldvelocity.z*goPC->upAxis.z);
 }
 
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt) 
@@ -131,38 +177,4 @@ void damp(float* s, float damp, float minDamp, float dt)
 {
 	float dampFrame = 1-damp*dt;
 	(*s) = (*s)*dampFrame; if((*s) < minDamp) (*s) = 0;
-}
-
-float magnitude( XMFLOAT3 v ) {
-	return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
-}
-
-float magnitudeSq( XMFLOAT3 v ) {
-	return v.x*v.x + v.y*v.y + v.z*v.z;
-}
-
-void normalize(XMFLOAT3* v) {
-	float k = v->x*v->x + v->y*v->y + v->z*v->z;
-
-	if( (k <= .99 || k >= 1.01) && k != 0) {
-		k = sqrt(k);
-		v->x /= k;
-		v->y /= k;
-		v->z /= k;
-	}
-}
-
-XMFLOAT3 norm( XMFLOAT3 v ){
-	XMFLOAT3 result( v.x, v.y, v.z );
-
-	float k = v.x*v.x + v.y*v.y + v.z*v.z;
-
-	if( (k <= .99 || k >= 1.01) && k != 0) {
-		k = sqrt(k);
-		result.x /= k;
-		result.y /= k;
-		result.z /= k;
-	}
-
-	return result;
 }

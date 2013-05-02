@@ -48,7 +48,7 @@ void TestState::Init(StateManager* manager) {
 		sceneMgr->Insert(bullet);
 	}
 
-	for(int i = 0; i < 50; i++) {
+	for(int i = 0; i < 30; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
@@ -56,7 +56,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 0; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),

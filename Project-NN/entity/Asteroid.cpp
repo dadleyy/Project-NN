@@ -28,12 +28,12 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	uniform_real_distribution<float> distribution(1.0f, 13.0f);
 	float scale = distribution(resourceMgr->randomEngine);
 	transform->scale = XMFLOAT3(scale, scale, scale);
-	PhysicsComponent* physics = new PhysicsComponent(XMFLOAT3(0,0,1), XMFLOAT3(1,0,0), XMFLOAT3(0,1,0), 100*scale, 0, 20, transform->position, XMFLOAT3(0,0,0), XMFLOAT3(0,0,0), 0, 0);
-	physics->accelerationDamp = 0;
-	physics->velocityDamp = 0;
+	PhysicsComponent* physics = new PhysicsComponent(XMFLOAT3(0,0,1), XMFLOAT3(1,0,0), XMFLOAT3(0,1,0), 100*scale, 0, 20, transform->position, XMFLOAT3(1,0,0), XMFLOAT3(0,0,0), 0, 0);
+	physics->accelerationDamp = .1;
+	physics->velocityDamp = .1;
 
 
-	components.push_back(divide);
+	//components.push_back(divide);
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
