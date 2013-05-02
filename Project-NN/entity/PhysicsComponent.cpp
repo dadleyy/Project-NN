@@ -128,6 +128,8 @@ void PhysicsComponent::HandleCollision(GameObject* go)
 	PhysicsComponent* goPC = go->GetComponent<PhysicsComponent>();
 
 	if(goPC == 0) return;
+	if(mass == 0 || goPC->mass == 0) return;
+	float totalMass = mass + goPC->mass;
 
 	//Move these apart to when they were just touching, then move them apart just a little more
 	float distApart = magnitude(XMFLOAT3( position.x - goPC->position.x, position.y - goPC->position.y, position.z - goPC->position.z ));
@@ -141,24 +143,21 @@ void PhysicsComponent::HandleCollision(GameObject* go)
 
 	XMFLOAT3 collisionNormal = normalize(XMFLOAT3(position.x - goPC->position.x, position.y - goPC->position.y, position.z - goPC->position.z));
 	XMFLOAT3 inverseCollisionNormal = scale(collisionNormal, -1);
-	frameNumber;
-	XMFLOAT3 proj1 = scale(collisionNormal, dotProduct(worldvelocity, inverseCollisionNormal));
-	XMFLOAT3 proj2 = scale(collisionNormal, dotProduct(goPC->worldvelocity, collisionNormal));
+	float proj1 = abs(dotProduct(worldvelocity, inverseCollisionNormal));
+	float proj2 = abs(dotProduct(goPC->worldvelocity, collisionNormal));
 
 	//the magnitude of the collision
-	float impact = magnitude(proj1) * mass + magnitude(proj2) * goPC->mass;
+	float impact = proj1*mass + proj2*goPC->mass;
 
-	float impact1 = impact/mass;
-	float impact2 = impact/goPC->mass;
+	float impact2 = (impact*mass)/(totalMass*totalMass);
+	float impact1 = (impact*goPC->mass)/(totalMass*totalMass);
 
-	proj1 = normalize(proj1);
 	worldvelocity = XMFLOAT3( worldvelocity.z - inverseCollisionNormal.x*impact1, worldvelocity.y - inverseCollisionNormal.y*impact1, worldvelocity.x - inverseCollisionNormal.z*impact1);
 	
 	velocity = XMFLOAT3(worldvelocity.x*forwardAxis.x + worldvelocity.y*forwardAxis.y + worldvelocity.z*forwardAxis.z,
-						worldvelocity.x*sideAxis.x + worldvelocity.y*sideAxis.y + worldvelocity.z*sideAxis.z,
-						worldvelocity.x*upAxis.x + worldvelocity.y*upAxis.y + worldvelocity.z*upAxis.z);
+						worldvelocity.x*sideAxis.x    + worldvelocity.y*sideAxis.y    + worldvelocity.z*sideAxis.z,
+						worldvelocity.x*upAxis.x      + worldvelocity.y*upAxis.y      + worldvelocity.z*upAxis.z);
 
-	proj2 = normalize(proj2);
 	goPC->worldvelocity = XMFLOAT3( goPC->worldvelocity.z - collisionNormal.x*impact2, goPC->worldvelocity.y - collisionNormal.y*impact2, goPC->worldvelocity.x - collisionNormal.z*impact2);
 
 	goPC->velocity = XMFLOAT3(goPC->worldvelocity.x*goPC->forwardAxis.x + goPC->worldvelocity.y*goPC->forwardAxis.y + goPC->worldvelocity.z*goPC->forwardAxis.z,
