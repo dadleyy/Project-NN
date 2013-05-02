@@ -3,6 +3,7 @@
 #include "entity/Component.h"
 
 class GameObject;
+class BulletManager;
 class Drawable;
 class PhysicsComponent;
 
@@ -36,6 +37,7 @@ public:
 
 private:
 	PhysicsComponent* physics;
+	BulletManager* bManager;
 	bool fired;
 	void handleKey( int keycode, float dt );
 	float fireDelay;

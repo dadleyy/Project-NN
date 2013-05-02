@@ -17,6 +17,7 @@ Bullet::Bullet(BulletManager* gManager) {
 	print = new PrintUponCollision();
 	fireBullet = new BulletFiring();
 	forward = XMFLOAT3();
+	
 	//collider = new Collider();
 	manager = gManager;
 
@@ -27,6 +28,8 @@ Bullet::Bullet(BulletManager* gManager) {
 	float scale = 0.25;
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
+	active = false;
+
     sphere->getEffectVariables("betterPhong", "Render");
 	sphere->createBuffer("Sphere");
 	sphere->addTexture("Test", "diffuseMap");
@@ -36,7 +39,7 @@ Bullet::Bullet(BulletManager* gManager) {
 	components.push_back(fireBullet);
 	//components.push_back(collider);
 	components.push_back(transform);
-	//manager->bullets.push_back(this);
+	manager->bullets.push_back(this);
 	GameObject::InitComponents();
 }
 
