@@ -104,7 +104,7 @@ bool Game::Init() {
 	R_btn = 3;
 	input = new Input();
 
-	manager.Init(md3dDevice, md3dImmediateContext);
+	manager.Init();
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources();

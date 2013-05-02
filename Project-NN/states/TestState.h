@@ -25,9 +25,6 @@ public:
 	void Cleanup();
 	void Update(float dt);
 	void Draw();
-	void OnMouseDown(int x, int y);
-	void OnMouseUp(int x, int y);
-	void OnMouseMove(int x, int y);
 
 	static TestState* Instance() {
 		return &instance;
@@ -35,20 +32,12 @@ public:
 
 private:
 
-	BulletManager* bManager;
-	
-	void handleKey( int keycode, float dt );
-
 	static TestState instance;
+
+	BulletManager* bManager;
 	std::vector<Asteroid*> asteroids;
 
 	DrawableInstancedModel* asteroidDraw;
 
 	Skybox* skybox;
-
-	bool mouseDown;
-
-	int currentmouseposition[2];
-	int lastmouseposition[2];
-
 };
