@@ -113,6 +113,8 @@ bool Game::Init() {
 	
 	physicsMgr = new PhysicsManager();
 	sceneMgr = new SceneManager();
+	guiMgr = new GuiManager();
+	guiMgr->Init();
 
 	//Call again to calculate aspect ratio now that the camera has been initialized.
 	OnResize();
@@ -151,6 +153,7 @@ void Game::OnResize() {
 }
 
 void Game::UpdateScene(float dt) {
+	guiMgr->Update(dt);
 	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
 	sceneMgr->Process();
