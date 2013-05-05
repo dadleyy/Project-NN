@@ -6,6 +6,7 @@
 
 class GameObject;
 class Transform;
+class PhysicsComponent;
 class Bullet;
 
 class BulletManager : public Component {

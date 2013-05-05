@@ -3,18 +3,21 @@
 #include "GameObject.h"
 #include "entity/Component.h"
 
+class Bullet;
 class GameObject;
 class Transform;
 
 class BulletFiring : public Component {
 public:
 	~BulletFiring();
-	bool Init(GameObject* go, XMFLOAT3* forward, int speed);
+	bool Init(GameObject* go);
 	void Update(float dt);
+
+	XMFLOAT3 forward;
 
 private:
 	GameObject* go;
 	Transform* transform;
 	int speed;
-	XMFLOAT3* forward;
+	
 };

@@ -24,17 +24,17 @@ public:
 	{
 		forward = gForward;
 	}
-	int getSpeed(){
-		return SPEED;
-	}
 	void Update(float dt);
+	
+	
+	Transform* transform;
+	static const int SPEED = 5;
+	XMFLOAT3 forward;
+
 private:
 	Drawable* sphere;
-	//Collider* collider;
+	Collider* collider;
 	BulletManager* manager;
-	static const int SPEED = 1;
-	XMFLOAT3 forward;
 	PrintUponCollision* print;
-	Transform* transform;
 	BulletFiring* fireBullet;
 };
