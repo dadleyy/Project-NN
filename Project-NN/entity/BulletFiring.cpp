@@ -6,23 +6,24 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "PhysicsManager.h"
+#include "Bullet.h";
 
 
 BulletFiring::~BulletFiring() {
 	physicsMgr->RemoveObject(go);
 }
 
-bool BulletFiring::Init(GameObject* go, XMFLOAT3* forward, int speed) {
+bool BulletFiring::Init(GameObject* go) {
 	this->go = go;
-	this->speed = speed;
-	this->forward = forward;
+	this->speed = dynamic_cast<Bullet*>(go)->SPEED;
+	//this->forward = dynamic_cast<Bullet*>(go)->forward;
 	transform = go->GetComponent<Transform>();
 	physicsMgr->AddObject(go);
 	return transform != nullptr;
 }
 
 void BulletFiring::Update(float dt) {
-	transform->position = XMFLOAT3(transform->position.x + (speed*forward->x)*dt,
-	                     transform->position.y + (speed*forward->y)*dt,
-	                     transform->position.z + (speed*forward->z)*dt);
+	transform->position = XMFLOAT3(transform->position.x + (dynamic_cast<Bullet*>(go)->forward.x*speed)*dt,
+	                     transform->position.y + (dynamic_cast<Bullet*>(go)->forward.y*speed)*dt,
+	                     transform->position.z + (dynamic_cast<Bullet*>(go)->forward.z*speed)*dt);
 }
