@@ -2,10 +2,10 @@
 
 class GuiManager {
 public:
-	Init();
-	Cleanup();
-	Update(float dt);
-	Render();
+	void Init();
+	void Cleanup();
+	void Update(float dt);
+	void Render();
 };
 
 extern GuiManager* guiMgr;
