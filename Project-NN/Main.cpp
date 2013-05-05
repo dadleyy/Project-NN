@@ -11,6 +11,7 @@
 #include "states/TestState.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
+#include "GuiManager.h"
 #include "SceneManager.h"
 #include "input.h"
 #include "entity\Drawable.h"
@@ -19,6 +20,7 @@ ResourceManager* resourceMgr;
 PhysicsManager* physicsMgr;
 Input* input;
 SceneManager* sceneMgr;
+GuiManager* guiMgr;
 
 int screenWidth;
 int screenHeight;
