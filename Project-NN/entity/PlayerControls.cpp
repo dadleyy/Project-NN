@@ -7,6 +7,7 @@ using namespace std;
 #include "GameObject.h"
 #include "Drawable.h"
 #include "PhysicsComponent.h"
+#include "BulletManager.h"
 #include "input.h"
 
 #define CAMERA_VELOCITY 3.0
@@ -14,6 +15,7 @@ using namespace std;
 
 bool PlayerControls::Init(GameObject* go) {
 	physics = go->GetComponent<PhysicsComponent>();
+	bManager = go->GetComponent<BulletManager>();
 	fired = false;
 	return physics != nullptr;
 	fireDelay = 0.0;
@@ -27,13 +29,9 @@ void PlayerControls::Update(float dt) {
 		fireDelay -= dt;
 	}
 	else if( input->getLMouseButton() && !input->getRMouseButton()) {
-		//float rotAngle = -(1 * dt);
-		//resourceMgr->camera.RotateY(rotAngle);
-		fired = true;
-	}/* else if(!input->getLMouseButton() && input->getRMouseButton()) {
-		//float rotAngle = (1 * dt);
-		//resourceMgr->camera.RotateY(rotAngle);
-	}*/
+		bManager->Fire();
+		fireDelay = 1;
+	}
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();
 	relMouseY = screenHeight/2.0 - input->getMouseY();

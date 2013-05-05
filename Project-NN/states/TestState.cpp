@@ -45,9 +45,8 @@ void TestState::Init(StateManager* manager) {
 	uniform_real_distribution<float> distribution(-50, 50);
 
 
-	for(int i = 0; i < 100; i++) {
+	for(int i = 0; i < 50; i++) {
 		auto bullet = new Bullet(bManager);
-		bullet->active = false;
 		sceneMgr->Insert(bullet);
 	}
 
