@@ -36,7 +36,7 @@ public:
 private:
 
 	BulletManager* bManager;
-	
+	std::vector<Bomb*> tempBombs;
 	void handleKey( int keycode, float dt );
 
 	static TestState instance;

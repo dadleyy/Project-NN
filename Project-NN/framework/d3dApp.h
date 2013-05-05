@@ -77,14 +77,18 @@ protected:
 	ID3D11Texture2D* originalImage;
 	ID3D11Texture2D* targetTexture1;
 	ID3D11Texture2D* targetTexture2;
+	ID3D11Texture2D* targetTextureScaledDown;
 
 	ID3D11RenderTargetView* originalView;
 	ID3D11RenderTargetView* targetView1;
 	ID3D11RenderTargetView* targetView2;
+	ID3D11RenderTargetView* targetViewScaledDown;
 
 	ID3D11ShaderResourceView* originalImageResourceView;
 	ID3D11ShaderResourceView* targetTextureResourceView1;
 	ID3D11ShaderResourceView* targetTextureResourceView2;
+	ID3D11ShaderResourceView* targetTextureResourceViewScaledDown;
+	ID3D11ShaderResourceView* depthTextureResourceView;
 
 	ID3D11RenderTargetView* mRenderTargetView;
 	ID3D11DepthStencilView* mDepthStencilView;

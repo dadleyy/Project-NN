@@ -194,6 +194,16 @@ void D3DApp::OnResize()
 	md3dDevice->CreateShaderResourceView(targetTexture1, &shaderResourceViewDesc, &targetTextureResourceView1);
 	md3dDevice->CreateShaderResourceView(targetTexture2, &shaderResourceViewDesc, &targetTextureResourceView2);
 
+	//create scaled render targets
+	textureDesc.Width = (int)mClientWidth/5;
+	textureDesc.Height = (int)mClientHeight/5;
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	renderTargetViewDesc.Format = textureDesc.Format;
+
+	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTextureScaledDown);
+	HR(md3dDevice->CreateRenderTargetView(targetTextureScaledDown, &renderTargetViewDesc, &targetViewScaledDown));
+	md3dDevice->CreateShaderResourceView(targetTextureScaledDown, &shaderResourceViewDesc, &targetTextureResourceViewScaledDown);
+
 	// Create the depth/stencil buffer and view.
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 	
@@ -201,38 +211,66 @@ void D3DApp::OnResize()
 	depthStencilDesc.Height    = mClientHeight;
 	depthStencilDesc.MipLevels = 1;
 	depthStencilDesc.ArraySize = 1;
-	depthStencilDesc.Format    = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	
-	
-	// Use 4X MSAA? --must match swap chain MSAA values.
-	if( mEnable4xMsaa )
-	{
-		depthStencilDesc.SampleDesc.Count   = 4;
-		depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality-1;
-	}
-	// No MSAA
-	else
-	{
-		depthStencilDesc.SampleDesc.Count   = 1;
-		depthStencilDesc.SampleDesc.Quality = 0;
-	}
-
+	depthStencilDesc.SampleDesc.Count = 1;
+	depthStencilDesc.SampleDesc.Quality = 0;
+	depthStencilDesc.Format    = DXGI_FORMAT_R32_TYPELESS ;
+	depthStencilDesc.BindFlags =  D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 	depthStencilDesc.Usage          = D3D11_USAGE_DEFAULT;
-	depthStencilDesc.BindFlags      = D3D11_BIND_DEPTH_STENCIL;
 	depthStencilDesc.CPUAccessFlags = 0; 
 	depthStencilDesc.MiscFlags      = 0;
 
 	HR(md3dDevice->CreateTexture2D(&depthStencilDesc, 0, &mDepthStencilBuffer));
-	HR(md3dDevice->CreateDepthStencilView(mDepthStencilBuffer, 0, &mDepthStencilView));
+
+	//// Use 4X MSAA? --must match swap chain MSAA values.
+	//if( mEnable4xMsaa )
+	//{
+	//	depthStencilDesc.SampleDesc.Count   = 4;
+	//	depthStencilDesc.SampleDesc.Quality = m4xMsaaQuality-1;
+	//}
+	//// No MSAA
+	//else
+	//{
+	//	depthStencilDesc.SampleDesc.Count   = 1;
+	//	depthStencilDesc.SampleDesc.Quality = 0;
+	//}
+
+	//Describe the shader resource view for the depth buffer
+	shaderResourceViewDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	//Describe the depth-stencil view
+	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+	ZeroMemory(&descDSV, sizeof(descDSV));
+	descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+	if( 1 == depthStencilDesc.SampleDesc.Count ) 
+		{ descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D; } 
+	else 
+	    { descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS; }
+	descDSV.Texture2D.MipSlice = 0;
+
+	
+	md3dDevice->CreateShaderResourceView(mDepthStencilBuffer, &shaderResourceViewDesc, &depthTextureResourceView);
+	HR(md3dDevice->CreateDepthStencilView(mDepthStencilBuffer, &descDSV, &mDepthStencilView));
 
 
 	// Bind the render target view and depth/stencil view to the pipeline.
-
 	md3dImmediateContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+
+	//Set depth stencil state
+	D3D11_DEPTH_STENCIL_DESC dStencilDesc;
+	ZeroMemory(&dStencilDesc, sizeof(dStencilDesc));
+	dStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dStencilDesc.DepthEnable = true;
+	dStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	
+	ID3D11DepthStencilState* dState = 0;
+	md3dDevice->CreateDepthStencilState(&dStencilDesc, &dState);
+	md3dImmediateContext->OMSetDepthStencilState(dState, 0);
+
 
 	// Set the viewport transform.
-
 	mScreenViewport.TopLeftX = 0;
 	mScreenViewport.TopLeftY = 0;
 	mScreenViewport.Width    = static_cast<float>(mClientWidth);
@@ -241,32 +279,6 @@ void D3DApp::OnResize()
 	mScreenViewport.MaxDepth = 1.0f;
 
 	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
-
-	/*D3D11_RASTERIZER_DESC rasterDesc;
-
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	md3dImmediateContext->RSSetState(rasterState);*/
-
-	D3D11_DEPTH_STENCIL_DESC dStencilDesc;
-	ZeroMemory(&dStencilDesc, sizeof(dStencilDesc));
-	dStencilDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-	dStencilDesc.DepthEnable = true;
-	dStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-
-	
-	ID3D11DepthStencilState* dState = 0;
-	md3dDevice->CreateDepthStencilState(&dStencilDesc, &dState);
-	md3dImmediateContext->OMSetDepthStencilState(dState, 0);
 }
  
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -550,6 +562,8 @@ bool D3DApp::InitDirect3D()
 	// also need to be executed every time the window is resized.  So
 	// just call the OnResize method here to avoid code duplication.
 	
+
+
 	OnResize();
 
 	return true;
