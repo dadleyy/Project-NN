@@ -44,7 +44,6 @@ void TestState::Init(StateManager* manager) {
 
 	for(int i = 0; i < 100; i++) {
 		auto bullet = new Bullet(bManager);
-		bullet->active = false;
 		sceneMgr->Insert(bullet);
 	}
 
