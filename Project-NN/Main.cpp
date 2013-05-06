@@ -131,10 +131,13 @@ void Game::OnResize() {
 	resourceMgr->textures["Original"] = originalImageResourceView;
 	resourceMgr->textures["Pass1"]    = targetTextureResourceView1;
 	resourceMgr->textures["Pass2"]    = targetTextureResourceView2;	
+	resourceMgr->textures["Depth"]    = depthTextureResourceView;
+	resourceMgr->textures["DScale5"] = targetTextureResourceViewScaledDown;
 
 	resourceMgr->renderTargets["Original"] = originalView;
 	resourceMgr->renderTargets["Pass1"]    = targetView1;
 	resourceMgr->renderTargets["Pass2"]    = targetView2;
+	resourceMgr->renderTargets["DScale5"]    = targetViewScaledDown;
 
 	finalDraw = new Drawable();
 	finalDraw->getEffectVariables("genericPost", "Render");
@@ -170,6 +173,7 @@ void Game::DrawScene()
 	
 	//post Processing
 	//*******************
+
 
 
 
@@ -253,6 +257,8 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
 	resourceMgr->addEffect(L"res/shaders/skyboxShader.fx", "skyShader" );
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstancedBump.fx", "bumpInstancePhong" );
+	resourceMgr->addEffect(L"res/shaders/glowDraw.fx", "glowDraw" );
+	resourceMgr->addEffect(L"res/shaders/glowEffect.fx", "glowEffect" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);

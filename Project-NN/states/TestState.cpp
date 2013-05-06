@@ -55,7 +55,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 0; i++) {
+	for(int i = 0; i < 5; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),

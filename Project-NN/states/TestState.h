@@ -31,7 +31,6 @@ public:
 	}
 
 private:
-
 	static TestState instance;
 
 	BulletManager* bManager;
