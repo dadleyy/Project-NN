@@ -123,6 +123,7 @@
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="entity\Skybox.cpp" />
+    <ClCompile Include="res\post processes\Glow.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="entity\Skybox.h" />
+    <ClInclude Include="res\post processes\Glow.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="states\TestState.h" />

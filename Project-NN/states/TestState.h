@@ -14,6 +14,7 @@ class DrawableInstancedModel;
 class Bomb;
 class Bullet;
 class Skybox;
+class Glow;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -43,6 +44,7 @@ private:
 	std::vector<Asteroid*> asteroids;
 
 	DrawableInstancedModel* asteroidDraw;
+	Glow* glow;
 
 	Skybox* skybox;
 

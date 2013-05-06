@@ -19,7 +19,7 @@
 #include "entity/PlayerControls.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
-
+#include "../res/post processes/Glow.h"
 
 using namespace std;
 
@@ -38,9 +38,18 @@ void TestState::Init(StateManager* manager) {
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
+	asteroidDraw->setShader("bumpInstancePhong", "Render");
 	asteroidDraw->createBuffer("Asteroid");
 	asteroidDraw->addTexture("asteroid", "diffuseMap");
 	asteroidDraw->addTexture("asteroidBump", "bumpMap");
+	
+
+	glow = new Glow();
+	glow->getEffectVariables("glowEffect", "Horz");
+	glow->getEffectVariables("glowEffect", "Vert");
+	glow->getEffectVariables("glowEffect", "Add");
+	glow->setShader("glowEffect", "Horz");
+	glow->createBuffer("rectangle");
 
 	uniform_real_distribution<float> distribution(-50, 50);
 
@@ -58,7 +67,7 @@ void TestState::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 15; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
@@ -123,6 +132,28 @@ void TestState::Draw() {
 	if( spacer != 0 )
 		spacer->Draw();
 	*/
+
+	//draw glowy stuff
+	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["DScale2"]);
+	resourceMgr->md3dImmediateContext->OMSetRenderTargets(1, &resourceMgr->renderTargets["DScale2"], NULL);
+	resourceMgr->md3dImmediateContext->ClearRenderTargetView(resourceMgr->renderTargets["DScale2"], reinterpret_cast<const float*>(&Colors::Black));
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) 
+	{
+		if(!(*it)->glow)
+			continue;
+		Drawable* temp = (*it)->GetComponent<Drawable>();
+		if(temp)
+		{
+			temp->setShader("glowDraw", "RenderGlowy");
+			temp->setEffectVariables();
+			temp->setEffectTextures();
+			(*it)->Draw();
+			temp->setShader("betterPhong", "Render");
+		}
+	}
+	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["Original"]);
+	glow->setEffectVariables();
+	glow->draw("DScale2", "Pass1", "Pass2", "Original");
 }
 
 

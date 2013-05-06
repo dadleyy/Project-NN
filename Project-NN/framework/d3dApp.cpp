@@ -195,8 +195,8 @@ void D3DApp::OnResize()
 	md3dDevice->CreateShaderResourceView(targetTexture2, &shaderResourceViewDesc, &targetTextureResourceView2);
 
 	//create scaled render targets
-	textureDesc.Width = (int)mClientWidth/5;
-	textureDesc.Height = (int)mClientHeight/5;
+	textureDesc.Width = (int)mClientWidth/2;
+	textureDesc.Height = (int)mClientHeight/2;
 	shaderResourceViewDesc.Format = textureDesc.Format;
 	renderTargetViewDesc.Format = textureDesc.Format;
 
@@ -269,7 +269,6 @@ void D3DApp::OnResize()
 	md3dDevice->CreateDepthStencilState(&dStencilDesc, &dState);
 	md3dImmediateContext->OMSetDepthStencilState(dState, 0);
 
-
 	// Set the viewport transform.
 	mScreenViewport.TopLeftX = 0;
 	mScreenViewport.TopLeftY = 0;
@@ -277,6 +276,14 @@ void D3DApp::OnResize()
 	mScreenViewport.Height   = static_cast<float>(mClientHeight);
 	mScreenViewport.MinDepth = 0.0f;
 	mScreenViewport.MaxDepth = 1.0f;
+
+	
+	mScreenViewportDiv5.TopLeftX = 0;
+	mScreenViewportDiv5.TopLeftY = 0;
+	mScreenViewportDiv5.Width    = static_cast<float>(mClientWidth/2.0);
+	mScreenViewportDiv5.Height   = static_cast<float>(mClientHeight/2.0);
+	mScreenViewportDiv5.MinDepth = 0.0f;
+	mScreenViewportDiv5.MaxDepth = 1.0f;
 
 	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
 }

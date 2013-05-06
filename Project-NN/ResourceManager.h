@@ -44,6 +44,7 @@ public:
 	vector<LightStruct*> lights;
 	unordered_map<char*, ID3D11ShaderResourceView*> textures;
 	unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
+	unordered_map<char*, D3D11_VIEWPORT> viewports;
 
 	bool lightChange;
 	unsigned int numLights;

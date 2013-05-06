@@ -15,8 +15,17 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
 	transform->scale = XMFLOAT3(3, 3, 3);
 	drawable->getEffectVariables("betterPhong", "Render");
+	drawable->setShader("betterPhong", "Render");
+	drawable->addTexture("bomb", "diffuseMap");
+	drawable->getEffectVariables("glowDraw", "RenderGlowy");
+	drawable->setShader("glowDraw", "RenderGlowy");
+	drawable->addTexture("bombGlow", "glowTex");
+	drawable->addTexture("Depth", "depth");
+	drawable->setShader("betterPhong", "Render");
+	
 	drawable->createBuffer("Sphere");
-	drawable->addTexture("Test2", "diffuseMap");
+	
+	glow = true;
 
 	components.push_back(transform);
 	components.push_back(drawable);

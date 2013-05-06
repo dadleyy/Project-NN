@@ -130,15 +130,19 @@ void Game::OnResize() {
 	resourceMgr->textures["Pass1"]    = targetTextureResourceView1;
 	resourceMgr->textures["Pass2"]    = targetTextureResourceView2;	
 	resourceMgr->textures["Depth"]    = depthTextureResourceView;
-	resourceMgr->textures["DScale5"] = targetTextureResourceViewScaledDown;
+	resourceMgr->textures["DScale2"]  = targetTextureResourceViewScaledDown;
 
 	resourceMgr->renderTargets["Original"] = originalView;
 	resourceMgr->renderTargets["Pass1"]    = targetView1;
 	resourceMgr->renderTargets["Pass2"]    = targetView2;
-	resourceMgr->renderTargets["DScale5"]    = targetViewScaledDown;
+	resourceMgr->renderTargets["DScale2"]  = targetViewScaledDown;
+
+	resourceMgr->viewports["Original"] = mScreenViewport;
+	resourceMgr->viewports["DScale2"]  = mScreenViewportDiv5;
 
 	finalDraw = new Drawable();
 	finalDraw->getEffectVariables("genericPost", "Render");
+	finalDraw->setShader("genericPost", "Render");
 	finalDraw->createBuffer("rectangle");
 	finalDraw->addTexture("Original", "tex");
 
@@ -236,6 +240,8 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 	resourceMgr->addTexture(L"res/textures/asteroidTexture.jpg", "asteroid");
+	resourceMgr->addTexture(L"res/textures/bombTex.jpg", "bomb");
+	resourceMgr->addTexture(L"res/textures/bombGlowTex.jpg", "bombGlow");
 	resourceMgr->addTexture(L"res/textures/asteroidBump.jpg", "asteroidBump");
 	resourceMgr->addTexture(L"res/textures/shiphullTexture.jpg", "shipTexture");
 	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
