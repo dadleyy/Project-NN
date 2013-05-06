@@ -162,7 +162,11 @@
     <ClCompile Include="entity\BulletManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="res\post processes\Glow.cpp">
+=======
+    <ClCompile Include="GuiManager.cpp">
+>>>>>>> 2f6beac2df286ca0e174bd94ea8c730784a8bbc3
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -317,7 +321,11 @@
     <ClInclude Include="entity\BulletManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="res\post processes\Glow.h">
+=======
+    <ClInclude Include="GuiManager.h">
+>>>>>>> 2f6beac2df286ca0e174bd94ea8c730784a8bbc3
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

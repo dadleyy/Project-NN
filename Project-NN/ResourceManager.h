@@ -14,8 +14,6 @@
 #include "framework/Camera.h"
 #include "entity/Light.h"
 
-using namespace std;
-
 struct Mesh {
 	ID3D11Buffer* verticies;
 	ID3D11Buffer* indicies;
@@ -38,13 +36,14 @@ public:
 	ID3D11DeviceContext* md3dImmediateContext;
 
 	~ResourceManager(void);
-	unordered_map<char*, Mesh*> meshes;
-	unordered_map<char*, Effect*> effects;
-	unordered_map<char*, ID3D11Buffer*> cBuffers;
-	vector<LightStruct*> lights;
-	unordered_map<char*, ID3D11ShaderResourceView*> textures;
-	unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
-	unordered_map<char*, D3D11_VIEWPORT> viewports;
+
+	std::unordered_map<char*, Mesh*> meshes;
+	std::unordered_map<char*, Effect*> effects;
+	std::unordered_map<char*, ID3D11Buffer*> cBuffers;
+	std::vector<LightStruct*> lights;
+	std::unordered_map<char*, ID3D11ShaderResourceView*> textures;
+	std::unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
+	std::unordered_map<char*, D3D11_VIEWPORT> viewports;
 
 	bool lightChange;
 	unsigned int numLights;

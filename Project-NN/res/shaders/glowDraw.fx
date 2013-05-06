@@ -79,7 +79,7 @@ float4 PS( PIXEL input ) : SV_Target
 	float4 finalColor = 0;
 	float4 d = depth.Sample(nearestPixel, float2(input.Pos.x/texDimensions.x, input.Pos.y/texDimensions.y));
 
-	if(abs(input.Pos.z) <= d.x +.00001 && input.Pos.z >= 0)
+	if(abs(input.Pos.z) <= d.x +.000001 && input.Pos.z >= 0)
 	{
 		if(colorMode == 1)
 		{

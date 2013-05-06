@@ -29,9 +29,6 @@ TestState TestState::instance;
 void TestState::Init(StateManager* manager) {
 	GameState::Init(manager);
 
-	currentmouseposition[0] = currentmouseposition[1] = 0;
-	lastmouseposition[0] = lastmouseposition[1] = 0;
-
 	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
 	bManager = spacer->getBullets();
 	sceneMgr->Insert(spacer);
@@ -156,20 +153,20 @@ void TestState::Draw() {
 	glow->draw("DScale2", "Pass1", "Pass2", "Original");
 }
 
-
-void TestState::OnMouseDown(int x, int y) {
-	/*cout << "mouse down" << endl;
-	mouseDown = true;
-
-	cout << resourceMgr->camera.GetPosition().z << endl;*/
-}
-
-void TestState::OnMouseUp(int x, int y) {
-	/*cout << "mouse up" << endl;
-	mouseDown = false;*/
-}
-
-void TestState::OnMouseMove(int x, int y) {
-	//currentmouseposition[0] = x;
-	//currentmouseposition[1] = y;
-}
+//
+//void TestState::OnMouseDown(int x, int y) {
+//	/*cout << "mouse down" << endl;
+//	mouseDown = true;
+//
+//	cout << resourceMgr->camera.GetPosition().z << endl;*/
+//}
+//
+//void TestState::OnMouseUp(int x, int y) {
+//	/*cout << "mouse up" << endl;
+//	mouseDown = false;*/
+//}
+//
+//void TestState::OnMouseMove(int x, int y) {
+//	//currentmouseposition[0] = x;
+//	//currentmouseposition[1] = y;
+//}
