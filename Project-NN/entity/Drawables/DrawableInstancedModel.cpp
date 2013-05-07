@@ -51,7 +51,7 @@ void DrawableInstancedModel::createBuffer(char* mesh)
 	
 	//get required vertex information from a shader technique
 	D3DX11_PASS_DESC passDesc;
-    technique->GetPassByIndex(0)->GetDesc(&passDesc);
+    currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	hr = pD3DDevice->CreateInputLayout(layout,
 				11,
@@ -108,10 +108,10 @@ void DrawableInstancedModel::drawInstanced(int numInstances)
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
-    technique->GetDesc( &techDesc );
+    currentTechnique->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
-        technique->GetPassByIndex(p)->Apply(0, deviceContext);
+        currentTechnique->GetPassByIndex(p)->Apply(0, deviceContext);
 		deviceContext->DrawInstanced(numVerts, numInstances, 0, 0);
 	}
 

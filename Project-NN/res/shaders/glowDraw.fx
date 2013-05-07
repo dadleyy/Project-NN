@@ -23,16 +23,17 @@ SamplerState samAnisotropic
 
 SamplerState nearestPixel
 {
-	Filter = MIN_MAG_MIP_POINT;
+	Filter = MIN_MAG_MIP_LINEAR;
 
 	AddressU = CLAMP;
 	AddressV = CLAMP;
 };
 
 Texture2D depth;
-Texture2D tex;
+Texture2D glowTex;
+float2 texDimensions;
 float4 color = float4(1,0,0,1);
-int colorMode = 0; //0 to use color, 1 to use texture, 2 to use texture*color
+int colorMode = 1; //0 to use color, 1 to use texture, 2 to use texture*color
 
 struct VERTEX
 {   
@@ -76,30 +77,31 @@ PIXEL VS( VERTEX input )
 float4 PS( PIXEL input ) : SV_Target
 {
 	float4 finalColor = 0;
-	float4 texColor = tex.Sample(samAnisotropic, input.UV);
-	float4 d = depth.Sample(nearestPixel, input.Pos.xy);
+	float4 d = depth.Sample(nearestPixel, float2(input.Pos.x/texDimensions.x, input.Pos.y/texDimensions.y));
 
-	if(input.Pos.z < d.x && input.Pos.z >= 0)
+	if(abs(input.Pos.z) <= d.x +.000001 && input.Pos.z >= 0)
 	{
 		if(colorMode == 1)
 		{
-			finalColor = texColor;
+			finalColor = glowTex.Sample(samAnisotropic, input.UV);;
 		}
 		else if(colorMode == 2)
 		{
-			finalColor = color*texColor;
+			finalColor = color*glowTex.Sample(samAnisotropic, input.UV);;
 		}
 		else
 		{
 			finalColor = color;
 		}
 	}
+	else
+		discard;
 
 	return finalColor;
 }
 
 
-technique11 Render
+technique11 RenderGlowy
 {
     pass P0
     {

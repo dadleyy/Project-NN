@@ -31,9 +31,10 @@ Bullet::Bullet(BulletManager* gManager) {
 	active = false;
 
     sphere->getEffectVariables("betterPhong", "Render");
+	sphere->setShader("betterPhong", "Render");
 	sphere->createBuffer("Sphere");
 	sphere->addTexture("Test2", "diffuseMap");
-
+	
 	components.push_back(sphere);
 	components.push_back(print);
 	components.push_back(fireBullet);
