@@ -19,7 +19,7 @@ Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 		resourceMgr->camera.GetRight(), 
 		XMFLOAT3(0.0f, 1.0f, 0.0f), 
 		0, 10, 15, 
-		XMFLOAT3(0, 0,0), 
+		initialPosition,
 		XMFLOAT3(0,0,0), 
 		XMFLOAT3(0,0,0), 
 		0, 0 
