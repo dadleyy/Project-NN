@@ -15,8 +15,6 @@
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "input.h"
-#include "entity/PlayerControls.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
 #include "../res/post processes/Glow.h"
