@@ -31,8 +31,6 @@ public:
 	GameObject *source;
 	GameObject *target;
 
-	std::string auid;
-
 private:
 
 	void Follow( float dt );
