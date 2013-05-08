@@ -15,6 +15,7 @@ class Bomb;
 class Bullet;
 class Skybox;
 class Glow;
+class DrawLasers;
 
 extern int screenWidth;
 extern int screenHeight;
@@ -39,6 +40,7 @@ private:
 
 	DrawableInstancedModel* asteroidDraw;
 	Glow* glow;
+	DrawLasers* laserDraw;
 
 	Skybox* skybox;
 };

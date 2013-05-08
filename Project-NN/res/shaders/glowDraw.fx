@@ -23,7 +23,7 @@ SamplerState samAnisotropic
 
 SamplerState nearestPixel
 {
-	Filter = MIN_MAG_MIP_LINEAR;
+	Filter = MIN_MAG_MIP_POINT;
 
 	AddressU = CLAMP;
 	AddressV = CLAMP;

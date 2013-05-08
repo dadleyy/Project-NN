@@ -42,7 +42,7 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 
 }
 
-void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
+void Asteroid::fillInstanceData(vector<float>* data)
 {
 	//translate, rotate, and scale matrix
 	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
@@ -55,8 +55,15 @@ void Asteroid::fillInstanceData(vector<XMFLOAT4X4>* data)
 	XMStoreFloat4x4(&world, w);
 	XMStoreFloat4x4(&normalWorld, rotation);
 
-	data->push_back(world); 
-	data->push_back(normalWorld);
+	data->push_back(world._11); data->push_back(world._12); data->push_back(world._13); data->push_back(world._14); 
+	data->push_back(world._21); data->push_back(world._22); data->push_back(world._23); data->push_back(world._24); 
+	data->push_back(world._31); data->push_back(world._32); data->push_back(world._33); data->push_back(world._34); 
+	data->push_back(world._41); data->push_back(world._42); data->push_back(world._43); data->push_back(world._44); 
+
+	data->push_back(normalWorld._11); data->push_back(normalWorld._12); data->push_back(normalWorld._13); data->push_back(normalWorld._14); 
+	data->push_back(normalWorld._21); data->push_back(normalWorld._22); data->push_back(normalWorld._23); data->push_back(normalWorld._24); 
+	data->push_back(normalWorld._31); data->push_back(normalWorld._32); data->push_back(normalWorld._33); data->push_back(normalWorld._34); 
+	data->push_back(normalWorld._41); data->push_back(normalWorld._42); data->push_back(normalWorld._43); data->push_back(normalWorld._44);
 }
 
 GameObject* Asteroid::Clone() {

@@ -5,7 +5,7 @@
 
 
 class Collider;
-class Drawable;
+class DrawLasers;
 class PrintUponCollision;
 class BulletFiring;
 class BulletManager;
@@ -28,11 +28,11 @@ public:
 	
 	
 	Transform* transform;
-	static const int SPEED = 5;
+	static const int SPEED = 1000;
 	XMFLOAT3 forward;
+	DrawLasers* laserDraw;
 
 private:
-	Drawable* sphere;
 	Collider* collider;
 	BulletManager* manager;
 	PrintUponCollision* print;

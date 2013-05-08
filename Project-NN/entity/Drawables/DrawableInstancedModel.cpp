@@ -15,7 +15,7 @@ DrawableInstancedModel::DrawableInstancedModel() : Drawable()
 
 	//create the buffer
 	pD3DDevice->CreateBuffer(&bufferDescription, NULL, &instanceBuffer);
-	instances = new vector<XMFLOAT4X4>();
+	instances = new vector<float>();
 }
 
 
@@ -93,7 +93,7 @@ void DrawableInstancedModel::drawInstanced(int numInstances)
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	deviceContext->Map(instanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
-	memcpy((float*)resource.pData,    &(*instances)[0]._11,  numInstances*32*4);
+	memcpy((float*)resource.pData,    &(*instances)[0],  numInstances*32*4);
 	deviceContext->Unmap(instanceBuffer, 0);
 
 	UINT stride[2] = {vertexStride, 128};

@@ -7,6 +7,7 @@
 #include "StateManager.h"
 #include "entity/BulletManager.h"
 #include "entity/Drawable.h"
+#include "entity/Drawables/DrawLasers.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
 #include "entity/Bomb.h"
@@ -20,6 +21,7 @@
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
 #include "../res/post processes/Glow.h"
+
 
 using namespace std;
 
@@ -48,11 +50,17 @@ void TestState::Init(StateManager* manager) {
 	glow->setShader("glowEffect", "Horz");
 	glow->createBuffer("rectangle");
 
+	laserDraw = new DrawLasers();
+	laserDraw->getEffectVariables("laserEffect", "RenderLasers");
+	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->createBuffer();
+
 	uniform_real_distribution<float> distribution(-50, 50);
 
 
 	for(int i = 0; i < 50; i++) {
 		auto bullet = new Bullet(bManager);
+		bullet->laserDraw = laserDraw;
 		sceneMgr->Insert(bullet);
 	}
 
@@ -122,6 +130,8 @@ void TestState::Draw() {
 		(*it)->Draw();
 	}
 
+	laserDraw->draw();
+
 	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
 		(*it)->Draw();
 	}
@@ -148,6 +158,9 @@ void TestState::Draw() {
 			temp->setShader("betterPhong", "Render");
 		}
 	}
+	laserDraw->draw();
+	laserDraw->points.clear();
+
 	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["Original"]);
 	glow->setEffectVariables();
 	glow->draw("DScale2", "Pass1", "Pass2", "Original");

@@ -5,7 +5,7 @@ Texture2D blurredTex2;
 
 float offsets[3] = {0.0, 1.3846153846, 3.2307692308};
 float weights[3] = {0.2270270270, 0.3162162162,  0.0702702703};
-float2 texDimensions = float2(160, 120);
+float2 texDimensions;
 
 SamplerState textureSampler
 {

@@ -20,7 +20,7 @@ public:
 
 	bool Init(GameObject* go);
 
-	void draw();	
+	virtual void draw();	
 	virtual void createBuffer(char* mesh);
 	virtual void addTexture(char* id, char* textureVariable);
     virtual void getEffectVariables(char* fxFilename, char* fxTechniqueName);
