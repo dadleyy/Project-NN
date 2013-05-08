@@ -53,6 +53,7 @@
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="states\TestState.cpp" />
     <ClCompile Include="entity\Drawables\DrawLasers.cpp" />
+    <ClCompile Include="states\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -107,6 +108,7 @@
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="states\TestState.h" />
     <ClInclude Include="entity\Drawables\DrawLasers.h" />
+    <ClInclude Include="states\MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

@@ -128,6 +128,7 @@
     <ClCompile Include="res\post processes\Glow.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="states\MainMenu.cpp" />
     <ClCompile Include="states\TestState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClInclude Include="res\post processes\Glow.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="states\MainMenu.h" />
     <ClInclude Include="states\TestState.h" />
   </ItemGroup>
   <ItemGroup>
