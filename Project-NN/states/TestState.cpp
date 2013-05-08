@@ -162,21 +162,3 @@ void TestState::Draw() {
 	glow->setEffectVariables();
 	glow->draw("DScale2", "Pass1", "Pass2", "Original");
 }
-
-//
-//void TestState::OnMouseDown(int x, int y) {
-//	/*cout << "mouse down" << endl;
-//	mouseDown = true;
-//
-//	cout << resourceMgr->camera.GetPosition().z << endl;*/
-//}
-//
-//void TestState::OnMouseUp(int x, int y) {
-//	/*cout << "mouse up" << endl;
-//	mouseDown = false;*/
-//}
-//
-//void TestState::OnMouseMove(int x, int y) {
-//	//currentmouseposition[0] = x;
-//	//currentmouseposition[1] = y;
-//}

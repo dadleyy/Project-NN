@@ -1,333 +1,112 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="entity\BulletFiring.cpp" />
+    <ClCompile Include="entity\BulletManager.cpp" />
+    <ClCompile Include="entity\DivideOnContact.cpp" />
+    <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
+    <ClCompile Include="entity\Health.cpp" />
+    <ClCompile Include="GuiManager.cpp" />
+    <ClCompile Include="OctTree.cpp" />
+    <ClCompile Include="entity\Bomb.cpp" />
+    <ClCompile Include="entity\Bullet.cpp" />
+    <ClCompile Include="entity\ExplodeOnContact.cpp" />
+    <ClCompile Include="res\post processes\Contrast.cpp" />
+    <ClCompile Include="entity\AIComponent.cpp" />
+    <ClCompile Include="entity\Asteroid.cpp" />
+    <ClCompile Include="entity\Collider.cpp" />
+    <ClCompile Include="entity\Component.cpp" />
+    <ClCompile Include="entity\Drawable.cpp" />
+    <ClCompile Include="entity\Enemy.cpp" />
+    <ClCompile Include="entity\GameObject.cpp" />
+    <ClCompile Include="entity\Light.cpp" />
+    <ClCompile Include="entity\PhysicsComponent.cpp" />
+    <ClCompile Include="entity\PlayerCameraComponent.cpp" />
+    <ClCompile Include="entity\PlayerControls.cpp" />
+    <ClCompile Include="entity\PrintUponCollision.cpp" />
+    <ClCompile Include="entity\Spacecraft.cpp" />
+    <ClCompile Include="entity\Transform.cpp" />
+    <ClCompile Include="entity\Wobble.cpp" />
+    <ClCompile Include="framework\Camera.cpp" />
+    <ClCompile Include="framework\d3dApp.cpp" />
+    <ClCompile Include="framework\d3dUtil.cpp" />
+    <ClCompile Include="framework\GameTimer.cpp" />
+    <ClCompile Include="framework\GeometryGenerator.cpp" />
+    <ClCompile Include="framework\LERP.cpp" />
+    <ClCompile Include="framework\LightHelper.cpp" />
+    <ClCompile Include="framework\quaternionMath.cpp" />
+    <ClCompile Include="framework\MathHelper.cpp" />
+    <ClCompile Include="framework\OBJLoader.cpp" />
+    <ClCompile Include="framework\SDKwavefile.cpp" />
+    <ClCompile Include="framework\TextureMgr.cpp" />
+    <ClCompile Include="framework\Waves.cpp" />
+    <ClCompile Include="framework\xnacollision.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="input.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="entity\Skybox.cpp" />
+    <ClCompile Include="res\post processes\Glow.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="states\TestState.cpp" />
+    <ClCompile Include="states\MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\d3dApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\d3dUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\GameTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\GeometryGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\LightHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\MathHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\TextureMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\Waves.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\xnacollision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="states\TestState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Drawable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Wobble.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Asteroid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Spacecraft.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\OBJLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Light.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\PlayerControls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\PhysicsComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\quaternionMath.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\PlayerCameraComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\PrintUponCollision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Collider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\LERP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\AIComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="framework\SDKwavefile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="res\post processes\Contrast.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OctTree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Bullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Bomb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\ExplodeOnContact.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\Health.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\DivideOnContact.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\BulletFiring.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="entity\BulletManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="res\post processes\Glow.cpp">
-=======
-    <ClCompile Include="GuiManager.cpp">
->>>>>>> 2f6beac2df286ca0e174bd94ea8c730784a8bbc3
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="framework\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\d3dApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\d3dUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\d3dx11effect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\GameTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\GeometryGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\LightHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\MathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\TextureMgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\Waves.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\xnacollision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="states\TestState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Drawable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Wobble.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Asteroid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Spacecraft.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\OBJLoader.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Light.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\PlayerControls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\PhysicsComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\quaternionMath.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\PlayerCameraComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\PrintUponCollision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\PrintUponCollision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\LERP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\AIComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="framework\SDKwavefile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="res\post processes\Contrast.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OctTree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Drawables\DrawableInstancedModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Bullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Bomb.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\ExplodeOnContact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\Health.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\DivideOnContact.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\BulletFiring.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="entity\BulletManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="res\post processes\Glow.h">
-=======
-    <ClInclude Include="GuiManager.h">
->>>>>>> 2f6beac2df286ca0e174bd94ea8c730784a8bbc3
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="entity\BulletFiring.h" />
+    <ClInclude Include="entity\BulletManager.h" />
+    <ClInclude Include="entity\DivideOnContact.h" />
+    <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
+    <ClInclude Include="entity\Health.h" />
+    <ClInclude Include="GuiManager.h" />
+    <ClInclude Include="OctTree.h" />
+    <ClInclude Include="entity\Bomb.h" />
+    <ClInclude Include="entity\Bullet.h" />
+    <ClInclude Include="entity\ExplodeOnContact.h" />
+    <ClInclude Include="res\post processes\Contrast.h" />
+    <ClInclude Include="entity\AIComponent.h" />
+    <ClInclude Include="entity\Asteroid.h" />
+    <ClInclude Include="entity\Collider.h" />
+    <ClInclude Include="entity\Component.h" />
+    <ClInclude Include="entity\Drawable.h" />
+    <ClInclude Include="entity\Enemy.h" />
+    <ClInclude Include="entity\GameObject.h" />
+    <ClInclude Include="entity\Light.h" />
+    <ClInclude Include="entity\PhysicsComponent.h" />
+    <ClInclude Include="entity\PlayerCameraComponent.h" />
+    <ClInclude Include="entity\PlayerControls.h" />
+    <ClInclude Include="entity\PrintUponCollision.h" />
+    <ClInclude Include="entity\Spacecraft.h" />
+    <ClInclude Include="entity\Transform.h" />
+    <ClInclude Include="entity\Wobble.h" />
+    <ClInclude Include="framework\Camera.h" />
+    <ClInclude Include="framework\d3dApp.h" />
+    <ClInclude Include="framework\d3dUtil.h" />
+    <ClInclude Include="framework\d3dx11effect.h" />
+    <ClInclude Include="framework\GameTimer.h" />
+    <ClInclude Include="framework\GeometryGenerator.h" />
+    <ClInclude Include="framework\LERP.h" />
+    <ClInclude Include="framework\LightHelper.h" />
+    <ClInclude Include="framework\quaternionMath.h" />
+    <ClInclude Include="framework\MathHelper.h" />
+    <ClInclude Include="framework\OBJLoader.h" />
+    <ClInclude Include="framework\SDKwavefile.h" />
+    <ClInclude Include="framework\TextureMgr.h" />
+    <ClInclude Include="framework\Waves.h" />
+    <ClInclude Include="framework\xnacollision.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="input.h" />
+    <ClInclude Include="PhysicsManager.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="entity\Skybox.h" />
+    <ClInclude Include="res\post processes\Glow.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="states\TestState.h" />
+    <ClInclude Include="states\MainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />
