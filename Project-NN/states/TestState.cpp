@@ -50,7 +50,14 @@ void TestState::Init(StateManager* manager) {
 
 	laserDraw = new DrawLasers();
 	laserDraw->getEffectVariables("laserEffect", "RenderLasers");
+	laserDraw->getEffectVariables("glowDraw", "RenderGlowy");
+
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->addEffectVariables("glowColor", "color", laserDraw->glowColor);
+	laserDraw->addEffectVariables("glowColorMode", "colorMode", &laserDraw->glowMode);
+
 	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
 	laserDraw->createBuffer();
 
 	uniform_real_distribution<float> distribution(-50, 50);
@@ -128,15 +135,8 @@ void TestState::Draw() {
 		(*it)->Draw();
 	}
 
+	laserDraw->setShader("laserEffect", "RenderLasers");
 	laserDraw->draw();
-
-	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
-		(*it)->Draw();
-	}
-
-	if( spacer != 0 )
-		spacer->Draw();
-	*/
 
 	//draw glowy stuff
 	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["DScale2"]);
@@ -156,6 +156,8 @@ void TestState::Draw() {
 			temp->setShader("betterPhong", "Render");
 		}
 	}
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->setEffectVariables();
 	laserDraw->draw();
 	laserDraw->points.clear();
 

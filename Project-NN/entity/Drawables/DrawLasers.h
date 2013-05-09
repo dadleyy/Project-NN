@@ -11,5 +11,8 @@ public:
 	virtual void createBuffer();
 	virtual void draw();
 	std::vector<XMFLOAT3> points;
+	float glowColor[4];
+	float laserColor[4];
+	float glowMode;
 };
 

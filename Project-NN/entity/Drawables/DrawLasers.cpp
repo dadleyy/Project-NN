@@ -1,6 +1,6 @@
 #include "DrawLasers.h"
 #include "ResourceManager.h"
-
+#include "../Transform.h"
 
 extern ResourceManager* resourceMgr;
 
@@ -15,6 +15,11 @@ DrawLasers::DrawLasers(void) : Drawable()
 
 	//create the buffer
 	HRESULT hr = pD3DDevice->CreateBuffer(&bufferDescription, NULL, &vertexBuffer);
+
+	glowColor[0]=0; glowColor[1]=1; glowColor[2]=0; glowColor[3]=1;
+	laserColor[0]=1; laserColor[1]=0; laserColor[2]=0; laserColor[3]=1;
+	glowMode = 0;
+	transform = new Transform();
 }
 
 

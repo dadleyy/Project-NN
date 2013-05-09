@@ -17,4 +17,5 @@ private:
 	Drawable* drawable;
 	Collider* collider;
 	ExplodeOnContact* explodeOnContact;
+	float glowColorMode;
 };

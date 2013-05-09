@@ -11,16 +11,21 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 	drawable = new Drawable();
 	collider = new Collider();
 	explodeOnContact = new ExplodeOnContact(30);
+	glowColorMode = 1;
 
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
 	transform->scale = XMFLOAT3(3, 3, 3);
 	drawable->getEffectVariables("betterPhong", "Render");
+
 	drawable->setShader("betterPhong", "Render");
 	drawable->addTexture("bomb", "diffuseMap");
 	drawable->getEffectVariables("glowDraw", "RenderGlowy");
+
 	drawable->setShader("glowDraw", "RenderGlowy");
+	drawable->addEffectVariables("glowColorMode", "colorMode", &glowColorMode);
 	drawable->addTexture("bombGlow", "glowTex");
 	drawable->addTexture("Depth", "depth");
+
 	drawable->setShader("betterPhong", "Render");
 	
 	drawable->createBuffer("Sphere");
