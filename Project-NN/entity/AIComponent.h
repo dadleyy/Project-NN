@@ -31,16 +31,17 @@ public:
 	GameObject *source;
 	GameObject *target;
 
+	std::string uid;
+
 private:
 
-	void Follow( float dt );
-	void Stand( float dt );
-	void Wander( float dt );
-	void Flock( float dt );
-	void Avoid( float dt );
+	XMVECTOR Follow( float dt );
+	XMVECTOR Stand( float dt );
+	XMVECTOR Wander( float dt );
+	XMVECTOR Flock( float dt );
+	XMVECTOR Avoid( float dt );
 	
 	AI_STATE state;
-	XMFLOAT3 desired;
 	float strength;
 
 };

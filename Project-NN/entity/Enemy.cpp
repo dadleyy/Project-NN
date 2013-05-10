@@ -10,10 +10,10 @@
 Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 {
 	
+	ai = new AIComponent( );	
 	transform = new Transform( );
 	drawable = new Drawable( );
 
-	ai = new AIComponent( );	
 	physics = new PhysicsComponent( 
 		resourceMgr->camera.GetLook(), 
 		resourceMgr->camera.GetRight(), 
@@ -28,8 +28,10 @@ Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 
 	transform->position = initialPosition; 
 	drawable->getEffectVariables("betterPhong", "Render");
+	drawable->setShader("betterPhong", "Render");
 	drawable->createBuffer("cool");
-	drawable->addTexture("quickie", "diffuseMap");
+	drawable->addTexture("shipTexture", "diffuseMap");
+
 
 	physics->setLinVDamp( .98 );
 	physics->setLinADamp( .9975 );
@@ -53,7 +55,7 @@ void Enemy::Draw()
 
 Enemy::~Enemy(void)
 {
-	delete drawable;
+	//delete drawable;
 	delete transform;
 	delete ai;
 	delete physics;
