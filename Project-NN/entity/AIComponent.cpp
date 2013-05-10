@@ -62,7 +62,7 @@ void AIComponent::Update( float dt )
 	// save a temp reference to the original target
 	GameObject* temp = target;
 	// add a flocking force 
-	force = XMVectorAdd( Flock(dt), force );
+	//force = XMVectorAdd( Flock(dt), force );
 	// set the target back to the original
 	target = temp;
 
@@ -77,7 +77,9 @@ void AIComponent::Update( float dt )
 	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->upAxis, up );
 
 	// add forces to velocity
-	XMStoreFloat3( &source->GetComponent<PhysicsComponent>( )->velocity, force );
+	XMVECTOR vel = XMLoadFloat3( &source->GetComponent<PhysicsComponent>( )->velocity );
+	vel = XMVectorAdd( vel, XMVectorScale( force, dt ) );
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>( )->velocity, vel );
 
 }
 
@@ -111,11 +113,11 @@ XMVECTOR AIComponent::Avoid( float dt )
 	XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>()->position );
 	XMVECTOR diff = XMVectorScale( XMVectorSubtract( tpos, mpos ), -1.0f );
 	XMVECTOR a_force = XMVector3Normalize( diff );
-	float length = XMVectorGetX( XMVector3Length( diff ) );
-	a_force = XMVectorScale( a_force, 1.0f );
-
-	XMVECTOR out = XMVectorZero( );
-	return out;
+	// calculate this force based on distance
+	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
+	a_force = XMVectorScale( a_force, 1.0f / length );
+	// add that
+	return a_force;
 }
 
 XMVECTOR AIComponent::Follow( float dt )
@@ -125,8 +127,8 @@ XMVECTOR AIComponent::Follow( float dt )
 	XMVECTOR diff = XMVectorSubtract( tpos, mpos );
 	XMVECTOR f_force = XMVector3Normalize( diff );
 	// calculate how large this force vector should be
-	float length = XMVectorGetX( XMVector3Length( diff ) );
-	f_force = XMVectorScale( f_force, pow( (length * 0.5f), 2.0f ) );
+	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
+	f_force = XMVectorScale( f_force, length * 10.0f );
 	// send that out
 	return f_force;
 }
