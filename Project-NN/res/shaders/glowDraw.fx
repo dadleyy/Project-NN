@@ -33,7 +33,7 @@ Texture2D depth;
 Texture2D glowTex;
 float2 texDimensions;
 float4 color = float4(1,0,0,1);
-int colorMode = 1; //0 to use color, 1 to use texture, 2 to use texture*color
+float colorMode = 0; //0 to use color, 1 to use texture, 2 to use texture*color
 
 struct VERTEX
 {   
@@ -45,7 +45,6 @@ struct VERTEX
 struct PIXEL
 {	
 	float4 Pos : SV_POSITION; 
-	float4 Col : COLOR0;
 	float2 UV : TEXCOORD2;	
 };
 
@@ -62,8 +61,6 @@ PIXEL VS( VERTEX input )
 	i =        mul(fovScaling, i);
 
 	output.Pos = i;
-	output.Col = 1;
-
 	output.UV = input.UV;
 
 	return output;
@@ -79,20 +76,21 @@ float4 PS( PIXEL input ) : SV_Target
 	float4 finalColor = 0;
 	float4 d = depth.Sample(nearestPixel, float2(input.Pos.x/texDimensions.x, input.Pos.y/texDimensions.y));
 
-	if(abs(input.Pos.z) <= d.x +.000001 && input.Pos.z >= 0)
+	if(abs(input.Pos.z) <= (d.x+(1-d.x)*.01) && input.Pos.z >= 0)
 	{
-		if(colorMode == 1)
-		{
-			finalColor = glowTex.Sample(samAnisotropic, input.UV);;
-		}
-		else if(colorMode == 2)
-		{
-			finalColor = color*glowTex.Sample(samAnisotropic, input.UV);;
-		}
-		else
+		if(colorMode < .2)
 		{
 			finalColor = color;
 		}
+		else if(colorMode < 1.2)
+		{
+			finalColor = glowTex.Sample(samAnisotropic, input.UV);;
+		}
+		else if(colorMode < 2.2)
+		{
+			finalColor = color*glowTex.Sample(samAnisotropic, input.UV);;
+		}
+		
 	}
 	else
 		discard;

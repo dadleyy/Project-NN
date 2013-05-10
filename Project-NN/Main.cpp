@@ -263,6 +263,7 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstancedBump.fx", "bumpInstancePhong" );
 	resourceMgr->addEffect(L"res/shaders/glowDraw.fx", "glowDraw" );
 	resourceMgr->addEffect(L"res/shaders/glowEffect.fx", "glowEffect" );
+	resourceMgr->addEffect(L"res/shaders/lasers.fx", "laserEffect" );
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);

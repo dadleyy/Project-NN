@@ -44,7 +44,21 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 	mDepthStencilView(0)
 {
 	ZeroMemory(&mScreenViewport, sizeof(D3D11_VIEWPORT));
+	originalImage = 0;
+	targetTexture1 = 0;
+	targetTexture2 = 0;
+	targetTextureScaledDown = 0;
 
+	originalView = 0;
+	targetView1 = 0;
+	targetView2 = 0;
+	targetViewScaledDown = 0;
+	 
+	originalImageResourceView = 0;
+	targetTextureResourceView1 = 0;
+	targetTextureResourceView2 = 0;
+	targetTextureResourceViewScaledDown = 0;
+	depthTextureResourceView = 0;
 	// Get a pointer to the application object so we can forward 
 	// Windows messages to the object's window procedure through
 	// the global window procedure.
@@ -140,6 +154,19 @@ void D3DApp::OnResize()
 	ReleaseCOM(mDepthStencilView);
 	ReleaseCOM(mDepthStencilBuffer);
 
+	ReleaseCOM(originalImage);
+	ReleaseCOM(targetTexture1);
+	ReleaseCOM(targetTexture2);
+	ReleaseCOM(targetTextureScaledDown);
+	ReleaseCOM(originalView);
+	ReleaseCOM(targetView1);
+	ReleaseCOM(targetView2);
+	ReleaseCOM(targetViewScaledDown);
+	ReleaseCOM(originalImageResourceView);
+	ReleaseCOM(targetTextureResourceView1);
+	ReleaseCOM(targetTextureResourceView2);
+	ReleaseCOM(targetTextureResourceViewScaledDown);
+	ReleaseCOM(depthTextureResourceView);
 
 	// Resize the swap chain and recreate the render target view.
 
@@ -276,7 +303,6 @@ void D3DApp::OnResize()
 	mScreenViewport.Height   = static_cast<float>(mClientHeight);
 	mScreenViewport.MinDepth = 0.0f;
 	mScreenViewport.MaxDepth = 1.0f;
-
 	
 	mScreenViewportDiv5.TopLeftX = 0;
 	mScreenViewportDiv5.TopLeftY = 0;

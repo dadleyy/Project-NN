@@ -4,7 +4,7 @@
 using namespace std;
 
 #include "ResourceManager.h"
-#include "Drawable.h"
+#include "Drawables/DrawLasers.h"
 #include "BulletFiring.h"
 #include "Transform.h"
 #include "PrintUponCollision.h"
@@ -13,7 +13,7 @@ using namespace std;
 
 Bullet::Bullet(BulletManager* gManager) {
 	transform = new Transform();
-	sphere = new Drawable();
+
 	print = new PrintUponCollision();
 	fireBullet = new BulletFiring();
 	forward = XMFLOAT3();
@@ -29,13 +29,7 @@ Bullet::Bullet(BulletManager* gManager) {
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
 	active = false;
-
-    sphere->getEffectVariables("betterPhong", "Render");
-	sphere->setShader("betterPhong", "Render");
-	sphere->createBuffer("Sphere");
-	sphere->addTexture("Test2", "diffuseMap");
 	
-	components.push_back(sphere);
 	components.push_back(print);
 	components.push_back(fireBullet);
 	components.push_back(collider);
@@ -46,7 +40,6 @@ Bullet::Bullet(BulletManager* gManager) {
 
 Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	transform = new Transform();
-	sphere = new Drawable();
 	print = new PrintUponCollision();
 	fireBullet = new BulletFiring();
 	forward = gForward;
@@ -59,11 +52,6 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	float scale = 0.25;
 	transform->scale = XMFLOAT3(scale, scale, scale);
 
-    sphere->getEffectVariables("betterPhong", "Render");
-	sphere->createBuffer("Sphere");
-	sphere->addTexture("Test", "diffuseMap");
-
-	components.push_back(sphere);
 	components.push_back(print);
 	components.push_back(fireBullet);
 	//components.push_back(collider);
@@ -71,8 +59,8 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
 	GameObject::InitComponents();
 }
 
-void Bullet::Draw() {
-	sphere->setEffectVariables();
-	sphere->setEffectTextures();
-	sphere->draw();
+void Bullet::Draw() 
+{
+	laserDraw->points.push_back(transform->position);
+	laserDraw->points.push_back(XMFLOAT3(transform->position.x + 2*forward.x, transform->position.y + 2*forward.y,transform->position.z + 2*forward.z));
 }

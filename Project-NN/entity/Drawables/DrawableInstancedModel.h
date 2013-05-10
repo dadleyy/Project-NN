@@ -11,11 +11,11 @@ public:
 	~DrawableInstancedModel(void);
 	
 	ID3D11Buffer* instanceBuffer;
-	vector<XMFLOAT4X4>* instances;
+	vector<float>* instances;
 
 	virtual void createBuffer(char* mesh);
 	virtual void setEffectVariables();
 	virtual void setEffectTextures();
-	void drawInstanced(int numInstances);
+	virtual void drawInstanced(int numInstances);
 };
 

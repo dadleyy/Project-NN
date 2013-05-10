@@ -30,6 +30,17 @@ bool Drawable::Init(GameObject* go) {
 	return transform != nullptr;
 }
 
+void Drawable::addEffectVariables(char* id, char* variableName, float* value)
+{
+	auto var = currentShader->GetVariableByName(variableName);
+	variables[var] = value;
+}
+
+void Drawable::addTexture(char* id, char* textureVariable) {
+	auto diffuseMap = resourceMgr->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
+	textures[diffuseMap] = resourceMgr->textures[id];
+}
+
 void Drawable::setEffectVariables()
 {
 	if(currentShader != 0)
@@ -50,6 +61,13 @@ void Drawable::setEffectVariables()
 
 		float arr[2] = {(int)(screenWidth*.5),(int)(screenHeight*.5)};
 		currentShader->GetVariableByName("texDimensions")->SetRawValue(arr, 0, 8);
+
+		for(auto it = variables.begin(); it != variables.end(); ++it) 
+		{
+			D3DX11_EFFECT_TYPE_DESC i;
+			it->first->GetType()->GetDesc(&i);
+			it->first->SetRawValue(it->second,0,(UINT)pow(4.0,i.Class+1));
+		}
 	}
 }
 
@@ -128,10 +146,4 @@ void Drawable::createBuffer(char* mesh)
 
 	numVerts = resourceMgr->meshes.at(mesh)->numVerts;
 	numIndicies = resourceMgr->meshes.at(mesh)->numIndicies;
-}
-
-
-void Drawable::addTexture(char* id, char* textureVariable) {
-	auto diffuseMap = resourceMgr->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
-	textures[diffuseMap] = resourceMgr->textures[id];
 }

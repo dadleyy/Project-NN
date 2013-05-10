@@ -7,6 +7,7 @@
 #include "StateManager.h"
 #include "entity/BulletManager.h"
 #include "entity/Drawable.h"
+#include "entity/Drawables/DrawLasers.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
 #include "entity/Bomb.h"
@@ -15,11 +16,10 @@
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "input.h"
-#include "entity/PlayerControls.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
 #include "../res/post processes/Glow.h"
+
 
 using namespace std;
 
@@ -48,11 +48,24 @@ void TestState::Init(StateManager* manager) {
 	glow->setShader("glowEffect", "Horz");
 	glow->createBuffer("rectangle");
 
+	laserDraw = new DrawLasers();
+	laserDraw->getEffectVariables("laserEffect", "RenderLasers");
+	laserDraw->getEffectVariables("glowDraw", "RenderGlowy");
+
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->addEffectVariables("glowColor", "color", laserDraw->glowColor);
+	laserDraw->addEffectVariables("glowColorMode", "colorMode", &laserDraw->glowMode);
+
+	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
+	laserDraw->createBuffer();
+
 	uniform_real_distribution<float> distribution(-50, 50);
 
 
 	for(int i = 0; i < 5; i++) {
 		auto bullet = new Bullet(bManager);
+		bullet->laserDraw = laserDraw;
 		sceneMgr->Insert(bullet);
 	}
 
@@ -132,13 +145,8 @@ void TestState::Draw() {
 		(*it)->Draw();
 	}
 
-	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
-		(*it)->Draw();
-	}
-
-	if( spacer != 0 )
-		spacer->Draw();
-	*/
+	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->draw();
 
 	//draw glowy stuff
 	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["DScale2"]);
@@ -158,25 +166,12 @@ void TestState::Draw() {
 			temp->setShader("betterPhong", "Render");
 		}
 	}
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->setEffectVariables();
+	laserDraw->draw();
+	laserDraw->points.clear();
+
 	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["Original"]);
 	glow->setEffectVariables();
 	glow->draw("DScale2", "Pass1", "Pass2", "Original");
 }
-
-//
-//void TestState::OnMouseDown(int x, int y) {
-//	/*cout << "mouse down" << endl;
-//	mouseDown = true;
-//
-//	cout << resourceMgr->camera.GetPosition().z << endl;*/
-//}
-//
-//void TestState::OnMouseUp(int x, int y) {
-//	/*cout << "mouse up" << endl;
-//	mouseDown = false;*/
-//}
-//
-//void TestState::OnMouseMove(int x, int y) {
-//	//currentmouseposition[0] = x;
-//	//currentmouseposition[1] = y;
-//}

@@ -15,7 +15,7 @@ public:
 	Asteroid(float xPos, float yPos, float zPos, std::vector<Asteroid*>* asteroids);
 	virtual ~Asteroid();
 	GameObject* Clone();
-	void fillInstanceData(std::vector<XMFLOAT4X4>* data);
+	void fillInstanceData(std::vector<float>* data);
 private:
 	Collider* collider;
 	DivideOnContact* divide;
