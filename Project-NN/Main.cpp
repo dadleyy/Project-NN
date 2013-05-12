@@ -8,7 +8,7 @@
 #include "framework/d3dApp.h"
 
 #include "StateManager.h"
-#include "states/TestState.h"
+#include "states/MainMenu.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
 #include "SceneManager.h"
@@ -116,7 +116,7 @@ bool Game::Init() {
 	OnResize();
 
 	resourceMgr->camera.UpdateViewMatrix();
-	manager.PushState(TestState::Instance());
+	manager.ChangeState(MainMenu::Instance());
 	return true;
 }
 
