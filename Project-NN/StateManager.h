@@ -18,6 +18,7 @@ public:
 	void OnKeyUp(int keycode);
 	void OnKeyDown(int keycode);
 
+	void ChangeState(GameState* state);
 	void PushState(GameState* state);
 	void PopState();
 

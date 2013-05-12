@@ -20,7 +20,7 @@ class DrawLasers;
 extern int screenWidth;
 extern int screenHeight;
 
-class TestState : public GameState {
+class Gameplay : public GameState {
 public:
 
 	void Init(StateManager* manager);
@@ -28,12 +28,15 @@ public:
 	void Update(float dt);
 	void Draw();
 
-	static TestState* Instance() {
+	static Gameplay* Instance() {
 		return &instance;
+	}
+	bool IsSubState() {
+		return false;
 	}
 
 private:
-	static TestState instance;
+	static Gameplay instance;
 
 	BulletManager* bManager;
 	std::vector<Asteroid*> asteroids;

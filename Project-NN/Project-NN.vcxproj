@@ -128,8 +128,11 @@
     <ClCompile Include="res\post processes\Glow.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="states\EndGame.cpp" />
+    <ClCompile Include="states\Gameplay.cpp" />
+    <ClCompile Include="states\Instructions.cpp" />
     <ClCompile Include="states\MainMenu.cpp" />
-    <ClCompile Include="states\TestState.cpp" />
+    <ClCompile Include="states\Pause.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -183,8 +186,11 @@
     <ClInclude Include="res\post processes\Glow.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="states\EndGame.h" />
+    <ClInclude Include="states\Gameplay.h" />
+    <ClInclude Include="states\Instructions.h" />
     <ClInclude Include="states\MainMenu.h" />
-    <ClInclude Include="states\TestState.h" />
+    <ClInclude Include="states\Pause.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

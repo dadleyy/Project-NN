@@ -1,4 +1,4 @@
-#include "TestState.h"
+#include "Gameplay.h"
 
 #include <iostream>
 #include <random>
@@ -23,10 +23,10 @@
 
 using namespace std;
 
-TestState TestState::instance;
+Gameplay Gameplay::instance;
 
 
-void TestState::Init(StateManager* manager) {
+void Gameplay::Init(StateManager* manager) {
 	GameState::Init(manager);
 
 	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
@@ -101,7 +101,7 @@ void TestState::Init(StateManager* manager) {
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
 }
 
-void TestState::Cleanup() {
+void Gameplay::Cleanup() {
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
 		delete *it;
 	}
@@ -109,7 +109,7 @@ void TestState::Cleanup() {
 }
 
 
-void TestState::Update(float dt) {
+void Gameplay::Update(float dt) {
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 up     = XMFLOAT3(0.0f, 1.0f, 0.0f);
@@ -126,7 +126,7 @@ void TestState::Update(float dt) {
 	resourceMgr->updateShaderBuffers();
 }
 
-void TestState::Draw() {
+void Gameplay::Draw() {
 	int activeAsteroids = 0;
 	for(auto it = asteroids.begin(); it != asteroids.end(); ++it) {
 		if(!(*it)->active)

@@ -23,10 +23,22 @@ void StateManager::Draw() {
 	states[states.size() - 1]->Draw();
 }
 
+void StateManager::ChangeState(GameState* state) {
+	//TODO: Error out
+	if(state->IsSubState())
+		return;
+	for(auto it = states.rbegin(); it != states.rend(); ++it)
+		(*it)->Cleanup();
+	states.clear();
+	states.push_back(state);
+	state->Init(this);
+}
 
 void StateManager::PushState(GameState* state) {
-	state->Init(this);
+	if(!state->IsSubState())
+		return;
 	states.push_back(state);
+	state->Init(this);
 }
 
 void StateManager::PopState() {
