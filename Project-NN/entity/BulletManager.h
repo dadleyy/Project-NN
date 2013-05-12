@@ -11,7 +11,6 @@ class Bullet;
 
 class BulletManager : public Component {
 public:
-	~BulletManager();
 	bool Init(GameObject* go);
 	void Update(float dt);
 	void Fire();
@@ -19,5 +18,5 @@ public:
 	std::vector<Bullet*> bullets;
 private:
 	GameObject* go;
-	Transform* transform;
+	//Transform* transform;
 };

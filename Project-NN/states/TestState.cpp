@@ -63,20 +63,20 @@ void TestState::Init(StateManager* manager) {
 	uniform_real_distribution<float> distribution(-50, 50);
 
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 50; i++) {
 		auto bullet = new Bullet(bManager);
 		bullet->laserDraw = laserDraw;
 		sceneMgr->Insert(bullet);
 	}
 
-	for(int i = 0; i < 3; i++) {
+	for(int i = 0; i < 30; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
 	}
 
 	uniform_real_distribution<float> enemy_d(-20, 20);
-	for(int i = 0; i < 30; i++){
+	for(int i = 0; i < 0; i++){
 		float x = enemy_d(resourceMgr->randomEngine), 
 			y = enemy_d(resourceMgr->randomEngine), 
 			z = enemy_d(resourceMgr->randomEngine);

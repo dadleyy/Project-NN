@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "PhysicsManager.h"
-#include "Bullet.h";
+#include "Bullet.h"
 
 
 bool BulletFiring::Init(GameObject* go) {
@@ -14,7 +14,7 @@ bool BulletFiring::Init(GameObject* go) {
 	this->speed = dynamic_cast<Bullet*>(go)->SPEED;
 	//this->forward = dynamic_cast<Bullet*>(go)->forward;
 	transform = go->GetComponent<Transform>();
-	physicsMgr->AddObject(go);
+	//physicsMgr->AddObject(go);
 	return transform != nullptr;
 }
 
