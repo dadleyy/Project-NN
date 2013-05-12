@@ -9,10 +9,6 @@
 #include "Bullet.h";
 
 
-BulletFiring::~BulletFiring() {
-	physicsMgr->RemoveObject(go);
-}
-
 bool BulletFiring::Init(GameObject* go) {
 	this->go = go;
 	this->speed = dynamic_cast<Bullet*>(go)->SPEED;
