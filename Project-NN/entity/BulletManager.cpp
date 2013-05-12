@@ -5,6 +5,7 @@
 
 #include "PhysicsComponent.h"
 #include "GameObject.h"
+#include "BulletFiring.h"
 #include "Bullet.h"
 #include "Transform.h"
 #include "PhysicsManager.h"
@@ -31,14 +32,14 @@ void BulletManager::Fire(){
 			continue;
 		else
 		{
-			(*it)->setForward(go->GetComponent<PhysicsComponent>()->forwardAxis);
+			(*it)->GetComponent<BulletFiring>()->forward = go->GetComponent<PhysicsComponent>()->forwardAxis;
 			(*it)->transform->position = transform->position;
 			(*it)->active = true;
 			return;
 		}
 	}
 	for(auto it = bullets.begin(); it != bullets.end(); ++it){
-			(*it)->setForward(go->GetComponent<PhysicsComponent>()->forwardAxis);
+			(*it)->GetComponent<BulletFiring>()->forward = go->GetComponent<PhysicsComponent>()->forwardAxis;
 			(*it)->transform->position = transform->position;
 			return;
 	}

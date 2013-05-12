@@ -84,6 +84,7 @@
     <ClCompile Include="entity\DivideOnContact.cpp" />
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="entity\Health.cpp" />
+    <ClCompile Include="entity\RandomRotation.cpp" />
     <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="entity\Bomb.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="entity\DivideOnContact.h" />
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
     <ClInclude Include="entity\Health.h" />
+    <ClInclude Include="entity\RandomRotation.h" />
     <ClInclude Include="GuiManager.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="entity\Bomb.h" />
