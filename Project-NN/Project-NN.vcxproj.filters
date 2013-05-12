@@ -40,7 +40,6 @@
     <ClCompile Include="framework\OBJLoader.cpp" />
     <ClCompile Include="framework\SDKwavefile.cpp" />
     <ClCompile Include="framework\TextureMgr.cpp" />
-    <ClCompile Include="framework\Waves.cpp" />
     <ClCompile Include="framework\xnacollision.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="input.cpp" />
@@ -99,7 +98,6 @@
     <ClInclude Include="framework\OBJLoader.h" />
     <ClInclude Include="framework\SDKwavefile.h" />
     <ClInclude Include="framework\TextureMgr.h" />
-    <ClInclude Include="framework\Waves.h" />
     <ClInclude Include="framework\xnacollision.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="input.h" />
