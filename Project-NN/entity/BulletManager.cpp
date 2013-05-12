@@ -8,18 +8,13 @@
 #include "BulletFiring.h"
 #include "Bullet.h"
 #include "Transform.h"
+#include "input.h"
 #include "PhysicsManager.h"
 
 
-BulletManager::~BulletManager() {
-	physicsMgr->RemoveObject(go);
-}
-
 bool BulletManager::Init(GameObject* go) {
 	this->go = go;
-	
 	transform = go->GetComponent<Transform>();
-	physicsMgr->AddObject(go);
 	return transform != nullptr;
 }
 

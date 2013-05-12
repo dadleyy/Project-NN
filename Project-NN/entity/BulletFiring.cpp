@@ -6,7 +6,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "PhysicsManager.h"
-#include "Bullet.h";
+#include "Bullet.h"
 
 
 bool BulletFiring::Init(GameObject* go) {
