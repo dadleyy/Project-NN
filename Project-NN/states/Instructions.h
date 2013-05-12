@@ -14,6 +14,9 @@ public:
 	static Instructions* Instance() {
 		return &instance;
 	}
+	bool IsSubState() {
+		return true;
+	}
 private:
 	static Instructions instance;
 };
