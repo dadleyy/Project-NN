@@ -7,6 +7,7 @@
 #include "StateManager.h"
 #include "entity/BulletManager.h"
 #include "entity/Drawable.h"
+#include "entity/Drawables/DrawLasers.h"
 #include "entity/Drawables/DrawableInstancedModel.h"
 #include "entity/Asteroid.h"
 #include "entity/Bomb.h"
@@ -15,10 +16,9 @@
 #include "entity/Spacecraft.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
-#include "input.h"
-#include "entity/PlayerControls.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
+#include "../res/post processes/Glow.h"
 
 
 using namespace std;
@@ -29,36 +29,65 @@ TestState TestState::instance;
 void TestState::Init(StateManager* manager) {
 	GameState::Init(manager);
 
-	currentmouseposition[0] = currentmouseposition[1] = 0;
-	lastmouseposition[0] = lastmouseposition[1] = 0;
-
 	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
 	bManager = spacer->getBullets();
 	sceneMgr->Insert(spacer);
 
 	asteroidDraw = new DrawableInstancedModel();
 	asteroidDraw->getEffectVariables("bumpInstancePhong", "Render");
+	asteroidDraw->setShader("bumpInstancePhong", "Render");
 	asteroidDraw->createBuffer("Asteroid");
 	asteroidDraw->addTexture("asteroid", "diffuseMap");
 	asteroidDraw->addTexture("asteroidBump", "bumpMap");
+	
+
+	glow = new Glow();
+	glow->getEffectVariables("glowEffect", "Horz");
+	glow->getEffectVariables("glowEffect", "Vert");
+	glow->getEffectVariables("glowEffect", "Add");
+	glow->setShader("glowEffect", "Horz");
+	glow->createBuffer("rectangle");
+
+	laserDraw = new DrawLasers();
+	laserDraw->getEffectVariables("laserEffect", "RenderLasers");
+	laserDraw->getEffectVariables("glowDraw", "RenderGlowy");
+
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->addEffectVariables("glowColor", "color", laserDraw->glowColor);
+	laserDraw->addEffectVariables("glowColorMode", "colorMode", &laserDraw->glowMode);
+
+	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
+	laserDraw->createBuffer();
 
 	uniform_real_distribution<float> distribution(-50, 50);
 
 
-	for(int i = 0; i < 50; i++) {
+	for(int i = 0; i < 5; i++) {
 		auto bullet = new Bullet(bManager);
+		bullet->laserDraw = laserDraw;
 		sceneMgr->Insert(bullet);
 	}
 
-	for(int i = 0; i < 30; i++) {
+	for(int i = 0; i < 3; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
 	}
 
+	uniform_real_distribution<float> enemy_d(-20, 20);
+	for(int i = 0; i < 30; i++){
+		float x = enemy_d(resourceMgr->randomEngine), 
+			y = enemy_d(resourceMgr->randomEngine), 
+			z = enemy_d(resourceMgr->randomEngine);
+
+		auto enemy = new Enemy( spacer, XMFLOAT3(x,y,z) );
+		sceneMgr->Insert( enemy );
+	}
+
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 2; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
@@ -116,29 +145,33 @@ void TestState::Draw() {
 		(*it)->Draw();
 	}
 
-	/*for(auto it = fired.begin(); it != fired.end(); ++it) {
-		(*it)->Draw();
+	laserDraw->setShader("laserEffect", "RenderLasers");
+	laserDraw->draw();
+
+	//draw glowy stuff
+	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["DScale2"]);
+	resourceMgr->md3dImmediateContext->OMSetRenderTargets(1, &resourceMgr->renderTargets["DScale2"], NULL);
+	resourceMgr->md3dImmediateContext->ClearRenderTargetView(resourceMgr->renderTargets["DScale2"], reinterpret_cast<const float*>(&Colors::Black));
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) 
+	{
+		if(!(*it)->glow)
+			continue;
+		Drawable* temp = (*it)->GetComponent<Drawable>();
+		if(temp)
+		{
+			temp->setShader("glowDraw", "RenderGlowy");
+			temp->setEffectVariables();
+			temp->setEffectTextures();
+			(*it)->Draw();
+			temp->setShader("betterPhong", "Render");
+		}
 	}
+	laserDraw->setShader("glowDraw", "RenderGlowy");
+	laserDraw->setEffectVariables();
+	laserDraw->draw();
+	laserDraw->points.clear();
 
-	if( spacer != 0 )
-		spacer->Draw();
-	*/
-}
-
-
-void TestState::OnMouseDown(int x, int y) {
-	/*cout << "mouse down" << endl;
-	mouseDown = true;
-
-	cout << resourceMgr->camera.GetPosition().z << endl;*/
-}
-
-void TestState::OnMouseUp(int x, int y) {
-	/*cout << "mouse up" << endl;
-	mouseDown = false;*/
-}
-
-void TestState::OnMouseMove(int x, int y) {
-	//currentmouseposition[0] = x;
-	//currentmouseposition[1] = y;
+	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["Original"]);
+	glow->setEffectVariables();
+	glow->draw("DScale2", "Pass1", "Pass2", "Original");
 }

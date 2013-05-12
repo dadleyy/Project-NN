@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "ResourceManager.h"
 
+extern int screenWidth;
+extern int screenHeight;
 extern ResourceManager* resourceMgr;
 
 Drawable::Drawable(void) : world()
@@ -28,21 +30,45 @@ bool Drawable::Init(GameObject* go) {
 	return transform != nullptr;
 }
 
+void Drawable::addEffectVariables(char* id, char* variableName, float* value)
+{
+	auto var = currentShader->GetVariableByName(variableName);
+	variables[var] = value;
+}
+
+void Drawable::addTexture(char* id, char* textureVariable) {
+	auto diffuseMap = resourceMgr->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
+	textures[diffuseMap] = resourceMgr->textures[id];
+}
+
 void Drawable::setEffectVariables()
 {
-	//translate, rotate, and scale matrix
-	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
-	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
-	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
-	XMMATRIX w = scale * rotation * translate;
+	if(currentShader != 0)
+	{
+		//translate, rotate, and scale matrix
+		XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
+		XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
+		XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
+		XMMATRIX w = scale * rotation * translate;
 
-	//update the world matrix in the shader
-	D3D11_MAPPED_SUBRESOURCE resource;
+		//update the world matrix in the shader
+		D3D11_MAPPED_SUBRESOURCE resource;
 
-	HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
-	memcpy((float*)resource.pData,    &w._11,  64);
-	memcpy((float*)resource.pData+16, &rotation._11, 64);
-	deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
+		HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+		memcpy((float*)resource.pData,    &w._11,  64);
+		memcpy((float*)resource.pData+16, &rotation._11, 64);
+		deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
+
+		float arr[2] = {(int)(screenWidth*.5),(int)(screenHeight*.5)};
+		currentShader->GetVariableByName("texDimensions")->SetRawValue(arr, 0, 8);
+
+		for(auto it = variables.begin(); it != variables.end(); ++it) 
+		{
+			D3DX11_EFFECT_TYPE_DESC i;
+			it->first->GetType()->GetDesc(&i);
+			it->first->SetRawValue(it->second,0,(UINT)pow(4.0,i.Class+1));
+		}
+	}
 }
 
 void Drawable::setEffectTextures()
@@ -50,6 +76,12 @@ void Drawable::setEffectTextures()
 	for(auto it = textures.begin(); it != textures.end(); ++it) {
 		it->first->AsShaderResource()->SetResource(it->second);
 	}
+}
+
+void Drawable::setShader(char* effectName, char* techniqueName)
+{
+	currentShader = shaders[effectName];
+	currentTechnique = techniques[techniqueName];
 }
 
 void Drawable::draw()
@@ -63,10 +95,10 @@ void Drawable::draw()
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
-    technique->GetDesc( &techDesc );
+    currentTechnique->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
-        technique->GetPassByIndex(p)->Apply(0, deviceContext);
+        currentTechnique->GetPassByIndex(p)->Apply(0, deviceContext);
 		deviceContext->Draw( numVerts, 0 );
 	}
 }
@@ -74,8 +106,8 @@ void Drawable::draw()
 void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 {
 	this->effectID = effectID;
-	shader = resourceMgr->effects.at( effectID )->effect;
-    technique = shader->GetTechniqueByName( fxTechniqueName );
+	shaders[effectID] = resourceMgr->effects.at( effectID )->effect;
+    techniques[fxTechniqueName] = shaders[effectID]->GetTechniqueByName( fxTechniqueName );
 }
 
 //****************************************************************
@@ -97,7 +129,7 @@ void Drawable::createBuffer(char* mesh)
 	
 	//get required vertex information from a shader technique
 	D3DX11_PASS_DESC passDesc;
-    technique->GetPassByIndex(0)->GetDesc(&passDesc);
+    currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	hr = pD3DDevice->CreateInputLayout(layout,
 				3,
@@ -114,10 +146,4 @@ void Drawable::createBuffer(char* mesh)
 
 	numVerts = resourceMgr->meshes.at(mesh)->numVerts;
 	numIndicies = resourceMgr->meshes.at(mesh)->numIndicies;
-}
-
-
-void Drawable::addTexture(char* id, char* textureVariable) {
-	auto diffuseMap = resourceMgr->getEffect(effectID)->GetVariableByName(textureVariable)->AsShaderResource();
-	textures[diffuseMap] = resourceMgr->textures[id];
 }

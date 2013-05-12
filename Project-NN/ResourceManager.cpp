@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include "framework\OBJLoader.h"
 
+using namespace std;
+
 ResourceManager::ResourceManager(void) {
 }
 

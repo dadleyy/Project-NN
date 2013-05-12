@@ -1,11 +1,11 @@
 
 //generic post process that draws the texture exactly as it appears
-Texture2D tex;
-Texture2D tex2;
+Texture2D blurredTex1;
+Texture2D blurredTex2;
 
 float offsets[3] = {0.0, 1.3846153846, 3.2307692308};
-float weights[3] = {0.3162162162, 0.2270270270, 0.0702702703};
-float2 texDimensions = float2(160, 120);
+float weights[3] = {0.2270270270, 0.3162162162,  0.0702702703};
+float2 texDimensions;
 
 SamplerState textureSampler
 {
@@ -54,8 +54,8 @@ float4 HorizontalBlur( PIXEL input ) : SV_Target
 	for(i = 0; i < 3; i++)
 	{
 		//samlelevel, becuase fuck everything at this point
-		color += tex.SampleLevel(textureSampler, input.UV + float2(offsets[i]/texDimensions.x,0.0),0) * weights[i];
-		color += tex.SampleLevel(textureSampler, input.UV + float2(-offsets[i]/texDimensions.x,0.0),0) * weights[i];
+		color += blurredTex1.SampleLevel(textureSampler, input.UV + float2(offsets[i]/texDimensions.x,0.0),0) * weights[i];
+		color += blurredTex1.SampleLevel(textureSampler, input.UV + float2(-offsets[i]/texDimensions.x,0.0),0) * weights[i];
 	}
 
 
@@ -70,8 +70,8 @@ float4 VerticalBlur( PIXEL input ) : SV_Target
 	for(i = 0; i < 3; i++)
 	{
 		//samplelevel, becuase fuck everything at this point
-		color += tex.SampleLevel(textureSampler, input.UV + float2(0.0, offsets[i]/texDimensions.x),0) * weights[i];
-		color += tex.SampleLevel(textureSampler, input.UV + float2(0.0, -offsets[i]/texDimensions.x),0) * weights[i];
+		color += blurredTex1.SampleLevel(textureSampler, input.UV + float2(0.0, offsets[i]/texDimensions.y),0) * weights[i];
+		color += blurredTex1.SampleLevel(textureSampler, input.UV + float2(0.0, -offsets[i]/texDimensions.y),0) * weights[i];
 	}
 
 
@@ -80,7 +80,7 @@ float4 VerticalBlur( PIXEL input ) : SV_Target
 
 float4 addTex( PIXEL input ) : SV_Target
 {
-	float4 texColor = tex.Sample(textureSampler, input.UV) + tex2.Sample(textureSampler, input.UV);
+	float4 texColor = blurredTex1.Sample(textureSampler, input.UV) + blurredTex2.Sample(textureSampler, input.UV);
 	texColor.w = 1;
 	return texColor;
 }

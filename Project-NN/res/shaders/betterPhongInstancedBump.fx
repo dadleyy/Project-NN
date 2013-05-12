@@ -210,7 +210,7 @@ float4 PS( PIXEL input ) : SV_Target
 	float4 finalColor = 0;
 	float4 texColor = diffuseMap.Sample(samAnisotropic, input.UV);
 	float4 bumpNormal = bumpMap.Sample(samAnisotropic, input.UV);
-
+	bumpNormal.xy = (bumpNormal.xy-.5)*2;
 	float3 bump = input.worldTangent*bumpNormal.x + input.worldBiTangent*bumpNormal.y + input.worldNormal*bumpNormal.z;
 
 	for(int i = 0; i < numLights; i++)

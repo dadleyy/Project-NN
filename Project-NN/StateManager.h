@@ -2,15 +2,13 @@
 #include <vector>
 
 class GameState;
-struct ID3D11Device;
-struct ID3D11DeviceContext;
 
 class StateManager {
 public:
-	StateManager(void);
-	~StateManager(void);
+	StateManager();
+	~StateManager();
 
-	void Init(ID3D11Device* device, ID3D11DeviceContext* context);
+	void Init();
 	void Update(float dt);
 	void Draw();
 
@@ -23,14 +21,7 @@ public:
 	void PushState(GameState* state);
 	void PopState();
 
-	ID3D11Device* GetDevice();
-	ID3D11DeviceContext* GetContext();
-
-	bool keystates[256];
-
 private:
 	std::vector<GameState*> states;
-	ID3D11Device* device;
-	ID3D11DeviceContext* context;
 };
 

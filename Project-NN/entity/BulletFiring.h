@@ -9,7 +9,6 @@ class Transform;
 
 class BulletFiring : public Component {
 public:
-	~BulletFiring();
 	bool Init(GameObject* go);
 	void Update(float dt);
 
@@ -19,5 +18,4 @@ private:
 	GameObject* go;
 	Transform* transform;
 	int speed;
-	
 };

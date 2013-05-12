@@ -5,87 +5,142 @@
 #include "PhysicsComponent.h"
 #include "ResourceManager.h"
 
-#include <iostream>
+#include <unordered_set>
+#include <sstream>
 #include <random>
-using namespace std;
 
-AIComponent::AIComponent( )
-{
-	state = AI_FOLLOWING;
+namespace AI {
+	std::unordered_set<AIComponent*> flockers;
 }
 
-void AIComponent::SetTarget(GameObject* t) { 
-	tarPhysics = t->GetComponent<PhysicsComponent>( ); 
-	tarTransform = t->GetComponent<Transform>( );
+AIComponent::AIComponent( ) : uid("ai_")
+{
+	state = AI_FOLLOWING;
+	strength = 10.0f;
+	AI::flockers.insert( this );
+
+	std::ostringstream con;
+	con << AI::flockers.size(  );
+	uid.append( con.str( ) );
+}
+
+AIComponent::~AIComponent ( ) {
+	AI::flockers.erase( this );
+}
+
+void AIComponent::SetTarget(GameObject* t) {
+	target = t;
 }
 
 void AIComponent::SetState(int s){ state = state; }
 
 bool AIComponent::Init(GameObject* go)
 {
-	objPhysics = go->GetComponent<PhysicsComponent>( );
-	objTransform = go->GetComponent<Transform>( );
-	return objTransform != nullptr && objPhysics != nullptr;
+	source = go;
+	return go != nullptr;
 }
 
 void AIComponent::Update( float dt )
 {
-	
+	XMVECTOR force = XMVectorZero( );
+
 	switch( state ){
 	case AI_FOLLOWING:
-		Follow( dt );
+		force = XMVectorAdd( Follow(dt), force );
 		break;
 	case AI_STANDING:
-		Stand( dt );
+		force = XMVectorAdd( Stand(dt), force );
 		break;
 	case AI_WANDER:
-		Wander( dt );
+		force = XMVectorAdd( Wander(dt), force );
 		break;
 	default:
-		Wander( dt );
+		force = XMVectorAdd( Stand(dt), force );
 		break;
 	}
 
-}
+	// save a temp reference to the original target
+	GameObject* temp = target;
+	// add a flocking force 
+	//force = XMVectorAdd( Flock(dt), force );
+	// set the target back to the original
+	target = temp;
 
-void AIComponent::Wander( float dt )
-{
-	
-}
-
-void AIComponent::Follow( float dt )
-{
-	// store the postions as vectors
-	XMVECTOR tpos = XMLoadFloat3( &tarTransform->position );
-	XMVECTOR mpos = XMLoadFloat3( &objTransform->position );
-
-	// calculate the differemce, save it
-	XMVECTOR diff = XMVectorSubtract( tpos, mpos );
-	XMStoreFloat3( &distV, diff );
-	distL = magnitude( distV );
-
-	// calculate new rotation axis
-	XMVECTOR up = XMLoadFloat3( &objPhysics->upAxis );
-	XMVECTOR forward = XMVector3Normalize( diff );
+	// at this point, force is a vector that has been manipulated with behaviors
+	XMVECTOR forward = XMVector3Normalize( force );
+	XMVECTOR up = XMLoadFloat3( &source->GetComponent<PhysicsComponent>( )->upAxis );
 	XMVECTOR side = XMVector3Normalize( XMVector3Cross( up, forward ) );
 
-	// save the new axis into the obj
-	XMStoreFloat3( &objPhysics->forwardAxis, forward );
-	XMStoreFloat3( &objPhysics->upAxis, up );
-	XMStoreFloat3( &objPhysics->sideAxis, side );
+	// save the new calculated axis's
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->forwardAxis, forward );
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->sideAxis, side );
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->upAxis, up );
 
-	// set the velocity and acceleration
-	XMStoreFloat3( &objPhysics->velocity, forward );
-	XMStoreFloat3( &objPhysics->acceleration, diff );
-
-	objPhysics->acceleration = scale( objPhysics->acceleration, 1000.0f * dt );
-
-	if( true )
-		int k = 10;
+	// add forces to velocity
+	XMVECTOR vel = XMLoadFloat3( &source->GetComponent<PhysicsComponent>( )->velocity );
+	vel = XMVectorAdd( vel, XMVectorScale( force, dt ) );
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>( )->velocity, vel );
 
 }
 
-void AIComponent::Stand( float dt )
+XMVECTOR AIComponent::Flock( float dt )
+{	
+	float closest_d = 0;
+	AIComponent* closest_ai;
+
+	for( auto i = AI::flockers.begin( ); i != AI::flockers.end( ); ++i ){
+		if( (*i)->uid == uid )
+			continue;
+		
+		XMVECTOR tpos = XMLoadFloat3( &(*i)->source->GetComponent<Transform>( )->position );
+		XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>( )->position );
+		XMVECTOR diff = XMVectorSubtract( tpos, mpos );
+		float diff_length = XMVectorGetX( XMVector3Length( diff ) );
+		if( closest_d == 0 || diff_length < closest_d ){
+			closest_d = diff_length;
+			closest_ai = (*i);
+		}
+
+	}
+	target = closest_ai->source;
+	
+	return Avoid( dt );
+}
+
+XMVECTOR AIComponent::Avoid( float dt )
+{
+	XMVECTOR tpos = XMLoadFloat3( &target->GetComponent<Transform>()->position );
+	XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>()->position );
+	XMVECTOR diff = XMVectorScale( XMVectorSubtract( tpos, mpos ), -1.0f );
+	XMVECTOR a_force = XMVector3Normalize( diff );
+	// calculate this force based on distance
+	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
+	a_force = XMVectorScale( a_force, 1.0f / length );
+	// add that
+	return a_force;
+}
+
+XMVECTOR AIComponent::Follow( float dt )
+{
+	XMVECTOR tpos = XMLoadFloat3( &target->GetComponent<Transform>()->position );
+	XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>()->position );
+	XMVECTOR diff = XMVectorSubtract( tpos, mpos );
+	XMVECTOR f_force = XMVector3Normalize( diff );
+	// calculate how large this force vector should be
+	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
+	f_force = XMVectorScale( f_force, length * 10.0f );
+	// send that out
+	return f_force;
+}
+
+XMVECTOR AIComponent::Stand( float dt )
 {
 
+	return XMVectorZero();
+}
+
+XMVECTOR AIComponent::Wander( float dt )
+{
+
+	return XMVectorZero();
 }

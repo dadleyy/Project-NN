@@ -15,7 +15,7 @@ DrawableInstancedModel::DrawableInstancedModel() : Drawable()
 
 	//create the buffer
 	pD3DDevice->CreateBuffer(&bufferDescription, NULL, &instanceBuffer);
-	instances = new vector<XMFLOAT4X4>();
+	instances = new vector<float>();
 }
 
 
@@ -51,7 +51,7 @@ void DrawableInstancedModel::createBuffer(char* mesh)
 	
 	//get required vertex information from a shader technique
 	D3DX11_PASS_DESC passDesc;
-    technique->GetPassByIndex(0)->GetDesc(&passDesc);
+    currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
 
 	hr = pD3DDevice->CreateInputLayout(layout,
 				11,
@@ -93,7 +93,7 @@ void DrawableInstancedModel::drawInstanced(int numInstances)
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	deviceContext->Map(instanceBuffer, 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
-	memcpy((float*)resource.pData,    &(*instances)[0]._11,  numInstances*32*4);
+	memcpy((float*)resource.pData,    &(*instances)[0],  numInstances*32*4);
 	deviceContext->Unmap(instanceBuffer, 0);
 
 	UINT stride[2] = {vertexStride, 128};
@@ -108,10 +108,10 @@ void DrawableInstancedModel::drawInstanced(int numInstances)
 	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
-    technique->GetDesc( &techDesc );
+    currentTechnique->GetDesc( &techDesc );
     for(UINT p = 0; p < techDesc.Passes; ++p)
     {
-        technique->GetPassByIndex(p)->Apply(0, deviceContext);
+        currentTechnique->GetPassByIndex(p)->Apply(0, deviceContext);
 		deviceContext->DrawInstanced(numVerts, numInstances, 0, 0);
 	}
 

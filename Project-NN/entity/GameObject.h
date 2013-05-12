@@ -34,6 +34,7 @@ public:
 	Transform* transform;
 	Collider* collider;
 	bool active;
+	bool glow;
 
 protected:
 	std::vector<Component*> components;

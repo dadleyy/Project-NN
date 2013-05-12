@@ -15,8 +15,10 @@ Skybox::Skybox(void)
 	transform->scale = XMFLOAT3( 150, 150, 150 );
 
     drawable->getEffectVariables("skyShader", "Render");
+	drawable->setShader("skyShader", "Render");
     drawable->createBuffer("Sphere");
 	drawable->addTexture("skybox", "texCube");
+	
 
 	components.push_back(transform);
     components.push_back(drawable);
