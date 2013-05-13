@@ -20,7 +20,6 @@ public:
 	}
 private:
 	static MainMenu instance;
-
 	MenuItem* playbutton;
 
 };

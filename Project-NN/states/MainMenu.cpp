@@ -11,6 +11,7 @@ MainMenu MainMenu::instance;
 
 void MainMenu::Init(StateManager* manager) {
 	GameState::Init(manager);
+	
 	playbutton = new MenuItem( manager );
 }
 
@@ -18,9 +19,7 @@ void MainMenu::Cleanup() {
 }
 
 void MainMenu::Update(float dt) {
-	resourceMgr->camera.UpdateViewMatrix( );
 	playbutton->Update( dt );
-
 }
 
 void MainMenu::Draw() 

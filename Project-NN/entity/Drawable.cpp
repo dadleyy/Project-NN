@@ -8,7 +8,7 @@ extern int screenWidth;
 extern int screenHeight;
 extern ResourceManager* resourceMgr;
 
-Drawable::Drawable(void) : world()
+Drawable::Drawable(void) : world(), drawtopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
 {
 	numVerts = 0;
 	pD3DDevice = resourceMgr->pD3DDevice;
@@ -89,10 +89,11 @@ void Drawable::draw()
 	UINT stride = vertexStride;
 	UINT offset = vertexOffset;
 
+
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( pVertexLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
-	deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+	deviceContext->IASetPrimitiveTopology( drawtopology );
 	
 	D3DX11_TECHNIQUE_DESC techDesc;
     currentTechnique->GetDesc( &techDesc );

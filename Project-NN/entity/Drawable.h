@@ -38,6 +38,8 @@ public:
 protected:
 	UINT vertexStride; //the size of an individual vertex in bytes
 	UINT vertexOffset; //the offset for each vertex in bytes
+	D3D11_PRIMITIVE_TOPOLOGY drawtopology;
+
 
 	ID3D11Device*			pD3DDevice;    //reference to the DX device being used
 	ID3D11DeviceContext*    deviceContext; //reference DX device context being used

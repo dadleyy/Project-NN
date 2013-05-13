@@ -21,22 +21,64 @@ VERTEX VS( VERTEX input )
 	return output;
 }
 
-[maxvertexcount(4)]
+[maxvertexcount(6)]
 void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 {
 	PIXEL p;
-	for(int i = 0; i < 4; i++)
-	{
-		p.Pos = float4( 0.0f, 0.0f, 0.0f, 0.0f );
-		p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
-		p.UV = float2( 1.0f, 1.0f );
-		output.Append( p );
-	}
+	float height = 0.25f;
+	float width = 0.25f;
+	
+	/*
+	v[0] = float4((ppos.x - hWidth), (ppos.y - hHeight), 1.0f, 1.0f);
+	v[1] = float4((ppos.x - hWidth), (ppos.y + hHeight), 1.0f, 1.0f);
+	v[2] = float4((ppos.x + hWidth), (ppos.y + hHeight), 1.0f, 1.0f);
+	v[3] = float4((ppos.x + hWidth), (ppos.y - hHeight), 1.0f, 1.0f);
+	*/
+	
+	float4 positions[4];
+	positions[0] = float4( -width, -height, 1.0f, 1.0f );
+	positions[1] = float4( -width, height, 1.0f, 1.0f );
+	positions[2] = float4( width, height, 1.0f, 1.0f );
+	positions[3] = float4( width, -height, 1.0f, 1.0f );
+	
+
+	p.Pos = positions[0];
+	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
+	p.Pos = positions[1];
+	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
+	p.Pos = positions[2];
+	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
+	output.RestartStrip( );
+	
+	p.Pos = positions[0];
+	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
+	p.Pos = positions[2];
+	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
+	p.Pos = positions[3];
+	p.Col = float4( 1.0f, 0.0f, 1.0f, 1.0f );
+	p.UV = float2( 1.0f, 1.0f );
+	output.Append( p );
+	
 }
 
 float4 PS( PIXEL input ) : SV_Target
 {
-	float4 finalColor = 0;
+	float4 finalColor = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	return finalColor;
 }
 

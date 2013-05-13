@@ -85,6 +85,7 @@
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="entity\Health.cpp" />
     <ClCompile Include="entity\MenuControlComponent.cpp" />
+    <ClCompile Include="entity\MenuDrawable.cpp" />
     <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="entity\RandomRotation.cpp" />
     <ClCompile Include="GuiManager.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
     <ClInclude Include="entity\Health.h" />
     <ClInclude Include="entity\MenuControlComponent.h" />
+    <ClInclude Include="entity\MenuDrawable.h" />
     <ClInclude Include="entity\MenuItem.h" />
     <ClInclude Include="entity\RandomRotation.h" />
     <ClInclude Include="GuiManager.h" />

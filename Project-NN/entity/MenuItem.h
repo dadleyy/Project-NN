@@ -6,7 +6,7 @@
 #include "StateManager.h"
 
 class Transform;
-class Drawable;
+class MenuDrawable;
 class MenuComponent;
 
 class MenuItem : public GameObject {
@@ -18,9 +18,9 @@ public:
 	void Trigger( );
 
 private:
-	Drawable* drawable;
 	Transform* transform;
 	MenuComponent* control;
+	MenuDrawable* drawable;
 	StateManager* manager;
 
 	bool triggered;
