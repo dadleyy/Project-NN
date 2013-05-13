@@ -62,14 +62,16 @@ void AIComponent::Update( float dt )
 	// save a temp reference to the original target
 	GameObject* temp = target;
 	// add a flocking force 
-	//force = XMVectorAdd( Flock(dt), force );
+	force = XMVectorAdd( Flock(dt), force );
 	// set the target back to the original
 	target = temp;
 
 	// at this point, force is a vector that has been manipulated with behaviors
-	XMVECTOR forward = XMVector3Normalize( force );
 	XMVECTOR up = XMLoadFloat3( &source->GetComponent<PhysicsComponent>( )->upAxis );
+	XMVECTOR forward = XMVector3Normalize( force );
 	XMVECTOR side = XMVector3Normalize( XMVector3Cross( up, forward ) );
+	// recalculate up axis for smoothnesss
+	up = XMVector3Normalize( XMVector3Cross( forward, side ) );
 
 	// save the new calculated axis's
 	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->forwardAxis, forward );
@@ -77,34 +79,24 @@ void AIComponent::Update( float dt )
 	XMStoreFloat3( &source->GetComponent<PhysicsComponent>()->upAxis, up );
 
 	// add forces to velocity
-	XMVECTOR vel = XMLoadFloat3( &source->GetComponent<PhysicsComponent>( )->velocity );
-	vel = XMVectorAdd( vel, XMVectorScale( force, dt ) );
-	XMStoreFloat3( &source->GetComponent<PhysicsComponent>( )->velocity, vel );
-
+	XMVECTOR accel = XMLoadFloat3( &source->GetComponent<PhysicsComponent>()->acceleration );
+	XMStoreFloat3( &source->GetComponent<PhysicsComponent>( )->acceleration, XMVectorAdd( accel, XMVectorScale( force, dt ) ) );
 }
 
 XMVECTOR AIComponent::Flock( float dt )
-{	
-	float closest_d = 0;
-	AIComponent* closest_ai;
+{
+	XMVECTOR force = XMVectorZero( );
 
 	for( auto i = AI::flockers.begin( ); i != AI::flockers.end( ); ++i ){
 		if( (*i)->uid == uid )
 			continue;
-		
-		XMVECTOR tpos = XMLoadFloat3( &(*i)->source->GetComponent<Transform>( )->position );
-		XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>( )->position );
-		XMVECTOR diff = XMVectorSubtract( tpos, mpos );
-		float diff_length = XMVectorGetX( XMVector3Length( diff ) );
-		if( closest_d == 0 || diff_length < closest_d ){
-			closest_d = diff_length;
-			closest_ai = (*i);
-		}
+
+		target = (*i)->source;
+		force = XMVectorAdd( force, Avoid( dt ) );
 
 	}
-	target = closest_ai->source;
 	
-	return Avoid( dt );
+	return force;
 }
 
 XMVECTOR AIComponent::Avoid( float dt )
@@ -115,7 +107,10 @@ XMVECTOR AIComponent::Avoid( float dt )
 	XMVECTOR a_force = XMVector3Normalize( diff );
 	// calculate this force based on distance
 	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
-	a_force = XMVectorScale( a_force, 1.0f / length );
+	if( length < 0.1f )
+		length = 0.11f;
+
+	a_force = XMVectorScale( a_force, 2.0f / length );
 	// add that
 	return a_force;
 }
@@ -126,9 +121,20 @@ XMVECTOR AIComponent::Follow( float dt )
 	XMVECTOR mpos = XMLoadFloat3( &source->GetComponent<Transform>()->position );
 	XMVECTOR diff = XMVectorSubtract( tpos, mpos );
 	XMVECTOR f_force = XMVector3Normalize( diff );
-	// calculate how large this force vector should be
+
 	float length = abs( XMVectorGetX( XMVector3Length( diff ) ) );
-	f_force = XMVectorScale( f_force, length * 10.0f );
+
+	if( true )
+		int k = 0;
+
+
+	if( length < 5.0f )
+		return Avoid( dt );
+
+	if( length < 0.1f )
+		length = 0.11f;
+	
+	f_force = XMVectorScale( f_force, length / 2.0f );
 	// send that out
 	return f_force;
 }
