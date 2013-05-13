@@ -57,6 +57,8 @@
     <ClCompile Include="states\Instructions.cpp" />
     <ClCompile Include="states\Pause.cpp" />
     <ClCompile Include="entity\RandomRotation.cpp" />
+    <ClCompile Include="entity\MenuItem.cpp" />
+    <ClCompile Include="entity\MenuControlComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -115,6 +117,8 @@
     <ClInclude Include="states\Gameplay.h" />
     <ClInclude Include="states\Pause.h" />
     <ClInclude Include="entity\RandomRotation.h" />
+    <ClInclude Include="entity\MenuItem.h" />
+    <ClInclude Include="entity\MenuControlComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

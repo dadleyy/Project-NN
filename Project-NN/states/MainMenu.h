@@ -3,6 +3,7 @@
 #include "GameState.h"
 
 class StateManager;
+class MenuItem;
 
 class MainMenu : public GameState {
 public:
@@ -19,4 +20,7 @@ public:
 	}
 private:
 	static MainMenu instance;
+
+	MenuItem* playbutton;
+
 };

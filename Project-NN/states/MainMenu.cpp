@@ -1,28 +1,29 @@
 #include "MainMenu.h"
 
 #include "entity/GameObject.h"
+#include "entity/MenuItem.h"
 #include "Gameplay.h"
 #include "SceneManager.h"
+#include "ResourceManager.h"
 #include "StateManager.h"
 
 MainMenu MainMenu::instance;
 
 void MainMenu::Init(StateManager* manager) {
 	GameState::Init(manager);
-	//For now, we pass through to Gameplay
-	manager->ChangeState(Gameplay::Instance());
+	playbutton = new MenuItem( manager );
 }
 
 void MainMenu::Cleanup() {
 }
 
 void MainMenu::Update(float dt) {
-	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
-		if(!(*it)->active)
-			continue;
-		(*it)->Update(dt);
-	}
+	resourceMgr->camera.UpdateViewMatrix( );
+	playbutton->Update( dt );
+
 }
 
-void MainMenu::Draw() {
+void MainMenu::Draw() 
+{
+	playbutton->Draw( );
 }
