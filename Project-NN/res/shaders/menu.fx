@@ -1,9 +1,13 @@
 //
 //
+cbuffer cbPerObject
+{
+	float4x4 kViewMatrix;
+};
 
 struct VERTEX
 {   
-	float4 Pos : POSITION;    
+	float2 Pos : POSITION;    
 	float Width : WIDTH;  
 	float Height : HEIGHT;
 };
@@ -17,16 +21,15 @@ struct PIXEL
 
 VERTEX VS( VERTEX input )
 {
-    VERTEX output = input;
-	return output;
+	return input;
 }
 
 [maxvertexcount(6)]
 void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 {
 	PIXEL p;
-	float height = 0.25f;
-	float width = 0.25f;
+	float height = v[0].Height;
+	float width = v[0].Width;
 	
 	/*
 	v[0] = float4((ppos.x - hWidth), (ppos.y - hHeight), 1.0f, 1.0f);

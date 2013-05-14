@@ -3,9 +3,11 @@
 #include <iostream>
 #include "Drawable.h"
 
-struct MenuStruct {
-	float width, height;
-	XMFLOAT2 position;
+struct MenuStruct
+{
+	float width;
+	float height;
+	XMFLOAT2 pos;
 };
 
 class MenuDrawable : public Drawable {
@@ -13,7 +15,10 @@ class MenuDrawable : public Drawable {
 public:
 
 	MenuDrawable( );
-
 	void createBuffer(char* param);
+	void draw( );
 
+private:	
+
+	std::vector<MenuStruct> menudata;
 };

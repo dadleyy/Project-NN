@@ -9,7 +9,7 @@ struct Light
 	float	Langle;			//		:		: SPOT
 	float	Lintensity;		//DIR	: POINT : SPOT : AMBIENT
 	int		Lfalloff;		//		: POINT : SPOT
-	int		LonOff;			//DIR	: POINT : SPOT
+	int		LonOff;			//DIR	: POINT : SPOT
 	int		Ltype;			//DIR	: POINT : SPOT
 	float2	Lpad;
 };
