@@ -35,7 +35,7 @@ void MenuItem::Trigger()
 
 void MenuItem::Draw( )
 {
-	drawable->setShader("menueffect","Render");
+	drawable->setShader("menuEffect","Render");
 	drawable->draw();
 }
 

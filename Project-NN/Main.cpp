@@ -234,6 +234,7 @@ void addResources() {
 	resourceMgr->addCBuffer(816, "Light");
 	resourceMgr->addCBuffer(144, "Camera");
 	resourceMgr->addCBuffer(128, "Object");
+	resourceMgr->addCBuffer(128, "Menu");
 
 	//textures
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
@@ -303,12 +304,46 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "laserEffect", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "laserEffect", "LightsBuffer", "Lights" );
 
+	resourceMgr->setEffectBuffer( "menuEffect", "cbPerObject", "Menu" );
+
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
 	resourceMgr->addLight(0, 1,  0, 1, 1, 1, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
 	resourceMgr->addLight(30, 10, 3.5, .6, .6, .6, 1.0,  0, 0, 0, 0, 1, 1, NONE, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
+
+
+	// input layouts
+	D3D11_INPUT_ELEMENT_DESC basic_format[] = { 
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0 ,                            D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+		{"NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0} 
+	};
+	InputLayoutDescription bld;
+	bld.format = basic_format;
+	bld.size = 3;
+
+	resourceMgr->addInputLayout( &bld, "betterPhong", "Render" );
+	resourceMgr->addInputLayout( &bld, "instancedPhong", "Render" );
+	resourceMgr->addInputLayout( &bld, "genericPost", "Render" );
+	resourceMgr->addInputLayout( &bld, "contrast", "Render" );
+	resourceMgr->addInputLayout( &bld, "skyShader", "Render" );
+	resourceMgr->addInputLayout( &bld, "bumpInstancePhong", "Render" );
+	resourceMgr->addInputLayout( &bld, "glowDraw", "RenderGlowy" );
+	resourceMgr->addInputLayout( &bld, "glowEffect", "Add" );
+	resourceMgr->addInputLayout( &bld, "laserEffect", "RenderLasers" );
+
+	D3D11_INPUT_ELEMENT_DESC menu_format[] = { 
+		{"WIDTH",    0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+		{"HEIGHT",   0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+
+	InputLayoutDescription mld;
+	mld.format = menu_format;
+	mld.size = 3;
+	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
 
 }
 

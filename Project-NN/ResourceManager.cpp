@@ -237,3 +237,31 @@ HRESULT ResourceManager::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntr
 void ResourceManager::setEffectBuffer( char* effectID, char* effectBufferName, char* localBufferName ){
 	effects.at( effectID )->effect->GetConstantBufferByName( effectBufferName )->SetConstantBuffer( getCBuffer(localBufferName) );
 }
+
+HRESULT ResourceManager::addInputLayout( InputLayoutDescription* description, char* effectID, char* techniqueID )
+{
+	Effect* e = effects.at( effectID );
+	HRESULT out = S_FALSE;
+	//get required vertex information from a shader technique
+	D3DX11_PASS_DESC pd;
+	out = e->effect->GetTechniqueByName( techniqueID )->GetPassByIndex(0)->GetDesc( &pd );
+	if( out != S_OK ){
+		std::cout << "unable to find: " << techniqueID << " in " << effectID << std::endl;
+		return S_FALSE;
+	} else {
+		std::cout << "found the technique: " << techniqueID << " in the effect " << effectID << std::endl;
+	}
+	
+	ID3D11InputLayout* ilayout;
+	out = pD3DDevice->CreateInputLayout( description->format, description->size, pd.pIAInputSignature, pd.IAInputSignatureSize, &ilayout);
+
+	if( out == S_OK ){ 
+		std::cout << "inserting the layout into: " << effectID << " to be used with technique: " << techniqueID << std::endl;
+		e->layouts.insert( std::make_pair<char*,ID3D11InputLayout*>( techniqueID, ilayout ) );
+	} else {
+		std::cout << "unable to insert the layout into: " << effectID << std::endl;
+	}
+	std::cout << std::endl;
+
+	return out;
+}

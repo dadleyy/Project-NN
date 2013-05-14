@@ -1,4 +1,5 @@
 #include "MenuDrawable.h"
+#include "ResourceManager.h"
 #include "MenuItem.h"
 
 MenuDrawable::MenuDrawable( ) : Drawable( )
@@ -6,12 +7,30 @@ MenuDrawable::MenuDrawable( ) : Drawable( )
 	drawtopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 }
 
+void MenuDrawable::setShader(char* effectName, char* techniqueName )
+{
+	currentShader = shaders[effectName];
+	currentTechnique = techniques[techniqueName];
+	currentLayout = layouts[techniqueName];
+}
+
+void MenuDrawable::getEffectVariables(char* effectID, char* techniqueName)
+{
+	this->effectID = effectID;
+	shaders[effectID] = resourceMgr->effects.at( effectID )->effect;
+	techniques[techniqueName] = shaders[effectID]->GetTechniqueByName( techniqueName );
+	layouts[techniqueName] = resourceMgr->effects.at( effectID )->layouts.at( techniqueName );
+}
+
 void MenuDrawable::draw() 
 {
 	// Clear the back buffer 
-	deviceContext->IASetInputLayout( pVertexLayout );
+	deviceContext->IASetInputLayout( currentLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( drawtopology );
+
+	D3D11_MAPPED_SUBRESOURCE resource;
+	HRESULT hr = deviceContext->Map( resourceMgr->getCBuffer("Menu"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource );
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	currentTechnique->GetDesc( &techDesc );
@@ -28,20 +47,6 @@ void MenuDrawable::createBuffer( MenuItemDescription* desc )
 	HRESULT hr;
 
 	description = desc;
-
-	//describe the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] = { 
-		{"WIDTH",    0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}, 
-		{"HEIGHT",   0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	};
-
-	//get required vertex information from a shader technique
-	D3DX11_PASS_DESC passDesc;
-	currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
-	hr = pD3DDevice->CreateInputLayout(layout, 3, passDesc.pIAInputSignature, passDesc.IAInputSignatureSize,&pVertexLayout);
-	if( hr == S_OK )
-		std::cout << "okay layout" << std::endl;
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change

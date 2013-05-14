@@ -35,6 +35,8 @@ public:
 	std::unordered_map<ID3DX11EffectVariable*, float*> variables;
 	std::unordered_map<char*, ID3DX11Effect*> shaders;
 	std::unordered_map<char*, ID3DX11EffectTechnique*> techniques;
+	std::unordered_map<char*, ID3D11InputLayout*> layouts;
+
 protected:
 	UINT vertexStride; //the size of an individual vertex in bytes
 	UINT vertexOffset; //the offset for each vertex in bytes

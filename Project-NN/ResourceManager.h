@@ -24,8 +24,14 @@ struct Mesh {
 	UINT vertexOffset;
 };
 
+struct InputLayoutDescription {
+	D3D11_INPUT_ELEMENT_DESC* format;
+	int size;
+};
+
 struct Effect {
 	ID3DX11Effect* effect;
+	std::unordered_map<char*,ID3D11InputLayout*> layouts;
 };
 
 class ResourceManager {
@@ -61,6 +67,8 @@ public:
 	              float dirX, float dirY, float dirZ,
 	              float radius, float angle, float intensity, int falloff,
 	              int onOff, int type);
+
+	HRESULT addInputLayout( InputLayoutDescription* description, char* effectID, char* techniqueId );
 
 	Mesh* getMesh( char* meshName );
 	ID3DX11Effect* getEffect( char* effectName );
