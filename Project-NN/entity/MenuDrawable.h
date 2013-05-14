@@ -3,22 +3,16 @@
 #include <iostream>
 #include "Drawable.h"
 
-struct MenuStruct
-{
-	float width;
-	float height;
-	XMFLOAT2 pos;
-};
+struct MenuItemDescription;
 
 class MenuDrawable : public Drawable {
 
 public:
 
 	MenuDrawable( );
-	void createBuffer(char* param);
+	void createBuffer( MenuItemDescription* desc );
 	void draw( );
 
-private:	
-
-	std::vector<MenuStruct> menudata;
+private:		
+	MenuItemDescription* description;
 };

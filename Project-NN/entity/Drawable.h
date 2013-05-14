@@ -49,6 +49,7 @@ protected:
 
 	ID3DX11Effect* currentShader;
 	ID3DX11EffectTechnique*	currentTechnique;
+	ID3D11InputLayout* currentLayout;
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies

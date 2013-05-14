@@ -30,6 +30,10 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	PIXEL p;
 	float height = v[0].Height;
 	float width = v[0].Width;
+	float2 pos = v[0].Pos;
+	
+	float hh = height * 0.5f;
+	float hw = width * 0.5f;
 	
 	/*
 	v[0] = float4((ppos.x - hWidth), (ppos.y - hHeight), 1.0f, 1.0f);
@@ -39,10 +43,10 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	*/
 	
 	float4 positions[4];
-	positions[0] = float4( -width, -height, 1.0f, 1.0f );
-	positions[1] = float4( -width, height, 1.0f, 1.0f );
-	positions[2] = float4( width, height, 1.0f, 1.0f );
-	positions[3] = float4( width, -height, 1.0f, 1.0f );
+	positions[0] = float4( (pos.x - hw), (pos.y - hh), 1.0f, 1.0f );
+	positions[1] = float4( (pos.x - hw), (pos.y + hh), 1.0f, 1.0f );
+	positions[2] = float4( (pos.x + hw), (pos.y + hh), 1.0f, 1.0f );
+	positions[3] = float4( (pos.x + hw), (pos.y - hh), 1.0f, 1.0f );
 	
 
 	p.Pos = positions[0];

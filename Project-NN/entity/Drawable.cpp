@@ -13,6 +13,9 @@ Drawable::Drawable(void) : world(), drawtopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANG
 	numVerts = 0;
 	pD3DDevice = resourceMgr->pD3DDevice;
 	deviceContext = resourceMgr->md3dImmediateContext;
+
+	currentLayout = 0;
+
 	pVertexBuffer = 0;
 	pVertexLayout = 0;
 	vertexStride = 0;

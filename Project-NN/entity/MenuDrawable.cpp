@@ -1,4 +1,5 @@
 #include "MenuDrawable.h"
+#include "MenuItem.h"
 
 MenuDrawable::MenuDrawable( ) : Drawable( )
 {
@@ -22,9 +23,11 @@ void MenuDrawable::draw()
 
 }
 
-void MenuDrawable::createBuffer(char* param)
+void MenuDrawable::createBuffer( MenuItemDescription* desc )
 {
 	HRESULT hr;
+
+	description = desc;
 
 	//describe the input layout
 	D3D11_INPUT_ELEMENT_DESC layout[] = { 
@@ -40,41 +43,22 @@ void MenuDrawable::createBuffer(char* param)
 	if( hr == S_OK )
 		std::cout << "okay layout" << std::endl;
 
-
-	MenuStruct item;
-	item.width = 0.010f;
-	item.height = 0.010f;
-	item.pos = XMFLOAT2( 10.0f, 10.0f );
-	menudata.push_back( item );
-
-	item.width = 0.010f;
-	item.height = 0.010f;
-	item.pos = XMFLOAT2( 10.0f, 10.0f );
-	menudata.push_back( item );
-
-
-	item.width = 0.010f;
-	item.height = 0.010f;
-	item.pos = XMFLOAT2( 10.0f, 10.0f );
-	menudata.push_back( item );
-
-
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change
-	vbd.ByteWidth = sizeof(MenuStruct); //total number of bytes for all verticies
+	vbd.ByteWidth = sizeof(MenuItemDescription); //total number of bytes for all verticies
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER; //binds the buffer to the correct type
 	vbd.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
 	vbd.MiscFlags = 0; //only one D3D device
 
 	//add the data for the buffer
 	D3D11_SUBRESOURCE_DATA initData;
-	initData.pSysMem = &menudata[0];
+	initData.pSysMem = description;
 
 	hr = pD3DDevice->CreateBuffer( &vbd, &initData, &pVertexBuffer );
 	if( hr == S_OK )
 		std::cout << "okay buffer" << std::endl;
 	
-	vertexStride = sizeof( MenuStruct );
+	vertexStride = sizeof( MenuItemDescription );
 	vertexOffset = 0;
-	numVerts = menudata.size();
+	numVerts = 1;
 }

@@ -4,7 +4,7 @@
 #include "Transform.h"
 #include "MenuControlComponent.h"
 
-MenuItem::MenuItem( StateManager* _manager ) : triggered(false)
+MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) : triggered(false)
 {
 	manager = _manager;
 
@@ -12,11 +12,11 @@ MenuItem::MenuItem( StateManager* _manager ) : triggered(false)
 	drawable = new MenuDrawable( );
 	control = new MenuComponent( this );
 
-	transform->position = XMFLOAT3( 0.0f, 0.0f, 0.0f );
+	transform->position = XMFLOAT3( description->position.x, description->position.y, 0.0f );
 
-	drawable->getEffectVariables("menueffect","Render");
-	drawable->setShader("menueffect","Render");
-	drawable->createBuffer("whoa");
+	drawable->getEffectVariables("menuEffect","Render");
+	drawable->setShader("menuEffect","Render");
+	drawable->createBuffer( description );
 
 	components.push_back( transform );
 	components.push_back( drawable );

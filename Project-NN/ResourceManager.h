@@ -65,6 +65,8 @@ public:
 	Mesh* getMesh( char* meshName );
 	ID3DX11Effect* getEffect( char* effectName );
 	ID3D11Buffer* getCBuffer( char* bufferName );
+	void setEffectBuffer( char* effectID, char* effectBufferName, char* localBufferName );
+
 
 	Camera camera;
 

@@ -17,19 +17,6 @@ ResourceManager::ResourceManager(ID3D11Device* device, ID3D11DeviceContext* imme
 	lightChange = 1;
 	cameraChange = 1;
 	numLights = 0;
-
-	HRESULT hr;
-	ID3DBlob* ppShader = NULL;
-	Effect* e = new Effect;
-	hr = CompileShaderFromFile(L"res/shaders/menu.fx", NULL, "fx_5_0", &ppShader);
-	if( hr == S_OK ){
-		ID3DX11Effect* effect;
-		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
-		if( hr == S_OK )
-			cout << "menu effect created okay" << endl;
-
-		effects.insert(std::make_pair<char*, Effect*>("menueffect", e));
-	}
 }
 
 void ResourceManager::addEffect(WCHAR* file, char* name) {
@@ -44,9 +31,6 @@ void ResourceManager::addEffect(WCHAR* file, char* name) {
 		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
 		effects.insert(std::make_pair<char*, Effect*>(name, e));
 	}
-	e->effect->GetConstantBufferByName("LightsBuffer")->SetConstantBuffer(getCBuffer("Light"));
-	e->effect->GetConstantBufferByName("CameraBuffer")->SetConstantBuffer(getCBuffer("Camera"));
-	e->effect->GetConstantBufferByName("perObject")->SetConstantBuffer(getCBuffer("Object"));
 }
 
 void ResourceManager::addTexture(WCHAR* file, char* name) {
@@ -248,4 +232,8 @@ HRESULT ResourceManager::CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntr
 	if( pErrorBlob ) pErrorBlob->Release();
 
 	return S_OK;
+}
+
+void ResourceManager::setEffectBuffer( char* effectID, char* effectBufferName, char* localBufferName ){
+	effects.at( effectID )->effect->GetConstantBufferByName( effectBufferName )->SetConstantBuffer( getCBuffer(localBufferName) );
 }

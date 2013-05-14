@@ -264,6 +264,45 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/glowDraw.fx", "glowDraw" );
 	resourceMgr->addEffect(L"res/shaders/glowEffect.fx", "glowEffect" );
 	resourceMgr->addEffect(L"res/shaders/lasers.fx", "laserEffect" );
+	resourceMgr->addEffect(L"res/shaders/menu.fx", "menuEffect" );
+
+	// set effect buffer references
+	resourceMgr->setEffectBuffer( "betterPhong", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "betterPhong", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "betterPhong", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "instancedPhong", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "instancedPhong", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "instancedPhong", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "genericPost", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "genericPost", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "genericPost", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "contrast", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "contrast", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "contrast", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "skyShader", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "skyShader", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "skyShader", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "bumpInstancePhong", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "bumpInstancePhong", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "bumpInstancePhong", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "glowDraw", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "glowDraw", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "glowDraw", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "glowEffect", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "glowEffect", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "glowEffect", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "laserEffect", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "laserEffect", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "laserEffect", "LightsBuffer", "Lights" );
+
 
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
