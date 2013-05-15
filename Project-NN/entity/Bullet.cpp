@@ -11,7 +11,8 @@ using namespace std;
 #include "Collider.h"
 #include "BulletManager.h"
 
-Bullet::Bullet(BulletManager* gManager) {
+Bullet::Bullet(BulletManager* gManager) : SPEED(20)
+{
 	transform = new Transform();
 
 	print = new PrintUponCollision();
@@ -38,7 +39,8 @@ Bullet::Bullet(BulletManager* gManager) {
 	GameObject::InitComponents();
 }
 
-Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward) {
+Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward): SPEED(20) 
+{
 	transform = new Transform();
 	print = new PrintUponCollision();
 	fireBullet = new BulletFiring();

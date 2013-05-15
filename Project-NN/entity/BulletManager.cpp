@@ -28,6 +28,7 @@ void BulletManager::Fire(){
 		else
 		{
 			(*it)->GetComponent<BulletFiring>()->forward = go->GetComponent<PhysicsComponent>()->forwardAxis;
+			(*it)->forward = (*it)->GetComponent<BulletFiring>()->forward;
 			(*it)->transform->position = transform->position;
 			(*it)->active = true;
 			return;

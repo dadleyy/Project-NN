@@ -169,7 +169,6 @@ void D3DApp::OnResize()
 	ReleaseCOM(depthTextureResourceView);
 
 	// Resize the swap chain and recreate the render target view.
-
 	HR(mSwapChain->ResizeBuffers(1, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
 	ID3D11Texture2D* backBuffer;
 	HR(mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
@@ -230,6 +229,10 @@ void D3DApp::OnResize()
 	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTextureScaledDown);
 	HR(md3dDevice->CreateRenderTargetView(targetTextureScaledDown, &renderTargetViewDesc, &targetViewScaledDown));
 	md3dDevice->CreateShaderResourceView(targetTextureScaledDown, &shaderResourceViewDesc, &targetTextureResourceViewScaledDown);
+
+	md3dDevice->CreateTexture2D(&textureDesc, NULL, &targetTextureScaledDown2);
+	HR(md3dDevice->CreateRenderTargetView(targetTextureScaledDown2, &renderTargetViewDesc, &targetViewScaledDown2));
+	md3dDevice->CreateShaderResourceView(targetTextureScaledDown2, &shaderResourceViewDesc, &targetTextureResourceViewScaledDown2);
 
 	// Create the depth/stencil buffer and view.
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
@@ -312,6 +315,7 @@ void D3DApp::OnResize()
 	mScreenViewportDiv5.MaxDepth = 1.0f;
 
 	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
+	md3dImmediateContext->RSSetState(0);
 }
  
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

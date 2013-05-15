@@ -130,12 +130,15 @@ void Game::OnResize() {
 	resourceMgr->textures["Pass1"]    = targetTextureResourceView1;
 	resourceMgr->textures["Pass2"]    = targetTextureResourceView2;	
 	resourceMgr->textures["Depth"]    = depthTextureResourceView;
-	resourceMgr->textures["DScale2"]  = targetTextureResourceViewScaledDown;
+	resourceMgr->textures["DScale"]  = targetTextureResourceViewScaledDown;
+	resourceMgr->textures["DScale2"]  = targetTextureResourceViewScaledDown2;
+	
 
 	resourceMgr->renderTargets["Original"] = originalView;
 	resourceMgr->renderTargets["Pass1"]    = targetView1;
 	resourceMgr->renderTargets["Pass2"]    = targetView2;
-	resourceMgr->renderTargets["DScale2"]  = targetViewScaledDown;
+	resourceMgr->renderTargets["DScale"]  = targetViewScaledDown;
+	resourceMgr->renderTargets["DScale2"]  = targetViewScaledDown2;
 
 	resourceMgr->viewports["Original"] = mScreenViewport;
 	resourceMgr->viewports["DScale2"]  = mScreenViewportDiv5;

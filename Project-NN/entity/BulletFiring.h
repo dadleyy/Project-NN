@@ -17,5 +17,5 @@ public:
 private:
 	GameObject* go;
 	Transform* transform;
-	int speed;
+	float speed;
 };

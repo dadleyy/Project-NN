@@ -19,7 +19,7 @@ public:
 
 	void Update(float dt);
 	
-	static const int SPEED = 1000;
+	const float SPEED;
 	XMFLOAT3 forward;
 	DrawLasers* laserDraw;
 

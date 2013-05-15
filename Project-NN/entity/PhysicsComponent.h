@@ -56,6 +56,7 @@ public:
 	float angAccelerationDamp;
 
 	XMFLOAT3 position;
+	XMFLOAT3 rotAxis;
 	Quaternion quaternion;
 	float angularVelocity;
 	float angularAcceleration;
