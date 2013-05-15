@@ -316,10 +316,6 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "laserEffect", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "laserEffect", "LightsBuffer", "Lights" );
 
-	resourceMgr->setEffectBuffer( "menuEffect", "CameraBuffer", "Camera" );
-	resourceMgr->setEffectBuffer( "menuEffect", "perObject", "Object" );
-
-
 	std::cout << "=== ADDING LIGHTS ===" << std::endl;
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
@@ -379,7 +375,7 @@ void addResources() {
 
 	//
 	// INSTANCED EFFECT INPUT LAYOUT
-	std::cout << "adding instanced effect input layout" << std::endl;
+	std::cout << "-> adding instanced effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC bump_phong_format[] = { 
 		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 ,                              D3D11_INPUT_PER_VERTEX_DATA, 0}, 
 		{"NORMAL",		   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT ,   D3D11_INPUT_PER_VERTEX_DATA, 0}, 

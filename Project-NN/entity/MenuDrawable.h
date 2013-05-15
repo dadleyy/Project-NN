@@ -11,11 +11,12 @@ class MenuDrawable : public Drawable {
 public:
 
 	MenuDrawable( );
-	void createBuffer( MenuItemDescription* desc );
+	void createBuffer( MenuItemDescription desc );
 	void draw( );
 	bool Init( GameObject* go );
 
-private:		
-	MenuItemDescription* description;
+private:
+
 	Transform* transform;
+
 };

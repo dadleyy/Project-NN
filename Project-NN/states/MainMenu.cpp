@@ -9,29 +9,42 @@
 
 MainMenu MainMenu::instance;
 
-void MainMenu::Init(StateManager* manager) {
+namespace MenuFunctions {
+	HRESULT ToGamePlay( StateManager* manager ){
+		manager->ChangeState( Gameplay::Instance( ) );
+		return S_OK;
+	};
+}
+
+void MainMenu::Init(StateManager* manager)
+{
 	GameState::Init(manager);
 
 	MenuItemDescription playbtn;
-	playbtn.width = 0.5f;
-	playbtn.height = 0.5f;
-	playbtn.position = XMFLOAT2( 0.0f, 0.0f );
-	
-	playbutton = new MenuItem( manager, &playbtn );
+	playbtn.width = 500.0f;
+	playbtn.height = 200.0f;
+	playbtn.function = MenuFunctions::ToGamePlay;
+	playbtn.texture = "playbtn";
+	playbtn.position = XMFLOAT2( 400.0f, 300.0f );
+
+	playbutton = new MenuItem( manager, playbtn );
 }
 
-void MainMenu::Cleanup() {
+void MainMenu::Cleanup() 
+{
+
 }
 
-void MainMenu::Update(float dt) {
-	resourceMgr->camera.UpdateViewMatrix( );
-
+void MainMenu::Update(float dt) 
+{
 	playbutton->Update( dt );
-
-	resourceMgr->updateCameraBuffer( );
 }
 
 void MainMenu::Draw() 
 {
+	ID3DX11EffectVectorVariable* dims = resourceMgr->effects.at("menuEffect")->effect->GetVariableByName("screenDimensions")->AsVector( );
+	float screen_dimensions[2] = { screenWidth, screenHeight };
+	dims->SetFloatVector( screen_dimensions );
+
 	playbutton->Draw( );
 }
