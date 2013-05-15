@@ -5,21 +5,22 @@
 #include "MenuControlComponent.h"
 #include "input.h"
 
-MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) : triggered(false)
+MenuItem::MenuItem( StateManager* _manager, MenuItemDescription description ) : triggered(false)
 {
 	manager = _manager;
+	this->description = description;
 
 	transform = new Transform( );
 	drawable = new MenuDrawable( );
-	control = new MenuComponent( this );
+	control = new MenuComponent( );
 
-	transform->position = XMFLOAT3( description->position.x, description->position.y, 0.0f );
+	transform->position = XMFLOAT3( 0.0f, 0.0f, 1.0f );
 	transform->scale = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
 	drawable->getEffectVariables("menuEffect","Render");
 	drawable->setShader("menuEffect","Render");
 	drawable->createBuffer( description );
-	drawable->addTexture("playbtn", "buttonTexture");
+	drawable->addTexture( description.texture, "buttonTexture");
 
 	components.push_back( transform );
 	components.push_back( drawable );
@@ -31,7 +32,7 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) :
 void MenuItem::Trigger()
 {
 	if( !triggered )
-		manager->ChangeState( Gameplay::Instance() );
+		description.function(manager);
 
 	triggered = true;
 }
@@ -39,7 +40,7 @@ void MenuItem::Trigger()
 void MenuItem::Draw( )
 {
 	drawable->setShader("menuEffect","Render");
-	drawable->setEffectTextures();
+	drawable->setEffectTextures( );
 	drawable->draw( );
 }
 

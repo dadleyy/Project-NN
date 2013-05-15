@@ -1,30 +1,18 @@
 //
 //
-cbuffer perObject
-{
-	float4x4 worldMatrix;
-};
-
 Texture2D buttonTexture;
+float2 screenDimensions = float2(800.0f,600.0f);
 
 SamplerState linearSample
 {
 	Filter = MIN_MAG_MIP_LINEAR;
 };
 
-cbuffer CameraBuffer
-{
-	float4x4 viewMatrix;
-	float4x4 fovScaling;
-	float3 cameraPosition;
-	float Cpad;
-};
-
 struct VERTEX
 {   
-	float2 Pos : POSITION;    
 	float Width : WIDTH;  
 	float Height : HEIGHT;
+	float2 Pos : POSITION;    
 };
 
 struct PIXEL
@@ -36,7 +24,24 @@ struct PIXEL
 
 VERTEX VS( VERTEX input )
 {
-	return input;
+	VERTEX output;
+	
+	float x_scale = screenDimensions.x / 800;
+	float y_scale = screenDimensions.y / 600;
+	
+	// get the width and height in terms of percentage
+	output.Width = ( input.Width / screenDimensions.x ) * x_scale;
+	output.Height = ( input.Height / screenDimensions.y ) * y_scale;
+	
+	// calc pos in terms of percentage
+	float x_per = ( ( input.Pos.x / screenDimensions.x ) * 2 ) * x_scale;
+	float y_per = ( ( input.Pos.y / screenDimensions.y ) * 2 ) * y_scale;
+	
+	float x = -1.0 + ( x_per );
+	float y = 1.0 - ( y_per );
+	output.Pos = float2( x, y );
+	
+	return output;
 }
 
 [maxvertexcount(6)]
@@ -63,36 +68,34 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	tc[2] = float2(1.0f, 0.0f); //top right
 	tc[3] = float2(1.0f, 1.0f); //borrom right
 
-	
-
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[0] ) ) );
+	p.Pos = positions[0];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[0];
 	output.Append( p );
 	
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[1] ) ) );
+	p.Pos = positions[1];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[1];
 	output.Append( p );
 	
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[2] ) ) );
+	p.Pos = positions[2];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[2];
 	output.Append( p );
 	
 	output.RestartStrip( );
 	
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[0] ) ) );
+	p.Pos = positions[0];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[0];
 	output.Append( p );
 	
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[2] ) ) );
+	p.Pos = positions[2];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[2];
 	output.Append( p );
 	
-	p.Pos = mul( fovScaling, mul( viewMatrix, mul( worldMatrix, positions[3] ) ) );
+	p.Pos = positions[3];
 	p.Col = float4( 1.0f, 0.0f, 1.0f, 1.0f );
 	p.UV = tc[3];
 	output.Append( p );

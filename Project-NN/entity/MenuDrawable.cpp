@@ -9,29 +9,16 @@ MenuDrawable::MenuDrawable( ) : Drawable( )
 }
 
 bool MenuDrawable::Init(GameObject* go) {
-	transform = go->GetComponent<Transform>();
+	transform = go->GetComponent<Transform>( );
 	return transform != nullptr;
 }
 
-void MenuDrawable::draw() 
+void MenuDrawable::draw( ) 
 {
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( currentLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( drawtopology );
-
-	//translate, rotate, and scale matrix
-	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
-	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
-	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
-	XMMATRIX w = scale * rotation * translate;
-
-	//update the world matrix in the shader
-	D3D11_MAPPED_SUBRESOURCE resource;
-
-	HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
-	memcpy((float*)resource.pData,    &w._11,  64);
-	deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	currentTechnique->GetDesc( &techDesc );
@@ -43,11 +30,9 @@ void MenuDrawable::draw()
 
 }
 
-void MenuDrawable::createBuffer( MenuItemDescription* desc )
+void MenuDrawable::createBuffer( MenuItemDescription desc )
 {
 	HRESULT hr;
-
-	description = desc;
 
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE; //the data will not change
@@ -56,9 +41,14 @@ void MenuDrawable::createBuffer( MenuItemDescription* desc )
 	vbd.CPUAccessFlags = 0;	//0 means the cpu does not have access to the buffer
 	vbd.MiscFlags = 0; //only one D3D device
 
+	MenuItemBuffer buf;
+	buf.width = desc.width;
+	buf.height = desc.height;
+	buf.position = XMFLOAT2( desc.position.x, desc.position.y );
+
 	//add the data for the buffer
 	D3D11_SUBRESOURCE_DATA initData;
-	initData.pSysMem = description;
+	initData.pSysMem = &buf;
 
 	hr = pD3DDevice->CreateBuffer( &vbd, &initData, &pVertexBuffer );
 	if( hr == S_OK )
