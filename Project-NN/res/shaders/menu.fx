@@ -1,8 +1,16 @@
 //
 //
-cbuffer cbPerObject
+cbuffer perObject
 {
-	float4x4 kViewMatrix;
+	float4x4 worldMatrix;
+};
+
+cbuffer CameraBuffer
+{
+	float4x4 viewMatrix;
+	float4x4 fovScaling;
+	float3 cameraPosition;
+	float Cpad;
 };
 
 struct VERTEX
@@ -35,13 +43,6 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	float hh = height * 0.5f;
 	float hw = width * 0.5f;
 	
-	/*
-	v[0] = float4((ppos.x - hWidth), (ppos.y - hHeight), 1.0f, 1.0f);
-	v[1] = float4((ppos.x - hWidth), (ppos.y + hHeight), 1.0f, 1.0f);
-	v[2] = float4((ppos.x + hWidth), (ppos.y + hHeight), 1.0f, 1.0f);
-	v[3] = float4((ppos.x + hWidth), (ppos.y - hHeight), 1.0f, 1.0f);
-	*/
-	
 	float4 positions[4];
 	positions[0] = float4( (pos.x - hw), (pos.y - hh), 1.0f, 1.0f );
 	positions[1] = float4( (pos.x - hw), (pos.y + hh), 1.0f, 1.0f );
@@ -49,34 +50,34 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	positions[3] = float4( (pos.x + hw), (pos.y - hh), 1.0f, 1.0f );
 	
 
-	p.Pos = positions[0];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[0] ) );
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );
 	
-	p.Pos = positions[1];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[1] ) );
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );
 	
-	p.Pos = positions[2];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[2] ) );
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );
 	
 	output.RestartStrip( );
 	
-	p.Pos = positions[0];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[0] ) );
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );
 	
-	p.Pos = positions[2];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[2] ) );
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );
 	
-	p.Pos = positions[3];
+	p.Pos = mul( viewMatrix, mul( worldMatrix, positions[3] ) );
 	p.Col = float4( 1.0f, 0.0f, 1.0f, 1.0f );
 	p.UV = float2( 1.0f, 1.0f );
 	output.Append( p );

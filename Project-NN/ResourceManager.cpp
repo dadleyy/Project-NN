@@ -193,16 +193,18 @@ void ResourceManager::updateShaderBuffers() {
 
 	//update camera buffer if it has changed
 	if(cameraChange) {
-		md3dImmediateContext->Map(getCBuffer("Camera"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource);
-
-		memcpy((float*)resource.pData,    camera.getViewPointer(),  64);
-		memcpy((float*)resource.pData+16, camera.getProjPointer(),  64);
-		memcpy((float*)resource.pData+32, camera.getPosPointer(),    12);
-
-		md3dImmediateContext->Unmap(getCBuffer("Camera"), 0);
-
-		//cameraChange = 0;
+		updateCameraBuffer( );
 	}
+}
+
+void ResourceManager::updateCameraBuffer(  )
+{
+	D3D11_MAPPED_SUBRESOURCE resource;
+	md3dImmediateContext->Map(getCBuffer("Camera"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource);
+	memcpy((float*)resource.pData,    camera.getViewPointer(),  64);
+	memcpy((float*)resource.pData+16, camera.getProjPointer(),  64);
+	memcpy((float*)resource.pData+32, camera.getPosPointer(),    12);
+	md3dImmediateContext->Unmap(getCBuffer("Camera"), 0);
 }
 
 

@@ -234,7 +234,6 @@ void addResources() {
 	resourceMgr->addCBuffer(816, "Light");
 	resourceMgr->addCBuffer(144, "Camera");
 	resourceMgr->addCBuffer(128, "Object");
-	resourceMgr->addCBuffer(128, "Menu");
 
 	//textures
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
@@ -304,7 +303,8 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "laserEffect", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "laserEffect", "LightsBuffer", "Lights" );
 
-	resourceMgr->setEffectBuffer( "menuEffect", "cbPerObject", "Menu" );
+	resourceMgr->setEffectBuffer( "menuEffect", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "menuEffect", "perObject", "Object" );
 
 
 	//lights
@@ -325,13 +325,15 @@ void addResources() {
 	bld.size = 3;
 
 	resourceMgr->addInputLayout( &bld, "betterPhong", "Render" );
-	resourceMgr->addInputLayout( &bld, "instancedPhong", "Render" );
 	resourceMgr->addInputLayout( &bld, "genericPost", "Render" );
 	resourceMgr->addInputLayout( &bld, "contrast", "Render" );
 	resourceMgr->addInputLayout( &bld, "skyShader", "Render" );
-	resourceMgr->addInputLayout( &bld, "bumpInstancePhong", "Render" );
 	resourceMgr->addInputLayout( &bld, "glowDraw", "RenderGlowy" );
+
+	resourceMgr->addInputLayout( &bld, "glowEffect", "Horz" );
+	resourceMgr->addInputLayout( &bld, "glowEffect", "Vert" );
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Add" );
+	
 	resourceMgr->addInputLayout( &bld, "laserEffect", "RenderLasers" );
 
 	D3D11_INPUT_ELEMENT_DESC menu_format[] = { 
@@ -344,6 +346,27 @@ void addResources() {
 	mld.format = menu_format;
 	mld.size = 3;
 	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
+
+
+	D3D11_INPUT_ELEMENT_DESC bump_phong_format[] = { 
+		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 ,                              D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+		{"NORMAL",		   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT ,   D3D11_INPUT_PER_VERTEX_DATA, 0}, 
+		{"TEXCOORD",	   0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D10_APPEND_ALIGNED_ELEMENT ,   D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"WORLD",		   0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0,	                              D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLD",		   1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16,	                          D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLD",		   2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 32,						      D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLD",		   3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 48,						      D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLDNORMAL",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 64,	                          D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLDNORMAL",    1, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 80,	                          D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLDNORMAL",    2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 96,						      D3D11_INPUT_PER_INSTANCE_DATA, 1},
+		{"WORLDNORMAL",    3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 112,						      D3D11_INPUT_PER_INSTANCE_DATA, 1}
+	};
+
+	InputLayoutDescription bipd;
+	bipd.format = bump_phong_format;
+	bipd.size = 11;
+	resourceMgr->addInputLayout( &bipd, "bumpInstancePhong", "Render" );
+	resourceMgr->addInputLayout( &bipd, "instancedPhong", "Render" );
 
 }
 

@@ -78,7 +78,8 @@ public:
 
 	Camera camera;
 
-	void updateShaderBuffers();
+	void updateShaderBuffers( );
+	void updateCameraBuffer( );
 
 	std::default_random_engine randomEngine;
 

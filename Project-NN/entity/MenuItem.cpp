@@ -3,6 +3,7 @@
 #include "MenuDrawable.h"
 #include "Transform.h"
 #include "MenuControlComponent.h"
+#include "input.h"
 
 MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) : triggered(false)
 {
@@ -13,6 +14,7 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) :
 	control = new MenuComponent( this );
 
 	transform->position = XMFLOAT3( description->position.x, description->position.y, 0.0f );
+	transform->scale = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
 	drawable->getEffectVariables("menuEffect","Render");
 	drawable->setShader("menuEffect","Render");
@@ -36,7 +38,7 @@ void MenuItem::Trigger()
 void MenuItem::Draw( )
 {
 	drawable->setShader("menuEffect","Render");
-	drawable->draw();
+	drawable->draw( );
 }
 
 MenuItem::~MenuItem( ){ }

@@ -24,7 +24,11 @@ void MainMenu::Cleanup() {
 }
 
 void MainMenu::Update(float dt) {
+	resourceMgr->camera.UpdateViewMatrix();
+
 	playbutton->Update( dt );
+
+	resourceMgr->updateCameraBuffer( );
 }
 
 void MainMenu::Draw() 

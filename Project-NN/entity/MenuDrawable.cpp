@@ -1,10 +1,16 @@
 #include "MenuDrawable.h"
 #include "ResourceManager.h"
 #include "MenuItem.h"
+#include "Transform.h"
 
 MenuDrawable::MenuDrawable( ) : Drawable( )
 {
 	drawtopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+}
+
+bool MenuDrawable::Init(GameObject* go) {
+	transform = go->GetComponent<Transform>();
+	return transform != nullptr;
 }
 
 void MenuDrawable::setShader(char* effectName, char* techniqueName )
@@ -29,8 +35,18 @@ void MenuDrawable::draw()
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( drawtopology );
 
+	//translate, rotate, and scale matrix
+	XMMATRIX translate = XMMatrixTranslation(transform->position.x, transform->position.y, transform->position.z);
+	XMMATRIX rotation = XMMatrixRotationQuaternion(XMLoadFloat4(&transform->rotation));
+	XMMATRIX scale = XMMatrixScaling(transform->scale.x, transform->scale.y, transform->scale.z);
+	XMMATRIX w = scale * rotation * translate;
+
+	//update the world matrix in the shader
 	D3D11_MAPPED_SUBRESOURCE resource;
-	HRESULT hr = deviceContext->Map( resourceMgr->getCBuffer("Menu"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource );
+
+	HRESULT hr = deviceContext->Map(resourceMgr->getCBuffer("Object"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource); 
+	memcpy((float*)resource.pData,    &w._11,  64);
+	deviceContext->Unmap(resourceMgr->getCBuffer("Object"), 0);
 
 	D3DX11_TECHNIQUE_DESC techDesc;
 	currentTechnique->GetDesc( &techDesc );

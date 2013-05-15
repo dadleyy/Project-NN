@@ -85,6 +85,7 @@ void Drawable::setShader(char* effectName, char* techniqueName)
 {
 	currentShader = shaders[effectName];
 	currentTechnique = techniques[techniqueName];
+	currentLayout = layouts[techniqueName];
 }
 
 void Drawable::draw()
@@ -94,7 +95,7 @@ void Drawable::draw()
 
 
 	// Clear the back buffer 
-	deviceContext->IASetInputLayout( pVertexLayout );
+	deviceContext->IASetInputLayout( currentLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( drawtopology );
 	
@@ -112,6 +113,7 @@ void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 	this->effectID = effectID;
 	shaders[effectID] = resourceMgr->effects.at( effectID )->effect;
     techniques[fxTechniqueName] = shaders[effectID]->GetTechniqueByName( fxTechniqueName );
+	layouts[fxTechniqueName] = resourceMgr->effects.at( effectID )->layouts.at( fxTechniqueName );
 }
 
 //****************************************************************
