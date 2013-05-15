@@ -13,21 +13,6 @@ bool MenuDrawable::Init(GameObject* go) {
 	return transform != nullptr;
 }
 
-void MenuDrawable::setShader(char* effectName, char* techniqueName )
-{
-	currentShader = shaders[effectName];
-	currentTechnique = techniques[techniqueName];
-	currentLayout = layouts[techniqueName];
-}
-
-void MenuDrawable::getEffectVariables(char* effectID, char* techniqueName)
-{
-	this->effectID = effectID;
-	shaders[effectID] = resourceMgr->effects.at( effectID )->effect;
-	techniques[techniqueName] = shaders[effectID]->GetTechniqueByName( techniqueName );
-	layouts[techniqueName] = resourceMgr->effects.at( effectID )->layouts.at( techniqueName );
-}
-
 void MenuDrawable::draw() 
 {
 	// Clear the back buffer 

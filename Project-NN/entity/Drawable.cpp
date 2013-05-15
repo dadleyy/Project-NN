@@ -17,7 +17,6 @@ Drawable::Drawable(void) : world(), drawtopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANG
 	currentLayout = 0;
 
 	pVertexBuffer = 0;
-	pVertexLayout = 0;
 	vertexStride = 0;
 	vertexOffset = 0;
 	XMMATRIX I = XMMatrixIdentity();
@@ -77,7 +76,7 @@ void Drawable::setEffectVariables()
 void Drawable::setEffectTextures()
 {
 	for(auto it = textures.begin(); it != textures.end(); ++it) {
-		it->first->AsShaderResource()->SetResource(it->second);
+		HRESULT hr = it->first->AsShaderResource()->SetResource(it->second);
 	}
 }
 
@@ -124,26 +123,6 @@ void Drawable::getEffectVariables(char *effectID, char* fxTechniqueName )
 void Drawable::createBuffer(char* mesh)
 {
 	HRESULT hr;
-
-	//VERTEX BUFFER
-	//describe the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] = { 
-											{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0 ,                            D3D11_INPUT_PER_VERTEX_DATA, 0}, 
-											{"NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0}, 
-											{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0} 
-										};
-	
-	//get required vertex information from a shader technique
-	D3DX11_PASS_DESC passDesc;
-    currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
-
-	hr = pD3DDevice->CreateInputLayout(layout,
-				3,
-				passDesc.pIAInputSignature,
-				passDesc.IAInputSignatureSize,
-				&pVertexLayout);
-
-
 	pVertexBuffer = resourceMgr->meshes.at(mesh)->verticies;
 	indexBuffer = resourceMgr->meshes.at(mesh)->indicies;
 

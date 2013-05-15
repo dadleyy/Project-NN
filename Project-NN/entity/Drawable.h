@@ -55,7 +55,6 @@ protected:
 
 	//vertex buffer
 	ID3D11Buffer*		pVertexBuffer;	//the buffer for our verticies
-	ID3D11InputLayout*  pVertexLayout;	//the description of our verticies
 	//index buffer
 	ID3D11Buffer*		indexBuffer;	//the buffer for our verticies
 

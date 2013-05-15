@@ -36,23 +36,6 @@ DrawLasers::~DrawLasers(void)
 void DrawLasers::createBuffer()
 {
 	HRESULT hr;
-
-	//VERTEX BUFFER
-	//describe the input layout
-	D3D11_INPUT_ELEMENT_DESC layout[] = { 
-											{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 , D3D11_INPUT_PER_VERTEX_DATA, 0}, 
-										};
-	
-	//get required vertex information from a shader technique
-	D3DX11_PASS_DESC passDesc;
-    currentTechnique->GetPassByIndex(0)->GetDesc(&passDesc);
-
-	hr = pD3DDevice->CreateInputLayout(layout,
-				1,
-				passDesc.pIAInputSignature,
-				passDesc.IAInputSignatureSize,
-				&pVertexLayout);
-
 	vertexStride = 12;
 	vertexOffset = 0;
 }
@@ -73,7 +56,7 @@ void DrawLasers::draw()
 		deviceContext->Unmap(vertexBuffer, 0);
 
 		// Clear the back buffer 
-		deviceContext->IASetInputLayout( pVertexLayout );
+		deviceContext->IASetInputLayout( currentLayout );
 		deviceContext->IASetVertexBuffers( 0, 1, &vertexBuffer, &vertexStride, &vertexOffset );
 		deviceContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
 	

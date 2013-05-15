@@ -149,6 +149,8 @@ void Game::OnResize() {
 	screenWidth = mClientWidth;
 	screenHeight = mClientHeight;
 
+	std::cout << "whoa resize" << std::endl;
+
 	resourceMgr->camera.SetLens(resourceMgr->camera.GetFovY(),
 								((float)screenWidth)/screenHeight,
 								resourceMgr->camera.GetNearZ(),
@@ -235,6 +237,8 @@ void addResources() {
 	resourceMgr->addCBuffer(144, "Camera");
 	resourceMgr->addCBuffer(128, "Object");
 
+
+	std::cout << "=== COMPILING TEXTURES ===" << std::endl;
 	//textures
 	resourceMgr->addTexture(L"res/textures/mossy-bricks.dds", "Test");
 	resourceMgr->addTexture(L"res/textures/Grass_Diff.dds", "Test2");
@@ -246,6 +250,11 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/shiphullTexture.jpg", "shipTexture");
 	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
 
+	// menu textures
+	resourceMgr->addTexture(L"res/textures/playbutton.jpg", "playbtn");
+
+
+	std::cout << "=== COMPILING MESHES ===" << std::endl;
 	//meshes
 	resourceMgr->addMesh("res/models/sphere.obj", "Sphere");
 	resourceMgr->addMesh("res/models/Dodecahedron.obj", "dodeca");
@@ -254,6 +263,8 @@ void addResources() {
 	resourceMgr->addMesh("res/models/cool.obj", "enemy");
 	resourceMgr->addMesh("res/models/asteroid.obj", "Asteroid");
 
+
+	std::cout << "=== COMPILING EFFECTS ===" << std::endl;
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
@@ -266,6 +277,8 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/lasers.fx", "laserEffect" );
 	resourceMgr->addEffect(L"res/shaders/menu.fx", "menuEffect" );
 
+
+	std::cout << "=== SETTING BUFFER REFERENCES ===" << std::endl;
 	// set effect buffer references
 	resourceMgr->setEffectBuffer( "betterPhong", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "betterPhong", "CameraBuffer", "Camera" );
@@ -307,6 +320,7 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "menuEffect", "perObject", "Object" );
 
 
+	std::cout << "=== ADDING LIGHTS ===" << std::endl;
 	//lights
 	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
 	resourceMgr->addLight(0, 1,  0, 1, 1, 1, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
@@ -315,6 +329,12 @@ void addResources() {
 
 
 	// input layouts
+	
+	std::cout << "=== COMPILING INPUT LAYOUTS ===" << std::endl;
+
+	//
+	// BASIC/GENERIC EFFECT INPUT LAYOUT
+	std::cout << "-> adding basic effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC basic_format[] = { 
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0 ,                            D3D11_INPUT_PER_VERTEX_DATA, 0}, 
 		{"NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT , D3D11_INPUT_PER_VERTEX_DATA, 0}, 
@@ -329,25 +349,37 @@ void addResources() {
 	resourceMgr->addInputLayout( &bld, "contrast", "Render" );
 	resourceMgr->addInputLayout( &bld, "skyShader", "Render" );
 	resourceMgr->addInputLayout( &bld, "glowDraw", "RenderGlowy" );
-
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Horz" );
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Vert" );
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Add" );
-	
-	resourceMgr->addInputLayout( &bld, "laserEffect", "RenderLasers" );
 
+	//
+	// LASER EFFECT INPUT LAYOUT
+	std::cout << "-> adding laser effect input layout" << std::endl;
+	D3D11_INPUT_ELEMENT_DESC laser_format[] = { 
+		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 , D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+	InputLayoutDescription lld;
+	lld.format = laser_format;
+	lld.size = 1;
+	resourceMgr->addInputLayout( &lld, "laserEffect", "RenderLasers" );
+
+	//
+	// MENU EFFECT INPUT LAYOUT
+	std::cout << "-> adding menu effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC menu_format[] = { 
 		{"WIDTH",    0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}, 
 		{"HEIGHT",   0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
-
 	InputLayoutDescription mld;
 	mld.format = menu_format;
 	mld.size = 3;
 	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
 
-
+	//
+	// INSTANCED EFFECT INPUT LAYOUT
+	std::cout << "adding instanced effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC bump_phong_format[] = { 
 		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 ,                              D3D11_INPUT_PER_VERTEX_DATA, 0}, 
 		{"NORMAL",		   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT ,   D3D11_INPUT_PER_VERTEX_DATA, 0}, 
@@ -361,7 +393,6 @@ void addResources() {
 		{"WORLDNORMAL",    2, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 96,						      D3D11_INPUT_PER_INSTANCE_DATA, 1},
 		{"WORLDNORMAL",    3, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 112,						      D3D11_INPUT_PER_INSTANCE_DATA, 1}
 	};
-
 	InputLayoutDescription bipd;
 	bipd.format = bump_phong_format;
 	bipd.size = 11;

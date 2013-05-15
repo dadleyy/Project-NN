@@ -30,6 +30,9 @@ void ResourceManager::addEffect(WCHAR* file, char* name) {
 		ID3DX11Effect* effect;
 		HRESULT hr = D3DX11CreateEffectFromMemory(ppShader->GetBufferPointer(), ppShader->GetBufferSize(), 0, pD3DDevice, &e->effect);
 		effects.insert(std::make_pair<char*, Effect*>(name, e));
+		std::cout << "++ the effect: " << name << " was made okay" << std::endl;
+	} else {
+		std::cout << "!! unable to compile effect: " << name << std::endl;
 	}
 }
 
@@ -40,7 +43,10 @@ void ResourceManager::addTexture(WCHAR* file, char* name) {
 	        file, 0, 0, &view, 0 );
 
 	if(hr == S_OK) {
+		std::cout << "++ the texture: " << name << " was made okay" << std::endl;
 		textures.insert(std::make_pair<char*, ID3D11ShaderResourceView*>(name, view));
+	} else {
+		std::cout << "!! the texture: " << name << " was not made okay" << std::endl;
 	}
 }
 
@@ -248,22 +254,21 @@ HRESULT ResourceManager::addInputLayout( InputLayoutDescription* description, ch
 	D3DX11_PASS_DESC pd;
 	out = e->effect->GetTechniqueByName( techniqueID )->GetPassByIndex(0)->GetDesc( &pd );
 	if( out != S_OK ){
-		std::cout << "unable to find: " << techniqueID << " in " << effectID << std::endl;
+		std::cout << "!! unable to find: " << techniqueID << " in " << effectID << std::endl;
 		return S_FALSE;
 	} else {
-		std::cout << "found the technique: " << techniqueID << " in the effect " << effectID << std::endl;
+		std::cout << "++ found the technique: " << techniqueID << " in the effect " << effectID << std::endl;
 	}
 	
 	ID3D11InputLayout* ilayout;
 	out = pD3DDevice->CreateInputLayout( description->format, description->size, pd.pIAInputSignature, pd.IAInputSignatureSize, &ilayout);
 
 	if( out == S_OK ){ 
-		std::cout << "inserting the layout into: " << effectID << " to be used with technique: " << techniqueID << std::endl;
+		std::cout << "++ inserting the layout into: " << effectID << " to be used with technique: " << techniqueID << std::endl;
 		e->layouts.insert( std::make_pair<char*,ID3D11InputLayout*>( techniqueID, ilayout ) );
 	} else {
-		std::cout << "unable to insert the layout into: " << effectID << std::endl;
+		std::cout << "!! unable to insert the layout into: " << effectID << std::endl;
 	}
-	std::cout << std::endl;
 
 	return out;
 }

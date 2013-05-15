@@ -19,6 +19,7 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription* description ) :
 	drawable->getEffectVariables("menuEffect","Render");
 	drawable->setShader("menuEffect","Render");
 	drawable->createBuffer( description );
+	drawable->addTexture("playbtn", "buttonTexture");
 
 	components.push_back( transform );
 	components.push_back( drawable );
@@ -38,6 +39,7 @@ void MenuItem::Trigger()
 void MenuItem::Draw( )
 {
 	drawable->setShader("menuEffect","Render");
+	drawable->setEffectTextures();
 	drawable->draw( );
 }
 
