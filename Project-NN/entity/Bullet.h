@@ -10,6 +10,7 @@ class PrintUponCollision;
 class BulletFiring;
 class BulletManager;
 class Transform;
+class PhysicsComponent;
 
 class Bullet : public GameObject {
 public:
@@ -28,4 +29,5 @@ private:
 	BulletManager* manager;
 	PrintUponCollision* print;
 	BulletFiring* fireBullet;
+	PhysicsComponent* physics;
 };

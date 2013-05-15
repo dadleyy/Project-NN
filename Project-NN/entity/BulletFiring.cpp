@@ -21,3 +21,8 @@ void BulletFiring::Update(float dt) {
 	                     transform->position.y + forward.y*speed*dt,
 	                     transform->position.z + forward.z*speed*dt);
 }
+
+void BulletFiring::HandleCollision(GameObject* other) {
+	//TODO: Explode
+	go->active = false;
+}

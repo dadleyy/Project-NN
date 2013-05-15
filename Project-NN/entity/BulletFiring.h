@@ -11,7 +11,7 @@ class BulletFiring : public Component {
 public:
 	bool Init(GameObject* go);
 	void Update(float dt);
-
+	void HandleCollision(GameObject* other);
 	XMFLOAT3 forward;
 
 private:

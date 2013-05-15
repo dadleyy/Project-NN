@@ -10,6 +10,7 @@ using namespace std;
 #include "PrintUponCollision.h"
 #include "Collider.h"
 #include "BulletManager.h"
+#include "PhysicsComponent.h"
 
 Bullet::Bullet(BulletManager* gManager) : SPEED(20)
 {
