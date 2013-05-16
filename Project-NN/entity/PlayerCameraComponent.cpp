@@ -18,8 +18,9 @@ PlayerCameraComponent::PlayerCameraComponent(Camera* cam)
 }
 
 
-PlayerCameraComponent::~PlayerCameraComponent(void)
+PlayerCameraComponent::~PlayerCameraComponent()
 {
+	camera->SetLens(baseFOV, camera->GetAspect(), camera->GetNearZ(), camera->GetFarZ());
 }
 
 bool PlayerCameraComponent::Init(GameObject* go)
