@@ -31,6 +31,8 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	PhysicsComponent* physics = new PhysicsComponent(XMFLOAT3(0,0,1), XMFLOAT3(1,0,0), XMFLOAT3(0,1,0), 100*scale, 0, 20, transform->position, XMFLOAT3(1,0,0), XMFLOAT3(0,0,0), 0, 0);
 	physics->accelerationDamp = .1;
 	physics->velocityDamp = .1;
+	physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
+	physics->angularVelocity = ((float)rand())/RAND_MAX * 15;
 	physics->friction = .2;
 
 
