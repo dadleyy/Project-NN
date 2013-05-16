@@ -14,6 +14,8 @@ using namespace std;
 
 
 bool PlayerControls::Init(GameObject* go) {
+	shooting = false;
+
 	physics = go->GetComponent<PhysicsComponent>();
 	bManager = go->GetComponent<BulletManager>();
 	fired = false;
@@ -24,13 +26,21 @@ bool PlayerControls::Init(GameObject* go) {
 void PlayerControls::Update(float dt) {
 	//fired = false;
 
-	if(fireDelay > 0)
-	{
+	if(fireDelay > 0) {
 		fireDelay -= dt;
-	}
-	else if( input->getLMouseButton() && !input->getRMouseButton()) {
+	} else if( input->getLMouseButton() && !input->getRMouseButton()) {
 		bManager->Fire();
 		fireDelay = 1;
+	}
+
+	if( input->getLMouseButton( ) ) {
+		if( !shooting )
+			resourceMgr->setCursor("shooting");
+		shooting = true;
+	} else {
+		if( shooting )
+			resourceMgr->setCursor("default");
+		shooting = false;
 	}
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();

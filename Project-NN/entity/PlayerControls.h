@@ -41,4 +41,6 @@ private:
 	bool fired;
 	void handleKey( int keycode, float dt );
 	float fireDelay;
+
+	bool shooting;
 };

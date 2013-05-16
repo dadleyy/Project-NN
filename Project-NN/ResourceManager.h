@@ -37,6 +37,11 @@ struct Effect {
 	std::unordered_map<char*,ID3D11InputLayout*> layouts;
 };
 
+struct Blender {
+	ID3D11BlendState* state;
+	D3D11_BLEND_DESC description;
+};
+
 class ResourceManager {
 public:
 	ResourceManager(void);
@@ -54,6 +59,7 @@ public:
 	std::unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
 	std::unordered_map<char*, D3D11_VIEWPORT> viewports;
 	std::unordered_map<char*, HCURSOR> cursors;
+	std::unordered_map<char*, Blender*> blenders;
 
 	bool lightChange;
 	unsigned int numLights;
@@ -74,6 +80,7 @@ public:
 	              int onOff, int type);
 
 	HRESULT addInputLayout( InputLayoutDescription* description, char* effectID, char* techniqueId );
+	HRESULT addBlendState( D3D11_BLEND_DESC description, char* blendID );
 
 	Mesh* getMesh( char* meshName );
 	ID3DX11Effect* getEffect( char* effectName );

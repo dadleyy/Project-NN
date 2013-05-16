@@ -125,13 +125,3 @@ technique11 Render
         SetPixelShader( CompileShader( ps_5_0, PS( ) ) );
     }
 }
-
-technique11 MenuGlow
-{
-    pass P0
-    {
-        SetVertexShader( CompileShader( vs_5_0, VS( ) ) );
-        SetGeometryShader( CompileShader( gs_5_0, GS( ) ) );
-        SetPixelShader( CompileShader( ps_5_0, PS( ) ) );
-    }
-}

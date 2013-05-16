@@ -313,3 +313,27 @@ void ResourceManager::setCursor( void )
 {
 	SetCursor( cursors.at( current_cursor ) );	
 }
+
+
+HRESULT ResourceManager::addBlendState(  D3D11_BLEND_DESC description, char* blendID )
+{
+	HRESULT out;
+	ID3D11BlendState* blend;
+
+	// initialize the new Blender
+	Blender* b = new Blender;
+	// copy the description
+	b->description = description;
+	// attempt to make the blendstate
+	out = pD3DDevice->CreateBlendState( &description, &blend );
+
+	if( out == S_OK ){
+		b->state = blend;
+		blenders.insert( std::make_pair<char*,Blender*>( blendID, b ) );
+		std::cout << "++ blend state: " << blendID << " was created okay" << std::endl;
+	} else {
+		std::cout << "!! failed to create blend state: " << blendID << std::endl;
+	}
+
+	return out;
+}
