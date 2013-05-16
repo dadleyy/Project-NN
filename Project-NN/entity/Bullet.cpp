@@ -12,7 +12,7 @@ using namespace std;
 #include "BulletManager.h"
 #include "PhysicsComponent.h"
 
-Bullet::Bullet(BulletManager* gManager) : SPEED(50)
+Bullet::Bullet(BulletManager* gManager) : SPEED(80)
 {
 	transform = new Transform();
 
@@ -41,7 +41,7 @@ Bullet::Bullet(BulletManager* gManager) : SPEED(50)
 	GameObject::InitComponents();
 }
 
-Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward): SPEED(20) 
+Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward): SPEED(80) 
 {
 	transform = new Transform();
 	print = new PrintUponCollision();
@@ -66,5 +66,5 @@ Bullet::Bullet(float xPos, float yPos, float zPos, XMFLOAT3 gForward): SPEED(20)
 void Bullet::Draw() 
 {
 	laserDraw->points.push_back(transform->position);
-	laserDraw->points.push_back(XMFLOAT3(transform->position.x + 2*forward.x, transform->position.y + 2*forward.y,transform->position.z + 2*forward.z));
+	laserDraw->points.push_back(XMFLOAT3(transform->position.x + 5*forward.x, transform->position.y + 5*forward.y,transform->position.z + 5*forward.z));
 }

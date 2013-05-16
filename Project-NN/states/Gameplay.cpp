@@ -83,7 +83,7 @@ void Gameplay::Init(StateManager* manager) {
 
 	//create enemies
 	uniform_real_distribution<float> enemy_d(-10, 10);
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 1; i++){
 		float x = enemy_d(resourceMgr->randomEngine), 
 			y = enemy_d(resourceMgr->randomEngine), 
 			z = enemy_d(resourceMgr->randomEngine);
@@ -92,9 +92,9 @@ void Gameplay::Init(StateManager* manager) {
 		sceneMgr->Insert( enemy );
 	}
 
-	uniform_real_distribution<float> bombDistribution(-30, 30);
+	uniform_real_distribution<float> bombDistribution(-200, 200);
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 20; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),

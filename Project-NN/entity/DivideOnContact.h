@@ -6,11 +6,11 @@ class GameObject;
 
 class DivideOnContact : public Component {
 public:
-	DivideOnContact(int divisionsRemaining);
+	DivideOnContact(int minimumScale);
 	bool Init(GameObject* go);
 	void HandleCollision(GameObject* other);
 
-	int divisionsRemaining;
+	int minScale;
 
 private:
 	GameObject* go;

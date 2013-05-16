@@ -1,11 +1,15 @@
 #include "PhysicsComponent.h"
+#include "PlayerControls.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "..\framework\quaternionMath.h"
+#include "Health.h"
 
 void damp(float* s, float damp, float minDamp, float dt);
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt);
 int frameNumber;
+
+
 PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAxis,
                                     float m, float sp, float m_sp, XMFLOAT3 pos, XMFLOAT3 vel,
                                     XMFLOAT3 acc, float angularVel, float angularAcc) : MIN_DAMP(.005) {
@@ -71,6 +75,8 @@ void PhysicsComponent::Update(float dt) {
 	                     velocity.y + acceleration.y*dt,
 	                     velocity.z + acceleration.z*dt );
 
+	if(velocity.x < 0)
+		velocity.x  = 0;
 	//normalize the velocity, multiply by speed, and add the acceleration from the last frame
 	speed = magnitude( velocity );
 
@@ -165,6 +171,23 @@ void PhysicsComponent::HandleCollision(GameObject* go)
 
 	//the magnitude of the collision
 	float impact = proj1*mass + proj2*goPC->mass;
+
+	//reduce health based on impact
+	Health* h1 = object->GetComponent<Health>();
+	Health* h2 = go->GetComponent<Health>();
+	if(impact < 50000000000)
+	{
+		if(h1)
+		{
+			if(object->GetComponent<PlayerControls>())
+				h1->Damage(impact/1000);
+		}
+		if(h2)
+		{
+			if(go->GetComponent<PlayerControls>())
+				h2->Damage(impact/1000);
+		}
+	}
 
 	float impact2 = (impact*mass)/(totalMass*totalMass);
 	float impact1 = (impact*goPC->mass)/(totalMass*totalMass);

@@ -16,7 +16,7 @@ using namespace std;
 Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* asteroids) {
 	transform = new Transform();
 	collider = new Collider();
-	divide = new DivideOnContact(3);
+	divide = new DivideOnContact(8);
 
 	this->asteroids = asteroids;
 
@@ -40,8 +40,8 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	components.push_back(collider);
 	components.push_back(transform);
 	components.push_back(physics);
-	components.push_back(new Health(100));
-	components.push_back(new DivideOnContact(3));
+	components.push_back(new Health(10*scale));
+	components.push_back(divide);
 	GameObject::InitComponents();
 
 }

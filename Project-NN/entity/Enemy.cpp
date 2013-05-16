@@ -36,6 +36,7 @@ Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 	physics->setLinVDamp( .98 );
 	physics->setLinADamp( .9975 );
 	physics->minSpeed = 3;
+	physics->MAX_SPEED = 9;
 
 	ai->SetTarget( initialTarget );
 

@@ -20,9 +20,20 @@ void BulletFiring::Update(float dt) {
 	transform->position = XMFLOAT3(transform->position.x + forward.x*speed*dt,
 	                     transform->position.y + forward.y*speed*dt,
 	                     transform->position.z + forward.z*speed*dt);
+	time -=dt;
+	if (time <= 0.0)
+	{
+		go->active = false;
+	}
 }
 
 void BulletFiring::HandleCollision(GameObject* other) {
 	//TODO: Explode
 	go->active = false;
+}
+
+
+void BulletFiring::SetActive() {
+	go->active = true;
+	time = 10.0;
 }

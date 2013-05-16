@@ -20,7 +20,7 @@ bool PlayerControls::Init(GameObject* go) {
 	bManager = go->GetComponent<BulletManager>();
 	fired = false;
 	return physics != nullptr;
-	fireDelay = 0.0;
+	fireDelay = 1.0;
 }
 
 void PlayerControls::Update(float dt) {
@@ -28,9 +28,11 @@ void PlayerControls::Update(float dt) {
 
 	if(fireDelay > 0) {
 		fireDelay -= dt;
-	} else if( input->getLMouseButton() && !input->getRMouseButton()) {
+	}
+	else if( input->getLMouseButton() && !input->getRMouseButton() && fireDelay <= 0) {
 		bManager->Fire();
-		fireDelay = 1;
+
+		fireDelay = .4;
 	}
 
 	if( input->getLMouseButton( ) ) {
@@ -87,26 +89,7 @@ void PlayerControls::handleKey( int keycode, float dt ) {
 		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
 		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .5, physics->acceleration.y, physics->acceleration.z) );
 		break;
-	case 'B':
-		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(0,0,0) );
-		physics->setVelocity(XMFLOAT3(0,0,0));
-		physics->setSpeed(0);
-		break;
-		/*
-	case 'Q':
-		drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		break;
-	case 'E':
-		drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
-		break;
-	case 'Z':
-		drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
-		break;
-	case 'C':
-		drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
-		break;
-		*/
+
 	default:
 		break;
 	}

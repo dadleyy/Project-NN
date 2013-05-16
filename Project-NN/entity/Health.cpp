@@ -10,6 +10,11 @@ void Health::Damage(int hp) {
 	this->hp = this->hp < 0 ? 0 : this->hp;
 }
 
+void Health::setHealth(int hp)
+{
+	this->hp = hp;
+}
+
 void Health::Heal(int hp) {
 	this->hp += hp;
 }

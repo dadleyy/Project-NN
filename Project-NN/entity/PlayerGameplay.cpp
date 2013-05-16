@@ -9,6 +9,6 @@ bool PlayerGameplay::Init(GameObject* go) {
 
 void PlayerGameplay::Update(float dt) {
 	if(!health->IsAlive()) {
-		DebugBreak();
+		//DebugBreak();
 	}
 }
