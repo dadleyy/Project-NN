@@ -52,11 +52,3 @@ void Enemy::Draw()
 	drawable->setEffectTextures();
 	drawable->draw();
 }
-
-Enemy::~Enemy(void)
-{
-	//delete drawable;
-	delete transform;
-	delete ai;
-	delete physics;
-}

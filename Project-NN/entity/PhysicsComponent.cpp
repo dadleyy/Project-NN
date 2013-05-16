@@ -112,6 +112,8 @@ void PhysicsComponent::Update(float dt) {
 	Quaternion q(1, 0, 0, 0);
 	if(angularVelocity > 0)
 	{
+		if(angularVelocity > 40)
+			angularVelocity = 40;
 		damp(&angularVelocity, angVelocityDamp, MIN_DAMP, dt);
 		q = Quaternion(angularVelocity*dt, rotAxis);
 		quaternion = mult(quaternion, q);
@@ -182,7 +184,7 @@ void PhysicsComponent::HandleCollision(GameObject* go)
 	//handle friction
 	if(friction*goPC->friction != 0)
 	{
-		float resistance = impact*(friction + goPC->friction)/10000;
+		float resistance = impact*(friction + goPC->friction)/1000000;
 		float angVel1 = magnitude(XMFLOAT3( worldvelocity.z - inverseCollisionNormal.x*proj1, worldvelocity.y - inverseCollisionNormal.y*proj1, worldvelocity.x - inverseCollisionNormal.z*proj1));
 		float angVel2 = magnitude(XMFLOAT3( goPC->worldvelocity.z - collisionNormal.x*proj2, goPC->worldvelocity.y - collisionNormal.y*proj2, goPC->worldvelocity.x - collisionNormal.z*proj2));
 		XMFLOAT3 rotAxis1 = normalize(cross(worldvelocity, inverseCollisionNormal));
