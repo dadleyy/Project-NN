@@ -8,6 +8,7 @@ public:
 	void Damage(int hp);
 	void Heal(int hp);
 	bool IsAlive();
+	void setHealth(int hp);
 	void HandleCollision(GameObject* other);
 private:
 	int hp;

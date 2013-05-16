@@ -7,8 +7,8 @@
 #include "SceneManager.h"
 
 
-DivideOnContact::DivideOnContact(int divisionsRemaining) {
-	this->divisionsRemaining = divisionsRemaining;
+DivideOnContact::DivideOnContact(int minimumScale) {
+	minScale = minimumScale;
 }
 
 bool DivideOnContact::Init(GameObject* go) {
@@ -23,14 +23,10 @@ void DivideOnContact::HandleCollision(GameObject* other) {
 	if(go->GetComponent<Health>()->IsAlive())
 		return;
 
-	if(divisionsRemaining > 0) {
+	if(go->transform->scale.x > minScale) {
 		auto obj1 = go->Clone();
 		auto obj2 = go->Clone();
 		auto obj3 = go->Clone();
-
-		obj1->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
-		obj2->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
-		obj3->GetComponent<DivideOnContact>()->divisionsRemaining = divisionsRemaining - 1;
 
 		float scaleDim = obj1->transform->scale.x;
 		obj1->transform->position.x += scaleDim;
@@ -45,16 +41,19 @@ void DivideOnContact::HandleCollision(GameObject* other) {
 		float initialSpeed = physics->speed;
 
 		physics = obj1->GetComponent<PhysicsComponent>();
+		obj1->GetComponent<Health>()->setHealth(obj1->transform->scale.x*10);
 		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(1,0,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;
 
 		physics = obj2->GetComponent<PhysicsComponent>();
+		obj2->GetComponent<Health>()->setHealth(obj2->transform->scale.x*10);
 		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(-1,0,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;
 
 		physics = obj3->GetComponent<PhysicsComponent>();
+		obj3->GetComponent<Health>()->setHealth(obj3->transform->scale.x*10);
 		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(0,-1,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;

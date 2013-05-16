@@ -30,7 +30,7 @@ void PlayerControls::Update(float dt) {
 	}
 	else if( input->getLMouseButton() && !input->getRMouseButton()) {
 		bManager->Fire();
-		fireDelay = 1;
+		fireDelay = .4;
 	}
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();

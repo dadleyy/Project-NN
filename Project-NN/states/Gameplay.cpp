@@ -91,9 +91,9 @@ void Gameplay::Init(StateManager* manager) {
 		sceneMgr->Insert( enemy );
 	}
 
-	uniform_real_distribution<float> bombDistribution(-30, 30);
+	uniform_real_distribution<float> bombDistribution(-200, 200);
 
-	for(int i = 0; i < 5; i++) {
+	for(int i = 0; i < 20; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
