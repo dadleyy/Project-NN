@@ -201,26 +201,32 @@ void Game::DrawScene()
 
 
 void Game::OnMouseDownL(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, L_btn, x, y);
 }
 
 void Game::OnMouseDownM(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, M_btn, x, y);
 }
 
 void Game::OnMouseDownR(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, R_btn, x, y);
 }
 
 void Game::OnMouseUpL(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, L_btn, x, y);
 }
 
 void Game::OnMouseUpM(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, M_btn, x, y);
 }
 
 void Game::OnMouseUpR(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, R_btn, x, y);
 }
 
