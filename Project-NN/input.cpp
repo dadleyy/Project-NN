@@ -3,6 +3,7 @@
 //
 
 #include "input.h"
+#include <iostream>
 
 
 //constructor
@@ -28,38 +29,6 @@ Input::~Input() {
 	if(mouseCaptured)
 		ReleaseCapture();               // release mouse
 }
-
-
-int Input::getMouseX() {
-	return mouseX;
-}
-
-//initialize
-/*void Input::initialize(HWND hwnd, bool capture, StateManager gManager)
-{
-    try{
-        mouseCaptured = capture;
-        if(mouseCaptured)
-            SetCapture(hwnd);           // capture mouse
-			SetCapture();
-	}
-    catch(...)
-    {
-	    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing input system"));
-    }
-	manager = gManager;
-}*/
-
-/*void Input::initialize(StateManager* gManager)
-{
-	manager = gManager;
-}*/
-
-/*void OnMouseDown(int x, int y);
-void OnMouseUp(int x, int y);
-void OnMouseMove(int x, int y);
-void OnKeyUp(int keycode);
-void OnKeyDown(int keycode);*/
 
 
 void Input::OnMouseDown(WPARAM btnState, UINT btn, int x, int y) {

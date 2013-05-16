@@ -338,10 +338,9 @@ void addResources() {
 	resourceMgr->addLight(30, 10, 3.5, .6, .6, .6, 1.0,  0, 0, 0, 0, 1, 1, NONE, 1, POINT_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
 
-
-	// input layouts
 	
 	std::cout << "=== COMPILING INPUT LAYOUTS ===" << std::endl;
+	// input layouts
 
 	//
 	// BASIC/GENERIC EFFECT INPUT LAYOUT
@@ -388,6 +387,7 @@ void addResources() {
 	mld.format = menu_format;
 	mld.size = 3;
 	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
+	resourceMgr->addInputLayout( &mld, "menuEffect", "Glow" );
 
 	//
 	// INSTANCED EFFECT INPUT LAYOUT

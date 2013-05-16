@@ -58,8 +58,6 @@ public:
 	void OnKeyUp(WPARAM keyCode);
 	void OnKeyDown(WPARAM keyCode);
 
-	int getMouseX();
-
 	bool getLMouseButton() {
 		return mouseLButton;
 	}
@@ -70,6 +68,10 @@ public:
 
 	bool getKeyDown(int i) {
 		return keysDown[i];
+	}
+
+	int getMouseX() {
+		return mouseX;
 	}
 
 	int getMouseY() {

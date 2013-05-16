@@ -40,5 +40,7 @@ void MenuItem::Draw( )
 	drawable->setEffectTextures( );
 	drawable->draw( );
 }
+MenuItem::~MenuItem( )
+{
 
-MenuItem::~MenuItem( ){ }
+}

@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 #include "StateManager.h"
+#include "MainMenu.h"
 #include "entity/BulletManager.h"
 #include "entity/Drawable.h"
 #include "entity/Drawables/DrawLasers.h"
@@ -18,6 +19,7 @@
 #include "SceneManager.h"
 #include "entity/Transform.h"
 #include "entity/Skybox.h"
+#include "Input.h"
 #include "../res/post processes/Glow.h"
 
 
@@ -113,6 +115,13 @@ void Gameplay::Cleanup() {
 
 
 void Gameplay::Update(float dt) {
+
+	// pause state
+	if( input->getKeyDown( 27 ) ) {
+		manager->ChangeState( MainMenu::Instance( ) );
+		return;
+	}
+
 	XMFLOAT3 pos    = resourceMgr->camera.GetPosition( );
 	XMFLOAT3 target = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 up     = XMFLOAT3(0.0f, 1.0f, 0.0f);
