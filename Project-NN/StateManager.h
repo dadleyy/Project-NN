@@ -21,8 +21,14 @@ public:
 	void ChangeState(GameState* state);
 	void PushState(GameState* state);
 	void PopState();
+	
+	static int ToGamePlay( StateManager* manager );
+	static int ToCredits( StateManager* manager );
+	static int ToMainMenu( StateManager* manager );
+	static int Blank( StateManager* manager);
 
 private:
 	std::vector<GameState*> states;
+	float wait_time;
 };
 

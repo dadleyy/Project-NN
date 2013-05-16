@@ -18,12 +18,16 @@ void MenuComponent::Update( float dt ){
 	
 	float mx = input->getMouseX(),
 		  my = input->getMouseY(),
-		  hw = item->GetWidth( ) * 0.5,
-		  hh = item->GetHeight( ) * 0.5,
-		  min_x = item->GetPosition().x - hw,
-		  max_x = item->GetPosition().x + hw,
-		  min_y = item->GetPosition().y - hh,
-		  max_y = item->GetPosition().y + hh;
+		  scale_x = screenWidth / 800.0f,
+		  scale_y = screenHeight / 600.0f,
+		  hw = ( item->GetWidth( ) * scale_x ) * 0.5,
+		  hh = ( item->GetHeight( )* scale_y ) * 0.5,
+		  x_pos = scale_x * item->GetPosition().x,
+		  y_pos = scale_y * item->GetPosition().y,
+		  min_x = (x_pos - hw),
+		  max_x = (x_pos + hw),
+		  min_y = (y_pos - hh),
+		  max_y = (y_pos + hh);
 
 	if( mx < max_x && mx > min_x && my < max_y && my > min_y )
 		hover_time = ( hover_time + dt > 100.0f ) ? 0.01f : hover_time + dt;

@@ -29,14 +29,14 @@ public:
 	void Draw();
 
 	static Gameplay* Instance() {
-		return &instance;
+		return &game_instance;
 	}
 	bool IsSubState() {
 		return false;
 	}
 
 private:
-	static Gameplay instance;
+	static Gameplay game_instance;
 
 	BulletManager* bManager;
 	std::vector<Asteroid*> asteroids;

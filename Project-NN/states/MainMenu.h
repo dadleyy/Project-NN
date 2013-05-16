@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "GameState.h"
 
 class StateManager;
@@ -13,13 +14,15 @@ public:
 	void Draw();
 
 	static MainMenu* Instance() {
-		return &instance;
+		return &mainmenu_instance;
 	}
 	bool IsSubState() {
 		return false;
 	}
 private:
-	static MainMenu instance;
-	MenuItem* playbutton;
+	static MainMenu mainmenu_instance;
+	std::vector<MenuItem*> buttons;
+
+	MenuItem* menuBG;
 
 };

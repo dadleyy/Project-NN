@@ -14,6 +14,9 @@
 #include "framework/Camera.h"
 #include "entity/Light.h"
 
+extern int screenHeight;
+extern int screenWidth;
+
 struct Mesh {
 	ID3D11Buffer* verticies;
 	ID3D11Buffer* indicies;

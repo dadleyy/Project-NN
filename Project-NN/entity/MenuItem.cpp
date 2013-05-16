@@ -31,10 +31,7 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription description ) : 
 
 void MenuItem::Trigger()
 {
-	if( !triggered )
-		description.function(manager);
-
-	triggered = true;
+	description.function(manager);
 }
 
 void MenuItem::Draw( )

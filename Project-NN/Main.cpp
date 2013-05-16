@@ -9,6 +9,8 @@
 
 #include "StateManager.h"
 #include "states/MainMenu.h"
+#include "states/Gameplay.h"
+#include "states/Credits.h"
 #include "ResourceManager.h"
 #include "PhysicsManager.h"
 #include "SceneManager.h"
@@ -251,7 +253,11 @@ void addResources() {
 	resourceMgr->addCubeMap(L"res/textures/SPACE.dds", "skybox");
 
 	// menu textures
-	resourceMgr->addTexture(L"res/textures/playbutton.jpg", "playbtn");
+	resourceMgr->addTexture(L"res/textures/play-button.png", "playBtn");
+	resourceMgr->addTexture(L"res/textures/credit-button.png", "creditBtn");
+	resourceMgr->addTexture(L"res/textures/back-button.png", "backBtn");
+	resourceMgr->addTexture(L"res/textures/bg-template.png", "menuBG");
+	resourceMgr->addTexture(L"res/textures/credits-bg.png", "creditsBG");
 
 
 	std::cout << "=== COMPILING MESHES ===" << std::endl;

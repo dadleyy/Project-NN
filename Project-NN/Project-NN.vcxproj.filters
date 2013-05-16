@@ -60,6 +60,7 @@
     <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="entity\MenuControlComponent.cpp" />
     <ClCompile Include="entity\MenuDrawable.cpp" />
+    <ClCompile Include="states\Credits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -121,6 +122,8 @@
     <ClInclude Include="entity\MenuItem.h" />
     <ClInclude Include="entity\MenuControlComponent.h" />
     <ClInclude Include="entity\MenuDrawable.h" />
+    <ClInclude Include="MenuFunctions.h" />
+    <ClInclude Include="states\Credits.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

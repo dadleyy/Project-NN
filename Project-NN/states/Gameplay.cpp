@@ -23,7 +23,7 @@
 
 using namespace std;
 
-Gameplay Gameplay::instance;
+Gameplay Gameplay::game_instance;
 
 
 void Gameplay::Init(StateManager* manager) {

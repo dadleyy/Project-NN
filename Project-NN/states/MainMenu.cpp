@@ -2,32 +2,40 @@
 
 #include "entity/GameObject.h"
 #include "entity/MenuItem.h"
-#include "Gameplay.h"
 #include "SceneManager.h"
 #include "ResourceManager.h"
 #include "StateManager.h"
 
-MainMenu MainMenu::instance;
-
-namespace MenuFunctions {
-	HRESULT ToGamePlay( StateManager* manager ){
-		manager->ChangeState( Gameplay::Instance( ) );
-		return S_OK;
-	};
-}
+MainMenu MainMenu::mainmenu_instance;
 
 void MainMenu::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 
 	MenuItemDescription playbtn;
-	playbtn.width = 500.0f;
-	playbtn.height = 200.0f;
-	playbtn.function = MenuFunctions::ToGamePlay;
-	playbtn.texture = "playbtn";
-	playbtn.position = XMFLOAT2( 400.0f, 300.0f );
+	playbtn.width = 170.0f;
+	playbtn.height = 50.0f;
+	playbtn.function = StateManager::ToGamePlay;
+	playbtn.texture = "playBtn";
+	playbtn.position = XMFLOAT2( 125.0f, 320.0f );
 
-	playbutton = new MenuItem( manager, playbtn );
+	MenuItemDescription creditbtn;
+	creditbtn.width = 170.0f;
+	creditbtn.height = 50.0f;
+	creditbtn.function = StateManager::ToCredits;
+	creditbtn.texture = "creditBtn";
+	creditbtn.position = XMFLOAT2( 125.0f, 390.0f );
+
+	MenuItemDescription menubg;
+	menubg.width = 800.0f;
+	menubg.height = 600.0f;
+	menubg.function = StateManager::Blank;
+	menubg.texture = "menuBG";
+	menubg.position = XMFLOAT2( 400.0f, 300.0f );
+
+	menuBG = new MenuItem( manager, menubg );
+	buttons.push_back( new MenuItem( manager, playbtn ) );
+	buttons.push_back( new MenuItem( manager, creditbtn ) );
 }
 
 void MainMenu::Cleanup() 
@@ -37,7 +45,9 @@ void MainMenu::Cleanup()
 
 void MainMenu::Update(float dt) 
 {
-	playbutton->Update( dt );
+	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
+		(*it)->Update( dt );
+	}
 }
 
 void MainMenu::Draw() 
@@ -46,5 +56,8 @@ void MainMenu::Draw()
 	float screen_dimensions[2] = { screenWidth, screenHeight };
 	dims->SetFloatVector( screen_dimensions );
 
-	playbutton->Draw( );
+	menuBG->Draw( );
+	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
+		(*it)->Draw( );
+	}
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "../states/Gameplay.h"
 #include "GameObject.h"
 #include "StateManager.h"
 
@@ -22,7 +21,7 @@ struct MenuItemDescription
 	float height;
 	XMFLOAT2 position;
 	char* texture;
-	HRESULT (*function)( StateManager* manager );
+	int (*function)( StateManager* manager );
 };
 
 

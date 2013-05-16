@@ -131,6 +131,7 @@
     <ClCompile Include="res\post processes\Glow.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="states\Credits.cpp" />
     <ClCompile Include="states\EndGame.cpp" />
     <ClCompile Include="states\Gameplay.cpp" />
     <ClCompile Include="states\Instructions.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="entity\MenuItem.h" />
     <ClInclude Include="entity\RandomRotation.h" />
     <ClInclude Include="GuiManager.h" />
+    <ClInclude Include="MenuFunctions.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="entity\Bomb.h" />
     <ClInclude Include="entity\Bullet.h" />
@@ -192,6 +194,7 @@
     <ClInclude Include="res\post processes\Glow.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="states\Credits.h" />
     <ClInclude Include="states\EndGame.h" />
     <ClInclude Include="states\Gameplay.h" />
     <ClInclude Include="states\Instructions.h" />

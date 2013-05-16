@@ -30,8 +30,8 @@ VERTEX VS( VERTEX input )
 	float y_scale = screenDimensions.y / 600;
 	
 	// get the width and height in terms of percentage
-	output.Width = ( input.Width / screenDimensions.x ) * x_scale;
-	output.Height = ( input.Height / screenDimensions.y ) * y_scale;
+	output.Width = ( ( input.Width / screenDimensions.x ) * 2.0f ) * x_scale;
+	output.Height = ( ( input.Height / screenDimensions.y ) * 2.0f ) * y_scale;
 	
 	// calc pos in terms of percentage
 	float x_per = ( ( input.Pos.x / screenDimensions.x ) * 2 ) * x_scale;
