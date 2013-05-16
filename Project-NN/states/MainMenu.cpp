@@ -62,7 +62,6 @@ void MainMenu::Cleanup()
 
 void MainMenu::Update(float dt) 
 {
-	menuBG->Update(dt);
 	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
 		(*it)->Update( dt );
 	}

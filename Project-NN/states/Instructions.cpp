@@ -18,29 +18,25 @@ void Instructions::Init(StateManager* manager) {
 	bgDesc.style = MENU_STATIC;
 	bgDesc.position = XMFLOAT2( 400.0f, 300.0f );
 
-	MenuItemDescription backBtn;
-	backBtn.width = 170.0f;
-	backBtn.height = 50.0f;
-	backBtn.function = StateManager::ToMainMenu;
-	backBtn.texture = "backBtn";
-	backBtn.style = MENU_BUTTON;
-	backBtn.position = XMFLOAT2( 125.0f, 320.0f );
+	MenuItemDescription backBtnDesc;
+	backBtnDesc.width = 170.0f;
+	backBtnDesc.height = 50.0f;
+	backBtnDesc.function = StateManager::ToMainMenu;
+	backBtnDesc.texture = "backBtn";
+	backBtnDesc.style = MENU_BUTTON;
+	backBtnDesc.position = XMFLOAT2( 125.0f, 320.0f );
 
-	buttons.push_back(new MenuItem(manager, background));
-	buttons.push_back(new MenuItem(manager, backBtn));
+	background = new MenuItem(manager, bgDesc);
+	backBtn = new MenuItem(manager, backBtnDesc);
 }
 
 void Instructions::Cleanup() {
-	for(auto it = buttons.begin(); it != buttons.end(); ++it) {
-		delete *it;
-	}
-	buttons.clear();
+	delete background;
+	delete backBtn;
 }
 
 void Instructions::Update(float dt) {
-	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
-		(*it)->Update( dt );
-	}
+	backBtn->Update(dt);
 }
 
 void Instructions::Draw() {
@@ -48,7 +44,6 @@ void Instructions::Draw() {
 	float screen_dimensions[2] = { screenWidth, screenHeight };
 	dims->SetFloatVector( screen_dimensions );
 
-	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
-		(*it)->Draw( );
-	}
+	background->Draw();
+	backBtn->Draw();
 }
