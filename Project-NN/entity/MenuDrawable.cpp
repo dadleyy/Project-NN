@@ -35,7 +35,7 @@ void MenuDrawable::draw( )
 		deviceContext->Draw( numVerts, 0 );
 	}
 
-	// deviceContext->OMSetBlendState( resourceMgr->blenders.at("defaultBlend")->state, NULL, 0xffffffff );
+	deviceContext->OMSetBlendState( resourceMgr->blenders.at("defaultBlend")->state, NULL, 0xffffffff );
 }
 
 void MenuDrawable::createBuffer( MenuItemDescription desc )
