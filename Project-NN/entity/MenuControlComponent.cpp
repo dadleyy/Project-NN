@@ -33,7 +33,7 @@ void MenuComponent::Update( float dt ){
 	if( mx < max_x && mx > min_x && my < max_y && my > min_y ){
 		
 		hover_time = ( hover_time + inc > HOVER_AGE_CAP ) ? HOVER_AGE_MIN : hover_time + inc;
-		resourceMgr->setCursor("hover");
+		resourceMgr->setCursor("active");
 
 	} else {
 
