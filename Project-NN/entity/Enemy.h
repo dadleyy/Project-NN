@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
-#include "..\framework\MathHelper.h"
+#include "framework\MathHelper.h"
 
 class Transform;
 class Drawable;
@@ -11,7 +11,6 @@ class AIComponent;
 class Enemy : public GameObject {
 public:
 	Enemy(GameObject* initialTarget, XMFLOAT3 intialPosition );
-	virtual ~Enemy();
 	void Draw();
 
 private:
