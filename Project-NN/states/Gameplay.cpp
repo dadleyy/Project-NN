@@ -82,7 +82,7 @@ void Gameplay::Init(StateManager* manager) {
 
 	//create enemies
 	uniform_real_distribution<float> enemy_d(-10, 10);
-	for(int i = 0; i < 0; i++){
+	for(int i = 0; i < 10; i++){
 		float x = enemy_d(resourceMgr->randomEngine), 
 			y = enemy_d(resourceMgr->randomEngine), 
 			z = enemy_d(resourceMgr->randomEngine);
