@@ -162,8 +162,9 @@ void Game::OnResize() {
 }
 
 void Game::UpdateScene(float dt) {
-	physicsMgr->CheckForCollisions();
 	manager.Update(dt);
+	physicsMgr->CheckForCollisions();
+	
 	sceneMgr->Process();
 	physicsMgr->Process();
 }
