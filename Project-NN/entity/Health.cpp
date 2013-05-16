@@ -26,5 +26,4 @@ bool Health::IsAlive() {
 void Health::HandleCollision(GameObject* other) 
 {
 	hp -= other->damage;
-
 }

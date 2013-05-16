@@ -20,7 +20,7 @@ bool PlayerControls::Init(GameObject* go) {
 	bManager = go->GetComponent<BulletManager>();
 	fired = false;
 	return physics != nullptr;
-	fireDelay = 0.0;
+	fireDelay = 1.0;
 }
 
 void PlayerControls::Update(float dt) {
@@ -28,8 +28,10 @@ void PlayerControls::Update(float dt) {
 
 	if(fireDelay > 0) {
 		fireDelay -= dt;
-	} else if( input->getLMouseButton() && !input->getRMouseButton()) {
+	}
+	else if( input->getLMouseButton() && !input->getRMouseButton() && fireDelay <= 0) {
 		bManager->Fire();
+
 		fireDelay = .4;
 	}
 

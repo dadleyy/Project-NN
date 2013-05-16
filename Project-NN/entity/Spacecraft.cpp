@@ -9,6 +9,8 @@
 #include "ResourceManager.h"
 #include "BulletManager.h"
 #include "AttachLight.h"
+#include "PlayerGameplay.h"
+#include "Health.h"
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
@@ -38,6 +40,8 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	components.push_back(playerCamera);
     components.push_back(playerControls);
 	components.push_back(bManager);
+	components.push_back(new Health(200));
+	components.push_back(new PlayerGameplay());
 	components.push_back(new AttachLight(resourceMgr->lights[2], physics));
 
 	physics->setLinVDamp( .95 );

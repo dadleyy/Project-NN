@@ -88,6 +88,7 @@
     <ClCompile Include="entity\MenuControlComponent.cpp" />
     <ClCompile Include="entity\MenuDrawable.cpp" />
     <ClCompile Include="entity\MenuItem.cpp" />
+    <ClCompile Include="entity\PlayerGameplay.cpp" />
     <ClCompile Include="entity\RandomRotation.cpp" />
     <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="OctTree.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="entity\MenuControlComponent.h" />
     <ClInclude Include="entity\MenuDrawable.h" />
     <ClInclude Include="entity\MenuItem.h" />
+    <ClInclude Include="entity\PlayerGameplay.h" />
     <ClInclude Include="entity\RandomRotation.h" />
     <ClInclude Include="GuiManager.h" />
     <ClInclude Include="MenuFunctions.h" />
