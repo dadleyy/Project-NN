@@ -6,6 +6,8 @@
 void damp(float* s, float damp, float minDamp, float dt);
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt);
 int frameNumber;
+
+
 PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAxis,
                                     float m, float sp, float m_sp, XMFLOAT3 pos, XMFLOAT3 vel,
                                     XMFLOAT3 acc, float angularVel, float angularAcc) : MIN_DAMP(.005) {

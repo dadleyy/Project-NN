@@ -18,7 +18,7 @@ bool PlayerControls::Init(GameObject* go) {
 	bManager = go->GetComponent<BulletManager>();
 	fired = false;
 	return physics != nullptr;
-	fireDelay = 0.0;
+	fireDelay = 1.0;
 }
 
 void PlayerControls::Update(float dt) {
@@ -28,9 +28,9 @@ void PlayerControls::Update(float dt) {
 	{
 		fireDelay -= dt;
 	}
-	else if( input->getLMouseButton() && !input->getRMouseButton()) {
+	else if( input->getLMouseButton() && !input->getRMouseButton() && fireDelay <= 0) {
 		bManager->Fire();
-		fireDelay = 1;
+		fireDelay = 1.0;
 	}
 
 	relMouseX = screenWidth/2.0 - input->getMouseX();

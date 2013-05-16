@@ -12,10 +12,12 @@ public:
 	bool Init(GameObject* go);
 	void Update(float dt);
 	void HandleCollision(GameObject* other);
+	void SetActive();
 	XMFLOAT3 forward;
 
 private:
 	GameObject* go;
 	Transform* transform;
 	float speed;
+	float time;
 };
