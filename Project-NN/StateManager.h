@@ -22,9 +22,11 @@ public:
 	void PushState(GameState* state);
 	void PopState();
 	
+	//TODO: Refactor if time permits
 	static int ToGamePlay( StateManager* manager );
 	static int ToCredits( StateManager* manager );
 	static int ToMainMenu( StateManager* manager );
+	static int ToInstructions( StateManager* manager );
 	static int Blank( StateManager* manager);
 
 private:

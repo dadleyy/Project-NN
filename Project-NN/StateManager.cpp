@@ -1,7 +1,8 @@
 #include "StateManager.h"
 #include "GameState.h"
-#include "states/Gameplay.h"
 #include "states/Credits.h"
+#include "states/Gameplay.h"
+#include "states/Instructions.h"
 #include "states/MainMenu.h"
 #include <iostream>
 
@@ -20,6 +21,12 @@ int StateManager::ToGamePlay( StateManager* manager )
 int StateManager::ToMainMenu( StateManager* manager )
 {
 	manager->ChangeState( MainMenu::Instance( ) );
+	return 1;
+}
+
+int StateManager::ToInstructions( StateManager* manager )
+{
+	manager->ChangeState( Instructions::Instance( ) );
 	return 1;
 }
 

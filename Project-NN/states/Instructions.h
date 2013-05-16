@@ -1,8 +1,10 @@
 #pragma once
 
 #include "GameState.h"
+#include <vector>
 
 class StateManager;
+class MenuItem;
 
 class Instructions : public GameState {
 public:
@@ -19,4 +21,5 @@ public:
 	}
 private:
 	static Instructions instance;
+	std::vector<MenuItem*> buttons;
 };

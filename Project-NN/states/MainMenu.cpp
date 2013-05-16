@@ -26,6 +26,13 @@ void MainMenu::Init(StateManager* manager)
 	creditbtn.texture = "creditBtn";
 	creditbtn.position = XMFLOAT2( 125.0f, 390.0f );
 
+	MenuItemDescription instructionsBtn;
+	instructionsBtn.width = 170.0f;
+	instructionsBtn.height = 50.0f;
+	instructionsBtn.function = StateManager::Blank;
+	instructionsBtn.texture = "creditBtn";
+	instructionsBtn.position = XMFLOAT2( 125.0f, 460.0f );
+
 	MenuItemDescription menubg;
 	menubg.width = 800.0f;
 	menubg.height = 600.0f;
@@ -36,11 +43,12 @@ void MainMenu::Init(StateManager* manager)
 	menuBG = new MenuItem( manager, menubg );
 	buttons.push_back( new MenuItem( manager, playbtn ) );
 	buttons.push_back( new MenuItem( manager, creditbtn ) );
+	buttons.push_back( new MenuItem( manager, instructionsBtn ) );
 }
 
 void MainMenu::Cleanup() 
 {
-
+	//TODO: clean up buttons
 }
 
 void MainMenu::Update(float dt) 
