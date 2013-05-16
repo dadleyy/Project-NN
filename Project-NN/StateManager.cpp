@@ -64,9 +64,8 @@ void StateManager::Update(float dt) {
 }
 
 void StateManager::Draw() {
-	//TODO: Add ability to have transparent states.
-	assert(states.size() > 0);
-	states[states.size() - 1]->Draw();
+	for(auto it = states.begin(); it != states.end(); ++it)
+		(*it)->Draw();
 }
 
 void StateManager::ChangeState(GameState* state) {
@@ -75,8 +74,6 @@ void StateManager::ChangeState(GameState* state) {
 
 	wait_time = 1.0f;
 	resourceMgr->setCursor("default");
-
-	//TODO: Error out
 	if(state->IsSubState())
 		return;
 	assert(preparedStateOperation == nullptr);

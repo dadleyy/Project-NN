@@ -17,9 +17,10 @@ public:
 		return &instance;
 	}
 	bool IsSubState() {
-		return true;
+		return false;
 	}
 private:
 	static Instructions instance;
-	std::vector<MenuItem*> buttons;
+	MenuItem* background;
+	MenuItem* backBtn;
 };
