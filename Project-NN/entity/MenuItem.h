@@ -35,6 +35,7 @@ class MenuItem : public GameObject {
 
 public:
 	MenuItem( StateManager* _manager, MenuItemDescription description );
+	~MenuItem( );
 	void Draw( );
 	void Trigger( );
 
