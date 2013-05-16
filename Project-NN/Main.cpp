@@ -248,6 +248,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 	resourceMgr->addTexture(L"res/textures/asteroidTexture.jpg", "asteroid");
 	resourceMgr->addTexture(L"res/textures/bombTex.jpg", "bomb");
+	resourceMgr->addTexture(L"res/textures/bombBumpTex.jpg", "bombBump");
 	resourceMgr->addTexture(L"res/textures/bombGlowTex.jpg", "bombGlow");
 	resourceMgr->addTexture(L"res/textures/asteroidBump.jpg", "asteroidBump");
 	resourceMgr->addTexture(L"res/textures/shiphullTexture.jpg", "shipTexture");
@@ -270,6 +271,7 @@ void addResources() {
 	std::cout << "=== COMPILING EFFECTS ===" << std::endl;
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+	resourceMgr->addEffect(L"res/shaders/betterPhongBump.fx", "betterPhongBump" );
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
@@ -286,6 +288,10 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "betterPhong", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "betterPhong", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "betterPhong", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "betterPhongBump", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "betterPhongBump", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "betterPhongBump", "LightsBuffer", "Light" );
 
 	resourceMgr->setEffectBuffer( "instancedPhong", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "instancedPhong", "CameraBuffer", "Camera" );
@@ -344,6 +350,7 @@ void addResources() {
 	bld.size = 3;
 
 	resourceMgr->addInputLayout( &bld, "betterPhong", "Render" );
+	resourceMgr->addInputLayout( &bld, "betterPhongBump", "Render" );
 	resourceMgr->addInputLayout( &bld, "genericPost", "Render" );
 	resourceMgr->addInputLayout( &bld, "contrast", "Render" );
 	resourceMgr->addInputLayout( &bld, "skyShader", "Render" );

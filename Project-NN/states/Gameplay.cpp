@@ -166,7 +166,7 @@ void Gameplay::Draw() {
 			temp->setEffectVariables();
 			temp->setEffectTextures();
 			(*it)->Draw();
-			temp->setShader("betterPhong", "Render");
+			temp->setShader("betterPhongBump", "Render");
 		}
 	}
 	laserDraw->setShader("glowDraw", "RenderGlowy");
