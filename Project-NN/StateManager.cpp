@@ -5,6 +5,8 @@
 #include "states/Instructions.h"
 #include "states/MainMenu.h"
 #include <iostream>
+#include <assert.h>
+
 
 int StateManager::ToCredits( StateManager* manager )
 {
@@ -41,7 +43,10 @@ StateManager::~StateManager(void) {
 }
 
 
-void StateManager::Init() {
+void StateManager::Init(GameState* state) {
+	states.push_back(state);
+	state->Init(this);
+	preparedStateOperation = nullptr;
 }
 
 void StateManager::Update(float dt) {
@@ -49,11 +54,17 @@ void StateManager::Update(float dt) {
 	if( wait_time < 0.0f )
 		wait_time = 0.0f;
 
+	assert(states.size() > 0);
 	states[states.size() - 1]->Update(dt);
+	if(preparedStateOperation != nullptr) {
+		preparedStateOperation();
+		preparedStateOperation = nullptr;
+	}
 }
 
 void StateManager::Draw() {
 	//TODO: Add ability to have transparent states.
+	assert(states.size() > 0);
 	states[states.size() - 1]->Draw();
 }
 
@@ -65,21 +76,31 @@ void StateManager::ChangeState(GameState* state) {
 	//TODO: Error out
 	if(state->IsSubState())
 		return;
-	for(auto it = states.rbegin(); it != states.rend(); ++it)
-		(*it)->Cleanup();
-	states.clear();
-	states.push_back(state);
-	state->Init(this);
+	assert(preparedStateOperation == nullptr);
+	preparedStateOperation = [this, state]() {
+		for(auto it = states.rbegin(); it != states.rend(); ++it)
+			(*it)->Cleanup();
+		states.clear();
+		states.push_back(state);
+		state->Init(this);
+	};
 }
 
 void StateManager::PushState(GameState* state) {
 	if(!state->IsSubState())
 		return;
-	states.push_back(state);
-	state->Init(this);
+	assert(preparedStateOperation == nullptr);
+	preparedStateOperation = [this, state]() {
+		states.push_back(state);
+		state->Init(this);
+	};
 }
 
 void StateManager::PopState() {
-	states[states.size() - 1]->Cleanup();
-	states.pop_back();
+	assert(preparedStateOperation == nullptr);
+	preparedStateOperation = [this]() {
+		assert(states.size() > 0);
+		states[states.size() - 1]->Cleanup();
+		states.pop_back();
+	};
 }

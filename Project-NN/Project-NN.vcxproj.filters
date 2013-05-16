@@ -57,9 +57,9 @@
     <ClCompile Include="states\Instructions.cpp" />
     <ClCompile Include="states\Pause.cpp" />
     <ClCompile Include="entity\RandomRotation.cpp" />
-    <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="entity\MenuControlComponent.cpp" />
     <ClCompile Include="entity\MenuDrawable.cpp" />
+    <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="states\Credits.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,8 +122,8 @@
     <ClInclude Include="entity\MenuItem.h" />
     <ClInclude Include="entity\MenuControlComponent.h" />
     <ClInclude Include="entity\MenuDrawable.h" />
-    <ClInclude Include="MenuFunctions.h" />
     <ClInclude Include="states\Credits.h" />
+    <ClInclude Include="MenuFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

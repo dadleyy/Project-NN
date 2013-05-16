@@ -48,7 +48,10 @@ void MainMenu::Init(StateManager* manager)
 
 void MainMenu::Cleanup() 
 {
-	//TODO: clean up buttons
+	for(auto it = buttons.begin(); it != buttons.end(); ++it) {
+		delete *it;
+	}
+	buttons.clear();
 }
 
 void MainMenu::Update(float dt) 

@@ -17,6 +17,7 @@ public:
 
 	std::unordered_set<GameObject*>::iterator Begin();
 	std::unordered_set<GameObject*>::iterator End();
+	void Clear();
 
 private:
 	std::unordered_set<GameObject*> sceneObjects;

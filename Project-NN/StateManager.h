@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <vector>
 
 class GameState;
@@ -8,7 +9,7 @@ public:
 	StateManager();
 	~StateManager();
 
-	void Init();
+	void Init(GameState* state);
 	void Update(float dt);
 	void Draw();
 
@@ -31,6 +32,7 @@ public:
 
 private:
 	std::vector<GameState*> states;
+	std::function<void()> preparedStateOperation;
 	float wait_time;
 };
 
