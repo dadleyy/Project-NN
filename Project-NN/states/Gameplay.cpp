@@ -73,7 +73,7 @@ void Gameplay::Init(StateManager* manager) {
 	}
 
 	//asteroids
-	for(int i = 0; i < 30; i++) {
+	for(int i = 0; i < 50; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);

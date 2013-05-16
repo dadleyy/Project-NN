@@ -184,7 +184,7 @@ void ResourceManager::updateShaderBuffers() {
 	D3D11_MAPPED_SUBRESOURCE resource;
 
 	//update light buffer if it has changed
-	if(lightChange) {
+	if(true) {
 		md3dImmediateContext->Map(getCBuffer("Light"), 0, D3D11_MAP_WRITE_DISCARD, NULL,  &resource);
 
 		for(int i = 0; i < numLights; i++) {
