@@ -17,7 +17,7 @@ DrawLasers::DrawLasers(void) : Drawable()
 	HRESULT hr = pD3DDevice->CreateBuffer(&bufferDescription, NULL, &vertexBuffer);
 
 	glowColor[0]=0; glowColor[1]=1; glowColor[2]=0; glowColor[3]=1;
-	laserColor[0]=1; laserColor[1]=0; laserColor[2]=0; laserColor[3]=1;
+	laserColor[0]=1; laserColor[1]=1; laserColor[2]=0; laserColor[3]=1;
 	glowMode[0] = 0;
 	transform = new Transform();
 }

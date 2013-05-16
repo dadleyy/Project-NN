@@ -18,7 +18,6 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription description ) : 
 	transform->scale = XMFLOAT3( 1.0f, 1.0f, 1.0f );
 
 	drawable->getEffectVariables("menuEffect","Render");
-	drawable->getEffectVariables("menuEffect","MenuGlow");
 	drawable->setShader("menuEffect","Render");
 	drawable->createBuffer( description );
 	drawable->addTexture( description.texture, "buttonTexture");
@@ -37,19 +36,7 @@ void MenuItem::Trigger()
 
 void MenuItem::Draw( )
 {
-	switch( this->description.style )
-	{
-	case MENU_STATIC:
-		drawable->setShader("menuEffect","Render");
-		break;
-	case MENU_BUTTON:
-		drawable->setShader("menuEffect","MenuGlow");
-		break;
-	default:
-		drawable->setShader("menuEffect","Render");
-		break;
-	}
-
+	drawable->setShader("menuEffect","Render");
 	drawable->setEffectTextures( );
 	drawable->draw( );
 }

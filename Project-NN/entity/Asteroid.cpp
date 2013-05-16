@@ -25,12 +25,14 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	transform->rotation = XMFLOAT4(0.707f, 0, 0, 0.707f);
 	
 	//TODO: accept as a parameter
-	uniform_real_distribution<float> distribution(1.0f, 13.0f);
+	uniform_real_distribution<float> distribution(8.0f, 75.0f);
 	float scale = distribution(resourceMgr->randomEngine);
 	transform->scale = XMFLOAT3(scale, scale, scale);
 	PhysicsComponent* physics = new PhysicsComponent(XMFLOAT3(0,0,1), XMFLOAT3(1,0,0), XMFLOAT3(0,1,0), 100*scale, 0, 20, transform->position, XMFLOAT3(1,0,0), XMFLOAT3(0,0,0), 0, 0);
 	physics->accelerationDamp = .1;
 	physics->velocityDamp = .1;
+	physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
+	physics->angularVelocity = ((float)rand())/RAND_MAX * 15;
 	physics->friction = .2;
 
 

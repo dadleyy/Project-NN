@@ -62,6 +62,7 @@
     <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="states\Credits.cpp" />
     <ClCompile Include="entity\attachLight.cpp" />
+    <ClCompile Include="entity\PlayerGameplay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -126,6 +127,7 @@
     <ClInclude Include="states\Credits.h" />
     <ClInclude Include="MenuFunctions.h" />
     <ClInclude Include="entity\attachLight.h" />
+    <ClInclude Include="entity\PlayerGameplay.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

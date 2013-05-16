@@ -35,6 +35,7 @@ Enemy::Enemy(GameObject* initialTarget, XMFLOAT3 initialPosition )
 
 	physics->setLinVDamp( .98 );
 	physics->setLinADamp( .9975 );
+	physics->minSpeed = 3;
 
 	ai->SetTarget( initialTarget );
 
@@ -51,12 +52,4 @@ void Enemy::Draw()
 	drawable->setEffectVariables();
 	drawable->setEffectTextures();
 	drawable->draw();
-}
-
-Enemy::~Enemy(void)
-{
-	//delete drawable;
-	delete transform;
-	delete ai;
-	delete physics;
 }

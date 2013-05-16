@@ -62,13 +62,14 @@ void GS( point VERTEX v[1], inout TriangleStream<PIXEL> output )
 	positions[2] = float4( (pos.x + hw), (pos.y + hh), 1.0f, 1.0f );
 	positions[3] = float4( (pos.x + hw), (pos.y - hh), 1.0f, 1.0f );
 	
-	// texture co-ordinate mapping
+	// texture coordinate mapping
 	float2 tc[4];
 	tc[1] = float2(0.0f, 0.0f); //the origin
 	tc[0] = float2(0.0f, 1.0f); //bottom left
 	tc[2] = float2(1.0f, 0.0f); //top right
 	tc[3] = float2(1.0f, 1.0f); //borrom right
 
+	// triangle stream generation
 	p.Pos = positions[0];
 	p.Col = float4( 1.0f, 1.0f, 1.0f, 1.0f );
 	p.UV = tc[0];
@@ -111,22 +112,12 @@ float4 PS( PIXEL input ) : SV_Target
 	float _red = (sin(itemHoverAge) / 3) + finalColor.x;
 	float _blue = (sin(itemHoverAge) / 3) + finalColor.y;
 	float _green = (sin(itemHoverAge) / 3) + finalColor.z;
-	float _alpha = finalColor.w;
+	float _alpha = (sin(itemHoverAge) / 4) + finalColor.w;
 	
 	return float4( _red, _blue, _green, _alpha );
 }
 
 technique11 Render
-{
-    pass P0
-    {
-        SetVertexShader( CompileShader( vs_5_0, VS( ) ) );
-        SetGeometryShader( CompileShader( gs_5_0, GS( ) ) );
-        SetPixelShader( CompileShader( ps_5_0, PS( ) ) );
-    }
-}
-
-technique11 MenuGlow
 {
     pass P0
     {

@@ -33,7 +33,7 @@ void MainMenu::Init(StateManager* manager)
 	MenuItemDescription instructionsBtn;
 	instructionsBtn.width = 170.0f;
 	instructionsBtn.height = 50.0f;
-	instructionsBtn.function = StateManager::Blank;
+	instructionsBtn.function = StateManager::ToInstructions;
 	instructionsBtn.texture = "guideBtn";
 	instructionsBtn.style = MENU_BUTTON;
 	instructionsBtn.position = XMFLOAT2( 125.0f, 460.0f );
@@ -62,7 +62,6 @@ void MainMenu::Cleanup()
 
 void MainMenu::Update(float dt) 
 {
-	
 	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
 		(*it)->Update( dt );
 	}
@@ -70,7 +69,6 @@ void MainMenu::Update(float dt)
 
 void MainMenu::Draw() 
 {
-
 	ID3DX11EffectVectorVariable* dims = resourceMgr->effects.at("menuEffect")->effect->GetVariableByName("screenDimensions")->AsVector( );
 	float screen_dimensions[2] = { screenWidth, screenHeight };
 	dims->SetFloatVector( screen_dimensions );
