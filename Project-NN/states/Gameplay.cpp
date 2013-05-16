@@ -63,20 +63,23 @@ void Gameplay::Init(StateManager* manager) {
 	uniform_real_distribution<float> distribution(-50, 50);
 
 	
+	//bullets
 	for(int i = 0; i < 50; i++) {
 		auto bullet = new Bullet(bManager);
 		bullet->laserDraw = laserDraw;
 		sceneMgr->Insert(bullet);
 	}
 
+	//asteroids
 	for(int i = 0; i < 30; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);
 	}
 
+	//create enemies
 	uniform_real_distribution<float> enemy_d(-10, 10);
-	for(int i = 0; i < 10; i++){
+	for(int i = 0; i < 0; i++){
 		float x = enemy_d(resourceMgr->randomEngine), 
 			y = enemy_d(resourceMgr->randomEngine), 
 			z = enemy_d(resourceMgr->randomEngine);
@@ -150,8 +153,8 @@ void Gameplay::Draw() {
 
 	//draw glowy stuff
 	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["DScale2"]);
-	resourceMgr->md3dImmediateContext->OMSetRenderTargets(1, &resourceMgr->renderTargets["DScale2"], NULL);
-	resourceMgr->md3dImmediateContext->ClearRenderTargetView(resourceMgr->renderTargets["DScale2"], reinterpret_cast<const float*>(&Colors::Black));
+	resourceMgr->md3dImmediateContext->OMSetRenderTargets(1, &resourceMgr->renderTargets["DScale"], NULL);
+	resourceMgr->md3dImmediateContext->ClearRenderTargetView(resourceMgr->renderTargets["DScale"], reinterpret_cast<const float*>(&Colors::Black));
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) 
 	{
 		if(!(*it)->glow)
@@ -163,7 +166,7 @@ void Gameplay::Draw() {
 			temp->setEffectVariables();
 			temp->setEffectTextures();
 			(*it)->Draw();
-			temp->setShader("betterPhong", "Render");
+			temp->setShader("betterPhongBump", "Render");
 		}
 	}
 	laserDraw->setShader("glowDraw", "RenderGlowy");
@@ -171,7 +174,6 @@ void Gameplay::Draw() {
 	laserDraw->draw();
 	laserDraw->points.clear();
 
-	resourceMgr->md3dImmediateContext->RSSetViewports(1, &resourceMgr->viewports["Original"]);
 	glow->setEffectVariables();
-	glow->draw("DScale2", "Pass1", "Pass2", "Original");
+	glow->draw("DScale", "DScale2", "Pass2", "Original");
 }

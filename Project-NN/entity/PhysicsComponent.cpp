@@ -22,6 +22,10 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	sideAxis = sAxis;
 	upAxis = uAxis;
 	frameNumber = 0;
+	angVelocityDamp = 0;
+	friction = 0;
+	quaternion = Quaternion(1,0,0,0);
+	minSpeed = 0;
 }
 
 
@@ -37,7 +41,6 @@ void PhysicsComponent::setLinADamp    ( float m )    { accelerationDamp = m; }
 void PhysicsComponent::setPosition    ( XMFLOAT3 v ) { position = v; }
 void PhysicsComponent::setVelocity    ( XMFLOAT3 v ) { velocity = v; }
 void PhysicsComponent::setAcceleration( XMFLOAT3 v ) { acceleration = v; }
-void PhysicsComponent::setQuaternion  ( XMFLOAT4 v ) { quaternion.x = v.x; quaternion.y = v.y; quaternion.z = v.z; quaternion.w = v.w; }
 void PhysicsComponent::setAxis( XMFLOAT3 f, XMFLOAT3 u, XMFLOAT3 s ) {
 	forwardAxis = f;
 	upAxis = u;
@@ -77,10 +80,10 @@ void PhysicsComponent::Update(float dt) {
 		speed = MAX_SPEED;
 		velocity = scale(normalize(velocity), MAX_SPEED);
 	}
-	if( speed < 0 ) 
+	if(speed < minSpeed)
 	{
-		speed = 0;
-		velocity = scale(velocity, 0);
+		speed = minSpeed;
+		velocity = scale(normalize(velocity), minSpeed);
 	}
 
 	// recalculate orientation from axis
@@ -106,9 +109,21 @@ void PhysicsComponent::Update(float dt) {
 	rotation._43 = 0.0f;
 	rotation._44 = 1.0f;
 
+	Quaternion q(1, 0, 0, 0);
+	if(angularVelocity > 0)
+	{
+		damp(&angularVelocity, angVelocityDamp, MIN_DAMP, dt);
+		q = Quaternion(angularVelocity*dt, rotAxis);
+		quaternion = mult(quaternion, q);
+	}
+
 	//XMMATRIX rotation = XMMatrixLookAtLH( mpos, tpos, up );
 	XMVECTOR quat = XMQuaternionRotationMatrix( rotation );
+	XMVECTOR angs = XMLoadFloat4(&XMFLOAT4(quaternion.x, quaternion.y, quaternion.z, quaternion.w)); 
+	quat = XMQuaternionMultiply(angs,quat);
 	XMStoreFloat4( &transform->rotation, quat );
+
+	
 
 	worldvelocity = XMFLOAT3(velocity.x*forwardAxis.x + velocity.y*sideAxis.x + velocity.z*upAxis.x,
 							 velocity.x*forwardAxis.y + velocity.y*sideAxis.y + velocity.z*upAxis.y,
@@ -163,6 +178,22 @@ void PhysicsComponent::HandleCollision(GameObject* go)
 	goPC->velocity = XMFLOAT3(goPC->worldvelocity.x*goPC->forwardAxis.x + goPC->worldvelocity.y*goPC->forwardAxis.y + goPC->worldvelocity.z*goPC->forwardAxis.z,
 						      goPC->worldvelocity.x*goPC->sideAxis.x    + goPC->worldvelocity.y*goPC->sideAxis.y    + goPC->worldvelocity.z*goPC->sideAxis.z,
 							  goPC->worldvelocity.x*goPC->upAxis.x      + goPC->worldvelocity.y*goPC->upAxis.y      + goPC->worldvelocity.z*goPC->upAxis.z);
+
+	//handle friction
+	if(friction*goPC->friction != 0)
+	{
+		float resistance = impact*(friction + goPC->friction)/10000;
+		float angVel1 = magnitude(XMFLOAT3( worldvelocity.z - inverseCollisionNormal.x*proj1, worldvelocity.y - inverseCollisionNormal.y*proj1, worldvelocity.x - inverseCollisionNormal.z*proj1));
+		float angVel2 = magnitude(XMFLOAT3( goPC->worldvelocity.z - collisionNormal.x*proj2, goPC->worldvelocity.y - collisionNormal.y*proj2, goPC->worldvelocity.x - collisionNormal.z*proj2));
+		XMFLOAT3 rotAxis1 = normalize(cross(worldvelocity, inverseCollisionNormal));
+		XMFLOAT3 rotAxis2 = normalize(cross(goPC->worldvelocity, collisionNormal));
+		
+		angularVelocity += angVel1*resistance;
+		rotAxis = normalize(add(rotAxis,rotAxis1));
+
+		goPC->angularVelocity += angVel2*resistance;
+		goPC->rotAxis = normalize(add(goPC->rotAxis,rotAxis2));
+	}
 }
 
 void damp(XMFLOAT3* v, float damp, float minDamp, float dt) 

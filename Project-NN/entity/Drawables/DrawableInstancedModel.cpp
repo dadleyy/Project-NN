@@ -25,7 +25,7 @@ DrawableInstancedModel::~DrawableInstancedModel(void)
 
 
 //****************************************************************
-//Creates all buffers needed for the object (vertex, index, etc.)
+//Creates all buffers needed for the object (vertex, index, etc.)f
 //and compiles the shaders to be used for this object
 // **We need to add the index buffer code still**
 //****************************************************************

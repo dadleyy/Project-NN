@@ -28,7 +28,8 @@ void BulletManager::Fire(){
 		else
 		{
 			(*it)->GetComponent<BulletFiring>()->forward = go->GetComponent<PhysicsComponent>()->forwardAxis;
-			(*it)->transform->position = transform->position;
+			(*it)->forward = (*it)->GetComponent<BulletFiring>()->forward;
+			(*it)->transform->position = XMFLOAT3(transform->position.x + (*it)->forward.x*4, transform->position.y + (*it)->forward.y*4, transform->position.z + (*it)->forward.z*4);
 			(*it)->active = true;
 			return;
 		}

@@ -132,12 +132,15 @@ void Game::OnResize() {
 	resourceMgr->textures["Pass1"]    = targetTextureResourceView1;
 	resourceMgr->textures["Pass2"]    = targetTextureResourceView2;	
 	resourceMgr->textures["Depth"]    = depthTextureResourceView;
-	resourceMgr->textures["DScale2"]  = targetTextureResourceViewScaledDown;
+	resourceMgr->textures["DScale"]  = targetTextureResourceViewScaledDown;
+	resourceMgr->textures["DScale2"]  = targetTextureResourceViewScaledDown2;
+	
 
 	resourceMgr->renderTargets["Original"] = originalView;
 	resourceMgr->renderTargets["Pass1"]    = targetView1;
 	resourceMgr->renderTargets["Pass2"]    = targetView2;
-	resourceMgr->renderTargets["DScale2"]  = targetViewScaledDown;
+	resourceMgr->renderTargets["DScale"]  = targetViewScaledDown;
+	resourceMgr->renderTargets["DScale2"]  = targetViewScaledDown2;
 
 	resourceMgr->viewports["Original"] = mScreenViewport;
 	resourceMgr->viewports["DScale2"]  = mScreenViewportDiv5;
@@ -247,6 +250,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/quickie.dds", "quickie");
 	resourceMgr->addTexture(L"res/textures/asteroidTexture.jpg", "asteroid");
 	resourceMgr->addTexture(L"res/textures/bombTex.jpg", "bomb");
+	resourceMgr->addTexture(L"res/textures/bombBumpTex.jpg", "bombBump");
 	resourceMgr->addTexture(L"res/textures/bombGlowTex.jpg", "bombGlow");
 	resourceMgr->addTexture(L"res/textures/asteroidBump.jpg", "asteroidBump");
 	resourceMgr->addTexture(L"res/textures/shiphullTexture.jpg", "shipTexture");
@@ -273,6 +277,7 @@ void addResources() {
 	std::cout << "=== COMPILING EFFECTS ===" << std::endl;
 	//effects
 	resourceMgr->addEffect(L"res/shaders/betterPhong.fx", "betterPhong" );
+	resourceMgr->addEffect(L"res/shaders/betterPhongBump.fx", "betterPhongBump" );
 	resourceMgr->addEffect(L"res/shaders/betterPhongInstanced.fx", "instancedPhong" );
 	resourceMgr->addEffect(L"res/shaders/genericPostProcess.fx", "genericPost" );
 	resourceMgr->addEffect(L"res/shaders/contrast.fx", "contrast" );
@@ -289,6 +294,10 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "betterPhong", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "betterPhong", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "betterPhong", "LightsBuffer", "Light" );
+
+	resourceMgr->setEffectBuffer( "betterPhongBump", "perObject", "Object" );
+	resourceMgr->setEffectBuffer( "betterPhongBump", "CameraBuffer", "Camera" );
+	resourceMgr->setEffectBuffer( "betterPhongBump", "LightsBuffer", "Light" );
 
 	resourceMgr->setEffectBuffer( "instancedPhong", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "instancedPhong", "CameraBuffer", "Camera" );
@@ -347,6 +356,7 @@ void addResources() {
 	bld.size = 3;
 
 	resourceMgr->addInputLayout( &bld, "betterPhong", "Render" );
+	resourceMgr->addInputLayout( &bld, "betterPhongBump", "Render" );
 	resourceMgr->addInputLayout( &bld, "genericPost", "Render" );
 	resourceMgr->addInputLayout( &bld, "contrast", "Render" );
 	resourceMgr->addInputLayout( &bld, "skyShader", "Render" );

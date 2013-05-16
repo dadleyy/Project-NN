@@ -70,7 +70,7 @@ Mat4 transpose(Mat4 m);
 
 
 XMFLOAT3 add(XMFLOAT3 v1, XMFLOAT3 v2);
-
+XMFLOAT3 cross(XMFLOAT3 v1, XMFLOAT3 v2);
 
 //*******************************
 //Multiplication*

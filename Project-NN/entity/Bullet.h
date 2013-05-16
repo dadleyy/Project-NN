@@ -10,6 +10,7 @@ class PrintUponCollision;
 class BulletFiring;
 class BulletManager;
 class Transform;
+class PhysicsComponent;
 
 class Bullet : public GameObject {
 public:
@@ -19,7 +20,7 @@ public:
 
 	void Update(float dt);
 	
-	static const int SPEED = 1000;
+	const float SPEED;
 	XMFLOAT3 forward;
 	DrawLasers* laserDraw;
 
@@ -28,4 +29,5 @@ private:
 	BulletManager* manager;
 	PrintUponCollision* print;
 	BulletFiring* fireBullet;
+	PhysicsComponent* physics;
 };

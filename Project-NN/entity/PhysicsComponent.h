@@ -42,6 +42,7 @@ public:
 	Transform* transform;
 
 	const float MIN_DAMP;
+	float minSpeed;
 
 	float mass;
 	float speed;
@@ -56,6 +57,7 @@ public:
 	float angAccelerationDamp;
 
 	XMFLOAT3 position;
+	XMFLOAT3 rotAxis;
 	Quaternion quaternion;
 	float angularVelocity;
 	float angularAcceleration;

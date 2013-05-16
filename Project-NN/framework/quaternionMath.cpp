@@ -37,6 +37,11 @@ XMFLOAT3 add( XMFLOAT3 v1, XMFLOAT3 v2 )
 	return XMFLOAT3(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
+XMFLOAT3 cross( XMFLOAT3 v1, XMFLOAT3 v2)
+{
+	return XMFLOAT3( v1.y*v2.z-v1.z*v2.y,  v1.z*v2.x-v1.x*v2.z,  v1.x*v2.y-v1.y*v2.x );
+}
+
 void Mat4::toArray(float* a)
 {
 	a[0] = x[0];  a[1] = x[1];	 a[2] = x[2];	a[3] = x[3];

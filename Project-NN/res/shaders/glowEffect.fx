@@ -6,7 +6,7 @@ Texture2D blurredTex2;
 float offsets[3] = {0.0, 1.3846153846, 3.2307692308};
 float weights[3] = {0.2270270270, 0.3162162162,  0.0702702703};
 float2 texDimensions;
-
+float intensity = 1;
 SamplerState textureSampler
 {
 	Filter = MIN_MAG_MIP_LINEAR;
@@ -59,7 +59,7 @@ float4 HorizontalBlur( PIXEL input ) : SV_Target
 	}
 
 
-	return color;
+	return color*intensity;
 }
 
 float4 VerticalBlur( PIXEL input ) : SV_Target
@@ -75,7 +75,7 @@ float4 VerticalBlur( PIXEL input ) : SV_Target
 	}
 
 
-	return color;
+	return color*intensity;
 }
 
 float4 addTex( PIXEL input ) : SV_Target
