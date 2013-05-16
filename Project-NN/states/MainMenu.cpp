@@ -38,6 +38,14 @@ void MainMenu::Init(StateManager* manager)
 	instructionsBtn.style = MENU_BUTTON;
 	instructionsBtn.position = XMFLOAT2( 125.0f, 460.0f );
 
+	UIElementDescription exitBtn;
+	exitBtn.width = 170.0f;
+	exitBtn.height = 50.0f;
+	exitBtn.function = StateManager::ExitGame;
+	exitBtn.texture = "exitBtn";
+	exitBtn.style = MENU_BUTTON;
+	exitBtn.position = XMFLOAT2( 125.0f, 530.0f );
+
 	UIElementDescription menubg;
 	menubg.width = 800.0f;
 	menubg.height = 600.0f;
@@ -50,6 +58,7 @@ void MainMenu::Init(StateManager* manager)
 	buttons.push_back( new MenuItem( manager, playbtn ) );
 	buttons.push_back( new MenuItem( manager, creditbtn ) );
 	buttons.push_back( new MenuItem( manager, instructionsBtn ) );
+	buttons.push_back( new MenuItem( manager, exitBtn ) );
 }
 
 void MainMenu::Cleanup() 

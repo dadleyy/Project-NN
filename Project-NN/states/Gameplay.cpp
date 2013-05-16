@@ -15,6 +15,7 @@
 #include "entity/Enemy.h"
 #include "entity/Bullet.h"
 #include "entity/Spacecraft.h"
+#include "entity/MenuItem.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "entity/Transform.h"
@@ -64,7 +65,6 @@ void Gameplay::Init(StateManager* manager) {
 	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
 	laserDraw->createBuffer();
 
-	// ui
 
 	//bullets
 	for(int i = 0; i < 50; i++) {
@@ -106,6 +106,17 @@ void Gameplay::Init(StateManager* manager) {
 
 	resourceMgr->md3dImmediateContext->RSSetState(0);
 	resourceMgr->camera.SetPosition(XMFLOAT3(0.0f, 0.0f, -10.0f));
+
+	// ui
+	UIElementDescription quitBtn;
+	quitBtn.width = 60.0f;
+	quitBtn.height = 60.0f;
+	quitBtn.function = StateManager::ExitGame;
+	quitBtn.texture = "closeBtn";
+	quitBtn.style = MENU_BUTTON;
+	quitBtn.position = XMFLOAT2( 750.0f, 50.0f );
+	closeButton =  new MenuItem( manager, quitBtn );
+
 }
 
 void Gameplay::Cleanup() {
@@ -139,6 +150,8 @@ void Gameplay::Update(float dt) {
 
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
 	resourceMgr->updateShaderBuffers();
+
+	closeButton->Update( dt );
 }
 
 void Gameplay::Draw() {
@@ -189,4 +202,5 @@ void Gameplay::Draw() {
 	glow->setEffectVariables();
 	glow->draw("DScale", "DScale2", "Pass2", "Original");
 
+	closeButton->Draw( );
 }

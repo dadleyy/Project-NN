@@ -276,6 +276,8 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/credit-button.png", "creditBtn");
 	resourceMgr->addTexture(L"res/textures/back-button.png", "backBtn");
 	resourceMgr->addTexture(L"res/textures/guide-button.png", "guideBtn");
+	resourceMgr->addTexture(L"res/textures/exit-button.png", "exitBtn");
+	resourceMgr->addTexture(L"res/textures/close-button.png", "closeBtn");
 	resourceMgr->addTexture(L"res/textures/bg-template.png", "menuBG");
 	resourceMgr->addTexture(L"res/textures/instructions-bg.png", "instructionsBG");
 	resourceMgr->addTexture(L"res/textures/credits-bg.png", "creditsBG");

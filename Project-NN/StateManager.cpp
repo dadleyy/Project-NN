@@ -35,6 +35,10 @@ int StateManager::ToInstructions( StateManager* manager )
 
 int StateManager::Blank( StateManager* manager ){ return 1; }
 
+int StateManager::ExitGame( StateManager* manager)
+{
+	exit(0);
+}
 
 StateManager::StateManager(void) : states(), wait_time(0.0f) {
 }

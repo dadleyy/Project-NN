@@ -29,6 +29,7 @@ public:
 	static int ToMainMenu( StateManager* manager );
 	static int ToInstructions( StateManager* manager );
 	static int Blank( StateManager* manager);
+	static int ExitGame( StateManager* manager);
 
 private:
 	std::vector<GameState*> states;
