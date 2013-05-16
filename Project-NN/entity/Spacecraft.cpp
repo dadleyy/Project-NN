@@ -12,6 +12,7 @@
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
+	damage = 10;
 	transform = new Transform();
     drawable = new Drawable();
 	bManager = new BulletManager();
@@ -40,8 +41,6 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 
 	physics->setLinVDamp( .95 );
 	physics->setLinADamp( .95 );
-
-
 
 	GameObject::InitComponents();
 }

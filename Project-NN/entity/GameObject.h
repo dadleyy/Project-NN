@@ -35,6 +35,7 @@ public:
 	Collider* collider;
 	bool active;
 	bool glow;
+	float damage;
 
 protected:
 	std::vector<Component*> components;

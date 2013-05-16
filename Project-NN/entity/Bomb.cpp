@@ -12,7 +12,7 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 	collider = new Collider();
 	explodeOnContact = new ExplodeOnContact(30);
 	glowColorMode = 1;
-
+	damage = 0;
 	transform->position = XMFLOAT3(xPos, yPos, zPos);
 	transform->scale = XMFLOAT3(3, 3, 3);
 	drawable->getEffectVariables("betterPhongBump", "Render");

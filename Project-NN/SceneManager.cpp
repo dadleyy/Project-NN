@@ -30,3 +30,10 @@ std::unordered_set<GameObject*>::iterator SceneManager::Begin() {
 std::unordered_set<GameObject*>::iterator SceneManager::End() {
 	return sceneObjects.end();
 }
+
+void SceneManager::Clear() {
+	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
+		delete *it;
+	}
+	sceneObjects.clear();
+}

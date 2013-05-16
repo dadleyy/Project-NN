@@ -13,6 +13,6 @@ public:
 	std::vector<XMFLOAT3> points;
 	float glowColor[4];
 	float laserColor[4];
-	float glowMode;
+	float glowMode[1];
 };
 

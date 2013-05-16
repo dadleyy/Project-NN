@@ -58,7 +58,7 @@ void Gameplay::Init(StateManager* manager) {
 
 	laserDraw->setShader("glowDraw", "RenderGlowy");
 	laserDraw->addEffectVariables("glowColor", "color", laserDraw->glowColor);
-	laserDraw->addEffectVariables("glowColorMode", "colorMode", &laserDraw->glowMode);
+	laserDraw->addEffectVariables("glowColorMode", "colorMode", laserDraw->glowMode);
 
 	laserDraw->setShader("laserEffect", "RenderLasers");
 	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
@@ -94,7 +94,7 @@ void Gameplay::Init(StateManager* manager) {
 
 	uniform_real_distribution<float> bombDistribution(-30, 30);
 
-	for(int i = 0; i < 2; i++) {
+	for(int i = 0; i < 5; i++) {
 		sceneMgr->Insert(new Bomb(
 			bombDistribution(resourceMgr->randomEngine),
 			bombDistribution(resourceMgr->randomEngine),
@@ -109,10 +109,11 @@ void Gameplay::Init(StateManager* manager) {
 }
 
 void Gameplay::Cleanup() {
-	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
-		delete *it;
-	}
+	sceneMgr->Clear();
+	asteroids.clear();
 	delete asteroidDraw;
+	delete glow;
+	delete laserDraw;
 }
 
 

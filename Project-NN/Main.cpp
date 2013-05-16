@@ -106,7 +106,6 @@ bool Game::Init() {
 	R_btn = 3;
 	input = new Input();
 
-	manager.Init();
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
 	addResources( );
@@ -118,7 +117,7 @@ bool Game::Init() {
 	OnResize();
 
 	resourceMgr->camera.UpdateViewMatrix();
-	manager.ChangeState(MainMenu::Instance());
+	manager.Init(MainMenu::Instance());
 	return true;
 }
 
