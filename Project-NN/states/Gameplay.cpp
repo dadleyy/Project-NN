@@ -64,7 +64,7 @@ void Gameplay::Init(StateManager* manager) {
 	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
 	laserDraw->createBuffer();
 
-	uniform_real_distribution<float> distribution(-50, 50);
+	uniform_real_distribution<float> distribution(-200, 200);
 
 	
 	//bullets

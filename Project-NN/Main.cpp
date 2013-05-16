@@ -416,8 +416,8 @@ void addResources() {
 
 	std::cout << "=== ADDING LIGHTS ===" << std::endl;
 	//LIGHTS
-	resourceMgr->addLight(40, 40, 3.5, .1, .2, .85, 1.0,  -.3, 0, 1, 0, 1, 1.3, NONE, 1, DIRECTIONAL_LIGHT);
-	resourceMgr->addLight(40, 40, 3.5, .85, .75, .75, 1.0,  1, 0, -.3, 0, 1, 1.3, NONE, 1, DIRECTIONAL_LIGHT);
-	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 30, 45, 2, LINEAR, 1, SPOT_LIGHT);
+	resourceMgr->addLight(40, 40, 3.5, .4, .5, .85, 1.0,  -.3, 0, 1, 0, 1, .4, NONE, 1, DIRECTIONAL_LIGHT);
+	resourceMgr->addLight(40, 40, 3.5, .85, .75, .75, 1.0,  1, 0, -.3, 0, 1, .7, NONE, 1, DIRECTIONAL_LIGHT);
+	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 55, 45, 2, LINEAR, 1, SPOT_LIGHT);
 }
 
