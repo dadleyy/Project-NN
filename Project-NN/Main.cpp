@@ -170,16 +170,18 @@ void Game::UpdateScene(float dt) {
 
 void Game::DrawScene() 
 {
+
+	//md3dImmediateContext->ClearState( );
 	// Clear the back buffer 
 	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Black));
 	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	//render the scene
+	// render the scene
 	md3dImmediateContext->OMSetRenderTargets(1, &originalView, mDepthStencilView);
 	md3dImmediateContext->ClearRenderTargetView(originalView, reinterpret_cast<const float*>(&Colors::Black));
 	manager.Draw();
 	
-	//post Processing
+	// post Processing
 	//*******************
 
 
@@ -251,6 +253,8 @@ void addResources() {
 	std::cout << "=== COMPILING CURSORS ===" << std::endl;
 	resourceMgr->addCursor(L"res/cursors/default-cursor.cur","default");
 	resourceMgr->addCursor(L"res/cursors/hover-cursor.cur","hover");
+	resourceMgr->addCursor(L"res/cursors/shooting-cursor.cur","shooting");
+	resourceMgr->addCursor(L"res/cursors/active-cursor.cur","active");
 
 
 	std::cout << "=== COMPILING TEXTURES ===" << std::endl;
@@ -272,6 +276,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/back-button.png", "backBtn");
 	resourceMgr->addTexture(L"res/textures/guide-button.png", "guideBtn");
 	resourceMgr->addTexture(L"res/textures/bg-template.png", "menuBG");
+	resourceMgr->addTexture(L"res/textures/instructions-bg.png", "instructionsBG");
 	resourceMgr->addTexture(L"res/textures/credits-bg.png", "creditsBG");
 
 
@@ -345,8 +350,6 @@ void addResources() {
 	std::cout << "=== COMPILING INPUT LAYOUTS ===" << std::endl;
 	// input layouts
 
-	//
-	// BASIC/GENERIC EFFECT INPUT LAYOUT
 	std::cout << "-> adding basic effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC basic_format[] = { 
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0 ,                            D3D11_INPUT_PER_VERTEX_DATA, 0}, 
@@ -367,8 +370,6 @@ void addResources() {
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Vert" );
 	resourceMgr->addInputLayout( &bld, "glowEffect", "Add" );
 
-	//
-	// LASER EFFECT INPUT LAYOUT
 	std::cout << "-> adding laser effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC laser_format[] = { 
 		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 , D3D11_INPUT_PER_VERTEX_DATA, 0}
@@ -378,8 +379,6 @@ void addResources() {
 	lld.size = 1;
 	resourceMgr->addInputLayout( &lld, "laserEffect", "RenderLasers" );
 
-	//
-	// MENU EFFECT INPUT LAYOUT
 	std::cout << "-> adding menu effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC menu_format[] = { 
 		{"WIDTH",    0, DXGI_FORMAT_R32_FLOAT,    0, D3D10_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}, 
@@ -390,10 +389,7 @@ void addResources() {
 	mld.format = menu_format;
 	mld.size = 3;
 	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
-	resourceMgr->addInputLayout( &mld, "menuEffect", "MenuGlow" );
 
-	//
-	// INSTANCED EFFECT INPUT LAYOUT
 	std::cout << "-> adding instanced effect input layout" << std::endl;
 	D3D11_INPUT_ELEMENT_DESC bump_phong_format[] = { 
 		{"POSITION",	   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 0 ,                              D3D11_INPUT_PER_VERTEX_DATA, 0}, 
@@ -419,5 +415,37 @@ void addResources() {
 	resourceMgr->addLight(40, 40, 3.5, .4, .5, .85, 1.0,  -.3, 0, 1, 0, 1, .4, NONE, 1, DIRECTIONAL_LIGHT);
 	resourceMgr->addLight(40, 40, 3.5, .85, .75, .75, 1.0,  1, 0, -.3, 0, 1, .7, NONE, 1, DIRECTIONAL_LIGHT);
 	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 55, 45, 2, LINEAR, 1, SPOT_LIGHT);
-}
 
+	std::cout << "=== COMPILING BLEND STATES ===" << std::endl;
+	// blend states
+
+	D3D11_BLEND_DESC default_blend;
+	ZeroMemory( &default_blend, sizeof(D3D11_BLEND_DESC) );
+	default_blend.AlphaToCoverageEnable = FALSE;
+	default_blend.IndependentBlendEnable = FALSE;
+	default_blend.RenderTarget[0].BlendEnable = FALSE;
+	default_blend.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	default_blend.RenderTarget[0].DestBlend	= D3D11_BLEND_ZERO;
+	default_blend.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	default_blend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	default_blend.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	default_blend.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	default_blend.RenderTarget[0].RenderTargetWriteMask	= D3D11_COLOR_WRITE_ENABLE_ALL;
+	resourceMgr->addBlendState( default_blend, "defaultBlend" );
+
+
+	D3D11_BLEND_DESC button_blend;
+	ZeroMemory( &button_blend, sizeof(D3D11_BLEND_DESC) );
+	button_blend.AlphaToCoverageEnable = FALSE;
+	button_blend.IndependentBlendEnable = FALSE;
+	button_blend.RenderTarget[0].BlendEnable = TRUE;
+	button_blend.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	button_blend.RenderTarget[0].DestBlend	= D3D11_BLEND_ONE;
+	button_blend.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	button_blend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+	button_blend.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	button_blend.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	button_blend.RenderTarget[0].RenderTargetWriteMask	= D3D11_COLOR_WRITE_ENABLE_ALL;
+	resourceMgr->addBlendState( button_blend, "buttonBlend" );
+
+}
