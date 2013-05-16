@@ -43,8 +43,6 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	physics->setLinVDamp( .95 );
 	physics->setLinADamp( .95 );
 
-
-
 	GameObject::InitComponents();
 }
 

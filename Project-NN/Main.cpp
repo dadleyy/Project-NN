@@ -108,7 +108,7 @@ bool Game::Init() {
 
 
 	resourceMgr = new ResourceManager(md3dDevice, md3dImmediateContext);
-	addResources();
+	addResources( );
 	
 	physicsMgr = new PhysicsManager();
 	sceneMgr = new SceneManager();
@@ -201,30 +201,37 @@ void Game::DrawScene()
 
 
 void Game::OnMouseDownL(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, L_btn, x, y);
 }
 
 void Game::OnMouseDownM(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, M_btn, x, y);
 }
 
 void Game::OnMouseDownR(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseDown(btnState, R_btn, x, y);
 }
 
 void Game::OnMouseUpL(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, L_btn, x, y);
 }
 
 void Game::OnMouseUpM(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, M_btn, x, y);
 }
 
 void Game::OnMouseUpR(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseUp(btnState, R_btn, x, y);
 }
 
 void Game::OnMouseMove(WPARAM btnState, int x, int y) {
+	resourceMgr->setCursor( );
 	input->OnMouseMove(btnState, x, y);
 }
 
@@ -240,6 +247,10 @@ void addResources() {
 	resourceMgr->addCBuffer(816, "Light");
 	resourceMgr->addCBuffer(144, "Camera");
 	resourceMgr->addCBuffer(128, "Object");
+
+	std::cout << "=== COMPILING CURSORS ===" << std::endl;
+	resourceMgr->addCursor(L"res/cursors/default-cursor.cur","default");
+	resourceMgr->addCursor(L"res/cursors/hover-cursor.cur","hover");
 
 
 	std::cout << "=== COMPILING TEXTURES ===" << std::endl;
@@ -259,6 +270,7 @@ void addResources() {
 	resourceMgr->addTexture(L"res/textures/play-button.png", "playBtn");
 	resourceMgr->addTexture(L"res/textures/credit-button.png", "creditBtn");
 	resourceMgr->addTexture(L"res/textures/back-button.png", "backBtn");
+	resourceMgr->addTexture(L"res/textures/guide-button.png", "guideBtn");
 	resourceMgr->addTexture(L"res/textures/bg-template.png", "menuBG");
 	resourceMgr->addTexture(L"res/textures/credits-bg.png", "creditsBG");
 
@@ -378,7 +390,7 @@ void addResources() {
 	mld.format = menu_format;
 	mld.size = 3;
 	resourceMgr->addInputLayout( &mld, "menuEffect", "Render" );
-	resourceMgr->addInputLayout( &mld, "menuEffect", "Glow" );
+	resourceMgr->addInputLayout( &mld, "menuEffect", "MenuGlow" );
 
 	//
 	// INSTANCED EFFECT INPUT LAYOUT
@@ -401,7 +413,6 @@ void addResources() {
 	bipd.size = 11;
 	resourceMgr->addInputLayout( &bipd, "bumpInstancePhong", "Render" );
 	resourceMgr->addInputLayout( &bipd, "instancedPhong", "Render" );
-
 
 	std::cout << "=== ADDING LIGHTS ===" << std::endl;
 	//LIGHTS

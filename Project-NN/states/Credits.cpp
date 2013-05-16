@@ -17,12 +17,14 @@ void Credits::Init(StateManager* manager)
 	backbtn.height = 50.0f;
 	backbtn.function = StateManager::ToMainMenu;
 	backbtn.texture = "backBtn";
+	backbtn.style = MENU_BUTTON;
 	backbtn.position = XMFLOAT2( 125.0f, 320.0f );
 
 	MenuItemDescription creditbg;
 	creditbg.width = 800.0f;
 	creditbg.height = 600.0f;
 	creditbg.function = StateManager::Blank;
+	creditbg.style = MENU_STATIC;
 	creditbg.texture = "creditsBG";
 	creditbg.position = XMFLOAT2( 400.0f, 300.0f );
 

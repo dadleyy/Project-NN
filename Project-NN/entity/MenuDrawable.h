@@ -4,6 +4,7 @@
 #include "Drawable.h"
 
 class Transform;
+class MenuComponent;
 struct MenuItemDescription;
 
 class MenuDrawable : public Drawable {
@@ -18,5 +19,8 @@ public:
 private:
 
 	Transform* transform;
+	MenuComponent* control;
+	ID3DX11EffectScalarVariable* ageVar;
+	int debug_count;
 
 };

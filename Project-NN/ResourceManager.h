@@ -53,12 +53,14 @@ public:
 	std::unordered_map<char*, ID3D11ShaderResourceView*> textures;
 	std::unordered_map<char*, ID3D11RenderTargetView*> renderTargets;
 	std::unordered_map<char*, D3D11_VIEWPORT> viewports;
+	std::unordered_map<char*, HCURSOR> cursors;
 
 	bool lightChange;
 	unsigned int numLights;
 
 	bool cameraChange;
 
+	void addCursor( WCHAR* file, char* cursorID ); 
 	void addEffect(WCHAR* file, char* name);
 	void addTexture(WCHAR* file, char* name);
 	void addCubeMap(WCHAR* file, char* name);
@@ -77,7 +79,8 @@ public:
 	ID3DX11Effect* getEffect( char* effectName );
 	ID3D11Buffer* getCBuffer( char* bufferName );
 	void setEffectBuffer( char* effectID, char* effectBufferName, char* localBufferName );
-
+	void setCursor( char* cursorID );
+	void setCursor( void );
 
 	Camera camera;
 
@@ -88,6 +91,9 @@ public:
 
 private:
 	HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR szShaderModel, ID3DBlob** ppBlobOut );
+	bool fileExists( WCHAR* filename );
+	char* current_cursor;
+
 };
 
 extern ResourceManager* resourceMgr;

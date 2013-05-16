@@ -30,6 +30,8 @@ Gameplay Gameplay::game_instance;
 
 void Gameplay::Init(StateManager* manager) {
 	GameState::Init(manager);
+	
+	resourceMgr->setCursor("default");
 
 	auto spacer = new Spacecraft(0.0, 0.0, 0.0);
 	bManager = spacer->getBullets();
@@ -116,7 +118,6 @@ void Gameplay::Cleanup() {
 
 
 void Gameplay::Update(float dt) {
-
 	// pause state
 	if( input->getKeyDown( 27 ) ) {
 		manager->ChangeState( MainMenu::Instance( ) );
