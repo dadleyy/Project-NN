@@ -75,6 +75,8 @@ void PhysicsComponent::Update(float dt) {
 	                     velocity.y + acceleration.y*dt,
 	                     velocity.z + acceleration.z*dt );
 
+	if(velocity.x < 0)
+		velocity.x  = 0;
 	//normalize the velocity, multiply by speed, and add the acceleration from the last frame
 	speed = magnitude( velocity );
 

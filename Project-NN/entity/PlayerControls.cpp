@@ -89,26 +89,7 @@ void PlayerControls::handleKey( int keycode, float dt ) {
 		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
 		physics->setAcceleration( XMFLOAT3(physics->acceleration.x + .5, physics->acceleration.y, physics->acceleration.z) );
 		break;
-	case 'B':
-		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(0,0,0) );
-		physics->setVelocity(XMFLOAT3(0,0,0));
-		physics->setSpeed(0);
-		break;
-		/*
-	case 'Q':
-		drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
-		break;
-	case 'E':
-		drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
-		break;
-	case 'Z':
-		drawAtts->camera.Strafe( -CAMERA_VELOCITY * dt );
-		break;
-	case 'C':
-		drawAtts->camera.Strafe( CAMERA_VELOCITY * dt );
-		break;
-		*/
+
 	default:
 		break;
 	}
