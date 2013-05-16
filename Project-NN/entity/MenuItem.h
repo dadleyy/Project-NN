@@ -5,7 +5,7 @@
 #include "StateManager.h"
 
 class Transform;
-class MenuDrawable;
+class UIDrawable;
 class MenuComponent;
 
 enum MENU_ITEM_STYLE {
@@ -13,14 +13,14 @@ enum MENU_ITEM_STYLE {
 	MENU_BUTTON = 1
 };
 
-struct MenuItemBuffer {
+struct UIElementBuffer {
 	float width;
 	float height;
 	XMFLOAT2 position;
 };
 
 // this describes menu items
-struct MenuItemDescription
+struct UIElementDescription
 {
 	float width;
 	float height;
@@ -34,7 +34,7 @@ struct MenuItemDescription
 class MenuItem : public GameObject {
 
 public:
-	MenuItem( StateManager* _manager, MenuItemDescription description );
+	MenuItem( StateManager* _manager, UIElementDescription description );
 	~MenuItem( );
 	void Draw( );
 	void Trigger( );
@@ -46,9 +46,9 @@ public:
 private:
 	Transform* transform;
 	MenuComponent* control;
-	MenuDrawable* drawable;
+	UIDrawable* drawable;
 	StateManager* manager;
-	MenuItemDescription description;
+	UIElementDescription description;
 
 	bool triggered;
 

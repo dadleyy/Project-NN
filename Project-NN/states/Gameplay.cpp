@@ -64,6 +64,7 @@ void Gameplay::Init(StateManager* manager) {
 	laserDraw->addEffectVariables("laserColor", "color", laserDraw->laserColor);
 	laserDraw->createBuffer();
 
+	// ui
 
 	//bullets
 	for(int i = 0; i < 50; i++) {
@@ -135,6 +136,7 @@ void Gameplay::Update(float dt) {
 		(*it)->Update(dt);
 	}
 
+
 	skybox->GameObject::transform->position = resourceMgr->camera.GetPosition();
 	resourceMgr->updateShaderBuffers();
 }
@@ -186,4 +188,5 @@ void Gameplay::Draw() {
 
 	glow->setEffectVariables();
 	glow->draw("DScale", "DScale2", "Pass2", "Original");
+
 }

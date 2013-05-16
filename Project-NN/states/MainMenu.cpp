@@ -14,7 +14,7 @@ void MainMenu::Init(StateManager* manager)
 	
 	resourceMgr->setCursor("default");
 
-	MenuItemDescription playbtn;
+	UIElementDescription playbtn;
 	playbtn.width = 170.0f;
 	playbtn.height = 50.0f;
 	playbtn.function = StateManager::ToGamePlay;
@@ -22,7 +22,7 @@ void MainMenu::Init(StateManager* manager)
 	playbtn.style = MENU_BUTTON;
 	playbtn.position = XMFLOAT2( 125.0f, 320.0f );
 
-	MenuItemDescription creditbtn;
+	UIElementDescription creditbtn;
 	creditbtn.width = 170.0f;
 	creditbtn.height = 50.0f;
 	creditbtn.function = StateManager::ToCredits;
@@ -30,7 +30,7 @@ void MainMenu::Init(StateManager* manager)
 	creditbtn.style = MENU_BUTTON;
 	creditbtn.position = XMFLOAT2( 125.0f, 390.0f );
 
-	MenuItemDescription instructionsBtn;
+	UIElementDescription instructionsBtn;
 	instructionsBtn.width = 170.0f;
 	instructionsBtn.height = 50.0f;
 	instructionsBtn.function = StateManager::ToInstructions;
@@ -38,7 +38,7 @@ void MainMenu::Init(StateManager* manager)
 	instructionsBtn.style = MENU_BUTTON;
 	instructionsBtn.position = XMFLOAT2( 125.0f, 460.0f );
 
-	MenuItemDescription menubg;
+	UIElementDescription menubg;
 	menubg.width = 800.0f;
 	menubg.height = 600.0f;
 	menubg.function = StateManager::Blank;

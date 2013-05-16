@@ -10,7 +10,7 @@ Instructions Instructions::instance;
 void Instructions::Init(StateManager* manager) {
 	GameState::Init(manager);
 
-	MenuItemDescription bgDesc;
+	UIElementDescription bgDesc;
 	bgDesc.width = 800.0f;
 	bgDesc.height = 600.0f;
 	bgDesc.function = StateManager::Blank;
@@ -18,7 +18,7 @@ void Instructions::Init(StateManager* manager) {
 	bgDesc.style = MENU_STATIC;
 	bgDesc.position = XMFLOAT2( 400.0f, 300.0f );
 
-	MenuItemDescription backBtnDesc;
+	UIElementDescription backBtnDesc;
 	backBtnDesc.width = 170.0f;
 	backBtnDesc.height = 50.0f;
 	backBtnDesc.function = StateManager::ToMainMenu;

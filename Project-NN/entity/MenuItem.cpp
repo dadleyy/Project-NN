@@ -1,17 +1,17 @@
 #include "MenuItem.h"
 
-#include "MenuDrawable.h"
+#include "UIDrawable.h"
 #include "Transform.h"
 #include "MenuControlComponent.h"
 #include "input.h"
 
-MenuItem::MenuItem( StateManager* _manager, MenuItemDescription description ) : triggered(false)
+MenuItem::MenuItem( StateManager* _manager, UIElementDescription description ) : triggered(false)
 {
 	manager = _manager;
 	this->description = description;
 
 	transform = new Transform( );
-	drawable = new MenuDrawable( );
+	drawable = new UIDrawable( );
 	control = new MenuComponent( );
 
 	transform->position = XMFLOAT3( 0.0f, 0.0f, 1.0f );
@@ -20,7 +20,7 @@ MenuItem::MenuItem( StateManager* _manager, MenuItemDescription description ) : 
 	drawable->getEffectVariables("menuEffect","Render");
 	drawable->setShader("menuEffect","Render");
 	drawable->createBuffer( description );
-	drawable->addTexture( description.texture, "buttonTexture");
+	drawable->addTexture( description.texture, "itemTexture");
 
 	components.push_back( transform );
 	components.push_back( drawable );

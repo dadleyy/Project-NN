@@ -11,7 +11,7 @@
 class GameObject;
 class MenuItem;
 class Transform;
-struct MenuItemDescription;
+struct UIElementDescription;
 
 class MenuComponent : public Component {
 

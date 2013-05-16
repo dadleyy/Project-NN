@@ -7,7 +7,6 @@
     <ClCompile Include="entity\DivideOnContact.cpp" />
     <ClCompile Include="entity\Drawables\DrawableInstancedModel.cpp" />
     <ClCompile Include="entity\Health.cpp" />
-    <ClCompile Include="GuiManager.cpp" />
     <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="entity\Bomb.cpp" />
     <ClCompile Include="entity\Bullet.cpp" />
@@ -58,11 +57,12 @@
     <ClCompile Include="states\Pause.cpp" />
     <ClCompile Include="entity\RandomRotation.cpp" />
     <ClCompile Include="entity\MenuControlComponent.cpp" />
-    <ClCompile Include="entity\MenuDrawable.cpp" />
     <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="states\Credits.cpp" />
     <ClCompile Include="entity\attachLight.cpp" />
     <ClCompile Include="entity\PlayerGameplay.cpp" />
+    <ClCompile Include="entity\GameplayUI.cpp" />
+    <ClCompile Include="entity\UIDrawable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -71,7 +71,6 @@
     <ClInclude Include="entity\DivideOnContact.h" />
     <ClInclude Include="entity\Drawables\DrawableInstancedModel.h" />
     <ClInclude Include="entity\Health.h" />
-    <ClInclude Include="GuiManager.h" />
     <ClInclude Include="OctTree.h" />
     <ClInclude Include="entity\Bomb.h" />
     <ClInclude Include="entity\Bullet.h" />
@@ -123,11 +122,12 @@
     <ClInclude Include="entity\RandomRotation.h" />
     <ClInclude Include="entity\MenuItem.h" />
     <ClInclude Include="entity\MenuControlComponent.h" />
-    <ClInclude Include="entity\MenuDrawable.h" />
     <ClInclude Include="states\Credits.h" />
     <ClInclude Include="MenuFunctions.h" />
     <ClInclude Include="entity\attachLight.h" />
     <ClInclude Include="entity\PlayerGameplay.h" />
+    <ClInclude Include="entity\GameplayUI.h" />
+    <ClInclude Include="entity\UIDrawable.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

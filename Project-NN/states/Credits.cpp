@@ -12,7 +12,7 @@ void Credits::Init(StateManager* manager)
 {
 	GameState::Init(manager);
 
-	MenuItemDescription backbtn;
+	UIElementDescription backbtn;
 	backbtn.width = 170.0f;
 	backbtn.height = 50.0f;
 	backbtn.function = StateManager::ToMainMenu;
@@ -20,7 +20,7 @@ void Credits::Init(StateManager* manager)
 	backbtn.style = MENU_BUTTON;
 	backbtn.position = XMFLOAT2( 125.0f, 320.0f );
 
-	MenuItemDescription creditbg;
+	UIElementDescription creditbg;
 	creditbg.width = 800.0f;
 	creditbg.height = 600.0f;
 	creditbg.function = StateManager::Blank;

@@ -302,7 +302,7 @@ void addResources() {
 	resourceMgr->addEffect(L"res/shaders/glowDraw.fx", "glowDraw" );
 	resourceMgr->addEffect(L"res/shaders/glowEffect.fx", "glowEffect" );
 	resourceMgr->addEffect(L"res/shaders/lasers.fx", "laserEffect" );
-	resourceMgr->addEffect(L"res/shaders/menu.fx", "menuEffect" );
+	resourceMgr->addEffect(L"res/shaders/ui.fx", "menuEffect" );
 
 
 	std::cout << "=== SETTING BUFFER REFERENCES ===" << std::endl;
