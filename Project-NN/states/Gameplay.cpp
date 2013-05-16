@@ -65,7 +65,6 @@ void Gameplay::Init(StateManager* manager) {
 	laserDraw->createBuffer();
 
 
-	
 	//bullets
 	for(int i = 0; i < 50; i++) {
 		auto bullet = new Bullet(bManager);
@@ -74,8 +73,8 @@ void Gameplay::Init(StateManager* manager) {
 	}
 
 	//asteroids
-	uniform_real_distribution<float> distribution(-50, 50);
-	for(int i = 0; i < 30; i++) {
+	uniform_real_distribution<float> distribution(-200, 200);
+	for(int i = 0; i < 50; i++) {
 		auto asteroid = new Asteroid(distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), distribution(resourceMgr->randomEngine), &asteroids);
 		sceneMgr->Insert(asteroid);
 		asteroids.push_back(asteroid);

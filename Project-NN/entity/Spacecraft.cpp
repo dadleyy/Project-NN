@@ -8,7 +8,7 @@
 #include "PlayerCameraComponent.h"
 #include "ResourceManager.h"
 #include "BulletManager.h"
-
+#include "AttachLight.h"
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
@@ -38,6 +38,7 @@ Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 	components.push_back(playerCamera);
     components.push_back(playerControls);
 	components.push_back(bManager);
+	components.push_back(new AttachLight(resourceMgr->lights[2], physics));
 
 	physics->setLinVDamp( .95 );
 	physics->setLinADamp( .95 );

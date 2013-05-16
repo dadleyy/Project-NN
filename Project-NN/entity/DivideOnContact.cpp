@@ -45,17 +45,17 @@ void DivideOnContact::HandleCollision(GameObject* other) {
 		float initialSpeed = physics->speed;
 
 		physics = obj1->GetComponent<PhysicsComponent>();
-		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(1,0,0))), initialSpeed);
+		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(1,0,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;
 
 		physics = obj2->GetComponent<PhysicsComponent>();
-		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(-1,0,0))), initialSpeed);
+		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(-1,0,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;
 
 		physics = obj3->GetComponent<PhysicsComponent>();
-		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(0,-1,0))), initialSpeed);
+		physics->velocity = scale(normalize(add(initialVel,XMFLOAT3(0,-1,0))), initialSpeed*1.5);
 		physics->rotAxis = normalize(XMFLOAT3(rand(), rand(), rand()));
 		physics->angularVelocity = (((float)rand())/RAND_MAX) * 20;
 

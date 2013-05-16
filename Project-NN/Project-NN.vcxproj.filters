@@ -61,6 +61,7 @@
     <ClCompile Include="entity\MenuDrawable.cpp" />
     <ClCompile Include="entity\MenuItem.cpp" />
     <ClCompile Include="states\Credits.cpp" />
+    <ClCompile Include="entity\attachLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -124,6 +125,7 @@
     <ClInclude Include="entity\MenuDrawable.h" />
     <ClInclude Include="states\Credits.h" />
     <ClInclude Include="MenuFunctions.h" />
+    <ClInclude Include="entity\attachLight.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="framework\Effects11.lib" />

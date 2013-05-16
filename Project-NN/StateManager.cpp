@@ -1,4 +1,5 @@
 #include "StateManager.h"
+#include "ResourceManager.h"
 #include "GameState.h"
 #include "states/Credits.h"
 #include "states/Gameplay.h"
@@ -72,6 +73,7 @@ void StateManager::ChangeState(GameState* state) {
 		return;
 
 	wait_time = 1.0f;
+	resourceMgr->setCursor("default");
 	if(state->IsSubState())
 		return;
 	assert(preparedStateOperation == nullptr);

@@ -73,7 +73,7 @@ float4 AmbientLight(Light light)
 
 float4 DirectionalLight(Light light, float3 normal)
 {
-	return light.Lintensity * dot(light.Ldirection.xyz, normal) * light.Lcolor;
+	return max(0,light.Lintensity * dot(light.Ldirection.xyz, normal) * light.Lcolor);
 }
 
 float4 PointLight(Light light, float3 shadePoint, float3 normal, float3 eyePosition)
@@ -137,29 +137,57 @@ float4 SpotLight(Light light, float3 shadePoint, float3 normal, float3 eyePositi
 	{
 		float intensity;
 
-		//no falloff
-		if(light.Lfalloff == 0)
+		if(light.Lradius == 0)
 		{
-			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal));
-			specularColor = float3(1,1,1) * pow( max(0, dot(R, L)), 25 );
+			//no falloff
+			if(light.Lfalloff == 0)
+			{
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal));
+				specularColor = float3(1,1,1) * pow( max(0, dot(R, L)), 25 );
+			}
+			//linear falloff
+			else if(light.Lfalloff == 1)
+			{
+				float k = 1/(sqrt(distSq));
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+				specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+			}
+
+			//quadratic falloff
+			else if(light.Lfalloff == 2)
+			{
+				float k = 1/distSq;
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+				specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+			}
 		}
 
-		//linear falloff
-		else if(light.Lfalloff == 1)
+		if(light.Lradius > 0)
 		{
-			float k = (1-sqrt(distSq)/light.Lradius);
-			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
-			specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+			//no falloff
+			if(light.Lfalloff == 0)
+			{
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal));
+				specularColor = float3(1,1,1) * pow( max(0, dot(R, L)), 25 );
+			}
+			//linear falloff
+			else if(light.Lfalloff == 1)
+			{
+				float k = 1-(sqrt(distSq)/light.Lradius);
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+				specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+			}
+
+			//quadratic falloff
+			else if(light.Lfalloff == 2)
+			{
+				float k = max(0,1-(distSq/radiusSq));
+				diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
+				specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
+			}
 		}
 
-		//quadratic falloff
-		else if(light.Lfalloff == 2)
-		{
-			float k = (1-distSq/radiusSq);
-			diffuseColor = light.Lcolor.xyz * max(0, dot(L, normal)) * k;
-			specularColor = light.Lcolor.xyz * pow( max(0, dot(R, L)), 25 ) * k;
-		}
-
+		//penumbra
 		float anglePercent = acos(angleDot)/acos(angleCos);
 		if(anglePercent > .95)
 		{
@@ -167,6 +195,13 @@ float4 SpotLight(Light light, float3 shadePoint, float3 normal, float3 eyePositi
 			specularColor *= (.05-(anglePercent - .95))/.05;
 		}
 	}
+	specularColor.x = max(0, specularColor.x);
+	specularColor.y = max(0, specularColor.y);
+	specularColor.z = max(0, specularColor.z);
+
+	diffuseColor.x = max(0, diffuseColor.x);
+	diffuseColor.y = max(0, diffuseColor.y);
+	diffuseColor.z = max(0, diffuseColor.z);
 
 	return float4((specularColor+diffuseColor)*light.Lintensity, 1.0);
 }
@@ -224,7 +259,7 @@ float4 PS( PIXEL input ) : SV_Target
 			if(lights[i].Ltype == 0)
 				finalColor += texColor * AmbientLight(lights[i]);
 			if(lights[i].Ltype == 1)
-				finalColor += texColor*DirectionalLight(lights[i], input.worldNormal);
+				finalColor += texColor*DirectionalLight(lights[i], bump);
 			if(lights[i].Ltype == 2)
 				finalColor += texColor*PointLight(lights[i], input.worldPosition, bump, cameraPosition);
 			if(lights[i].Ltype == 3)

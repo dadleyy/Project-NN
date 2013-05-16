@@ -30,5 +30,6 @@ bool Collider::IsColliding(GameObject* other) {
 	auto distVector = XMVector3LengthSq(vectorDiff);
 	float dist;
 	XMStoreFloat(&dist, distVector);
-	return dist <= transform->scale.x * transform->scale.x + otherTransform->scale.x * otherTransform->scale.x;
+	float radSq = transform->scale.x * transform->scale.x*.64 + otherTransform->scale.x * otherTransform->scale.x*.64;
+	return dist <= radSq;
 }

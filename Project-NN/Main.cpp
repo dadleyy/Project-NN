@@ -341,14 +341,6 @@ void addResources() {
 	resourceMgr->setEffectBuffer( "laserEffect", "perObject", "Object" );
 	resourceMgr->setEffectBuffer( "laserEffect", "CameraBuffer", "Camera" );
 	resourceMgr->setEffectBuffer( "laserEffect", "LightsBuffer", "Lights" );
-
-	std::cout << "=== ADDING LIGHTS ===" << std::endl;
-	//lights
-	resourceMgr->addLight(5, 5, 10, 0.1, .2, 1.0, 1.0, 0, 0, 0, 15, 1, 1, QUADRATIC, 1, POINT_LIGHT);
-	resourceMgr->addLight(0, 1,  0, 1, 1, 1, 1.0, 0, 0, 0,  0, 0, .3,  NONE, 1, AMBIENT_LIGHT);
-	resourceMgr->addLight(30, 10, 3.5, .6, .6, .6, 1.0,  0, 0, 0, 0, 1, 1, NONE, 1, POINT_LIGHT);
-	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 0, 5, 1, NONE, 1, SPOT_LIGHT);
-
 	
 	std::cout << "=== COMPILING INPUT LAYOUTS ===" << std::endl;
 	// input layouts
@@ -421,5 +413,11 @@ void addResources() {
 	bipd.size = 11;
 	resourceMgr->addInputLayout( &bipd, "bumpInstancePhong", "Render" );
 	resourceMgr->addInputLayout( &bipd, "instancedPhong", "Render" );
+
+	std::cout << "=== ADDING LIGHTS ===" << std::endl;
+	//LIGHTS
+	resourceMgr->addLight(40, 40, 3.5, .4, .5, .85, 1.0,  -.3, 0, 1, 0, 1, .4, NONE, 1, DIRECTIONAL_LIGHT);
+	resourceMgr->addLight(40, 40, 3.5, .85, .75, .75, 1.0,  1, 0, -.3, 0, 1, .7, NONE, 1, DIRECTIONAL_LIGHT);
+	resourceMgr->addLight(-30, -30, 3.5, 0.0, 1.0, 1.0, 0.0,  1, 1, 0, 55, 45, 2, LINEAR, 1, SPOT_LIGHT);
 }
 
