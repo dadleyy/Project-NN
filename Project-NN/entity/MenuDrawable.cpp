@@ -17,6 +17,8 @@ bool MenuDrawable::Init(GameObject* go) {
 
 void MenuDrawable::draw( ) 
 {
+	
+	deviceContext->OMSetBlendState( resourceMgr->blenders.at("buttonBlend")->state, NULL, 0xffffffff );
 	// Clear the back buffer 
 	deviceContext->IASetInputLayout( currentLayout );
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
@@ -34,7 +36,7 @@ void MenuDrawable::draw( )
 		currentTechnique->GetPassByIndex(p)->Apply(0, deviceContext);
 		deviceContext->Draw( numVerts, 0 );
 	}
-
+	
 	deviceContext->OMSetBlendState( resourceMgr->blenders.at("defaultBlend")->state, NULL, 0xffffffff );
 }
 

@@ -435,12 +435,14 @@ void addResources() {
 
 	D3D11_BLEND_DESC button_blend;
 	ZeroMemory( &button_blend, sizeof(D3D11_BLEND_DESC) );
+	button_blend.AlphaToCoverageEnable = FALSE;
+	button_blend.IndependentBlendEnable = FALSE;
 	button_blend.RenderTarget[0].BlendEnable = TRUE;
-	button_blend.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-	button_blend.RenderTarget[0].DestBlend	= D3D11_BLEND_ZERO;
+	button_blend.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	button_blend.RenderTarget[0].DestBlend	= D3D11_BLEND_ONE;
 	button_blend.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	button_blend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	button_blend.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	button_blend.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+	button_blend.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 	button_blend.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	button_blend.RenderTarget[0].RenderTargetWriteMask	= D3D11_COLOR_WRITE_ENABLE_ALL;
 	resourceMgr->addBlendState( button_blend, "buttonBlend" );
