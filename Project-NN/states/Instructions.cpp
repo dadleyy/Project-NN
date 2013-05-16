@@ -14,7 +14,7 @@ void Instructions::Init(StateManager* manager) {
 	bgDesc.width = 800.0f;
 	bgDesc.height = 600.0f;
 	bgDesc.function = StateManager::Blank;
-	bgDesc.texture = "menuBG";
+	bgDesc.texture = "instructionsBG";
 	bgDesc.style = MENU_STATIC;
 	bgDesc.position = XMFLOAT2( 400.0f, 300.0f );
 
