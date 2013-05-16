@@ -28,7 +28,10 @@ void Instructions::Init(StateManager* manager) {
 }
 
 void Instructions::Cleanup() {
-	//TODO: Clean up buttons.
+	for(auto it = buttons.begin(); it != buttons.end(); ++it) {
+		delete *it;
+	}
+	buttons.clear();
 }
 
 void Instructions::Update(float dt) {

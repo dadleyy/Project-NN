@@ -107,10 +107,11 @@ void Gameplay::Init(StateManager* manager) {
 }
 
 void Gameplay::Cleanup() {
-	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) {
-		delete *it;
-	}
+	sceneMgr->Clear();
+	asteroids.clear();
 	delete asteroidDraw;
+	delete glow;
+	delete laserDraw;
 }
 
 
