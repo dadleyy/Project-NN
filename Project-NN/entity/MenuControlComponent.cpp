@@ -27,13 +27,22 @@ void MenuComponent::Update( float dt ){
 		  min_x = (x_pos - hw),
 		  max_x = (x_pos + hw),
 		  min_y = (y_pos - hh),
-		  max_y = (y_pos + hh);
+		  max_y = (y_pos + hh),
+		  inc = HOVER_SPEED * dt;
 
-	if( mx < max_x && mx > min_x && my < max_y && my > min_y )
-		hover_time = ( hover_time + dt > 100.0f ) ? 0.01f : hover_time + dt;
-	else
+	if( mx < max_x && mx > min_x && my < max_y && my > min_y ){
+		
+		hover_time = ( hover_time + inc > HOVER_AGE_CAP ) ? HOVER_AGE_MIN : hover_time + inc;
+		resourceMgr->setCursor("hover");
+
+	} else {
+
+		if( hover_time != 0.0f )
+			resourceMgr->setCursor("default");
+
 		hover_time = 0.0f;
 
+	}
 }
 
 

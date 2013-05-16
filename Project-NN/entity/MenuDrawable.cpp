@@ -2,14 +2,16 @@
 #include "ResourceManager.h"
 #include "MenuItem.h"
 #include "Transform.h"
+#include "MenuControlComponent.h"
 
-MenuDrawable::MenuDrawable( ) : Drawable( )
+MenuDrawable::MenuDrawable( ) : Drawable( ), ageVar(0), debug_count(0)
 {
 	drawtopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 }
 
 bool MenuDrawable::Init(GameObject* go) {
 	transform = go->GetComponent<Transform>( );
+	control = go->GetComponent<MenuComponent>( );
 	return transform != nullptr;
 }
 
@@ -20,6 +22,11 @@ void MenuDrawable::draw( )
 	deviceContext->IASetVertexBuffers( 0, 1, &pVertexBuffer, &vertexStride, &vertexOffset );
 	deviceContext->IASetPrimitiveTopology( drawtopology );
 
+	if( ageVar == 0 )
+		ageVar = currentShader->GetVariableByName("itemHoverAge")->AsScalar( );
+
+	ageVar->SetFloat( control->getHoverAge( ) );
+
 	D3DX11_TECHNIQUE_DESC techDesc;
 	currentTechnique->GetDesc( &techDesc );
 	for(UINT p = 0; p < techDesc.Passes; ++p)
@@ -27,7 +34,6 @@ void MenuDrawable::draw( )
 		currentTechnique->GetPassByIndex(p)->Apply(0, deviceContext);
 		deviceContext->Draw( numVerts, 0 );
 	}
-
 }
 
 void MenuDrawable::createBuffer( MenuItemDescription desc )

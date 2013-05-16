@@ -11,12 +11,15 @@ MainMenu MainMenu::mainmenu_instance;
 void MainMenu::Init(StateManager* manager)
 {
 	GameState::Init(manager);
+	
+	resourceMgr->setCursor("default");
 
 	MenuItemDescription playbtn;
 	playbtn.width = 170.0f;
 	playbtn.height = 50.0f;
 	playbtn.function = StateManager::ToGamePlay;
 	playbtn.texture = "playBtn";
+	playbtn.style = MENU_BUTTON;
 	playbtn.position = XMFLOAT2( 125.0f, 320.0f );
 
 	MenuItemDescription creditbtn;
@@ -24,13 +27,15 @@ void MainMenu::Init(StateManager* manager)
 	creditbtn.height = 50.0f;
 	creditbtn.function = StateManager::ToCredits;
 	creditbtn.texture = "creditBtn";
+	creditbtn.style = MENU_BUTTON;
 	creditbtn.position = XMFLOAT2( 125.0f, 390.0f );
 
 	MenuItemDescription instructionsBtn;
 	instructionsBtn.width = 170.0f;
 	instructionsBtn.height = 50.0f;
 	instructionsBtn.function = StateManager::Blank;
-	instructionsBtn.texture = "creditBtn";
+	instructionsBtn.texture = "guideBtn";
+	instructionsBtn.style = MENU_BUTTON;
 	instructionsBtn.position = XMFLOAT2( 125.0f, 460.0f );
 
 	MenuItemDescription menubg;
@@ -38,6 +43,7 @@ void MainMenu::Init(StateManager* manager)
 	menubg.height = 600.0f;
 	menubg.function = StateManager::Blank;
 	menubg.texture = "menuBG";
+	menubg.style = MENU_STATIC;
 	menubg.position = XMFLOAT2( 400.0f, 300.0f );
 
 	menuBG = new MenuItem( manager, menubg );
@@ -53,6 +59,7 @@ void MainMenu::Cleanup()
 
 void MainMenu::Update(float dt) 
 {
+	
 	for( auto it = buttons.begin(); it != buttons.end(); ++it ){
 		(*it)->Update( dt );
 	}
@@ -60,6 +67,7 @@ void MainMenu::Update(float dt)
 
 void MainMenu::Draw() 
 {
+
 	ID3DX11EffectVectorVariable* dims = resourceMgr->effects.at("menuEffect")->effect->GetVariableByName("screenDimensions")->AsVector( );
 	float screen_dimensions[2] = { screenWidth, screenHeight };
 	dims->SetFloatVector( screen_dimensions );

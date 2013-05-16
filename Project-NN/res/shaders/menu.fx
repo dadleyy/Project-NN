@@ -2,6 +2,7 @@
 //
 Texture2D buttonTexture;
 float2 screenDimensions = float2(800.0f,600.0f);
+float itemHoverAge = 0.0f;
 
 SamplerState linearSample
 {
@@ -106,7 +107,13 @@ float4 PS( PIXEL input ) : SV_Target
 {
 	
 	float4 finalColor = buttonTexture.Sample(linearSample, input.UV);
-	return finalColor;
+	
+	float _red = (sin(itemHoverAge) / 3) + finalColor.x;
+	float _blue = (sin(itemHoverAge) / 3) + finalColor.y;
+	float _green = (sin(itemHoverAge) / 3) + finalColor.z;
+	float _alpha = finalColor.w;
+	
+	return float4( _red, _blue, _green, _alpha );
 }
 
 technique11 Render
@@ -119,14 +126,12 @@ technique11 Render
     }
 }
 
-technique11 Glow
+technique11 MenuGlow
 {
-	pass P0
+    pass P0
     {
         SetVertexShader( CompileShader( vs_5_0, VS( ) ) );
         SetGeometryShader( CompileShader( gs_5_0, GS( ) ) );
         SetPixelShader( CompileShader( ps_5_0, PS( ) ) );
     }
 }
-
-

@@ -272,3 +272,44 @@ HRESULT ResourceManager::addInputLayout( InputLayoutDescription* description, ch
 
 	return out;
 }
+bool ResourceManager::fileExists( WCHAR* filename ) 
+{
+	ifstream exists(filename);
+	bool output = exists.good( );
+	exists.close( );
+	return output;
+}
+
+void ResourceManager::addCursor( WCHAR* file, char* cursorID )
+{
+
+	if( !fileExists(file) ){
+		std::cout << "!! could not find cursor: " << cursorID << std::endl;
+		return;
+	}
+
+	HANDLE result = LoadImage( NULL, file, IMAGE_CURSOR, 0, 0, LR_LOADFROMFILE );
+	if( result == NULL ){ 
+		std::cout << "!! failed to load cursor: " << cursorID << std::endl;
+		return;
+	}
+	
+	std::cout << "++ succeded loading cursor: " << cursorID << std::endl;
+	cursors.insert( std::make_pair<char*,HCURSOR>( cursorID, (HCURSOR)result ) );	
+}
+
+void ResourceManager::setCursor( char* cursorID )
+{
+	if( cursors.find(cursorID) == cursors.end( ) ){
+		//std::cout << "!! could not set cursor: " << cursorID << ", it doesnt exist" << std::endl;
+		return;
+	}
+	SetCursor( cursors.at( cursorID ) );
+	current_cursor = cursorID;
+	//std::cout << "++ set cursor: " << cursorID << std::endl;
+}
+
+void ResourceManager::setCursor( void ) 
+{
+	SetCursor( cursors.at( current_cursor ) );	
+}
