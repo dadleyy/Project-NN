@@ -25,6 +25,7 @@ PhysicsComponent::PhysicsComponent( XMFLOAT3 fAxis, XMFLOAT3 sAxis, XMFLOAT3 uAx
 	angVelocityDamp = 0;
 	friction = 0;
 	quaternion = Quaternion(1,0,0,0);
+	minSpeed = 0;
 }
 
 
@@ -79,10 +80,10 @@ void PhysicsComponent::Update(float dt) {
 		speed = MAX_SPEED;
 		velocity = scale(normalize(velocity), MAX_SPEED);
 	}
-	if( speed < 0 ) 
+	if(speed < minSpeed)
 	{
-		speed = 0;
-		velocity = scale(velocity, 0);
+		speed = minSpeed;
+		velocity = scale(normalize(velocity), minSpeed);
 	}
 
 	// recalculate orientation from axis

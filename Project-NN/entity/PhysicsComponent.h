@@ -42,6 +42,7 @@ public:
 	Transform* transform;
 
 	const float MIN_DAMP;
+	float minSpeed;
 
 	float mass;
 	float speed;
