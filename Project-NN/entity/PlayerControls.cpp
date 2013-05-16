@@ -80,7 +80,8 @@ void PlayerControls::handleKey( int keycode, float dt ) {
 		break;
 	case 'S':
 		//drawAtts->camera.Walk( -CAMERA_VELOCITY * dt );
-		physics->setAcceleration( XMFLOAT3(physics->acceleration.x - .5, physics->acceleration.y, physics->acceleration.z) );
+		if(physics->velocity.x > .5)
+			physics->setAcceleration( XMFLOAT3(physics->acceleration.x - .5, physics->acceleration.y, physics->acceleration.z) );
 		break;
 	case 'W':
 		//drawAtts->camera.Walk( CAMERA_VELOCITY * dt );
