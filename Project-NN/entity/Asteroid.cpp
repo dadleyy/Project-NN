@@ -39,6 +39,7 @@ Asteroid::Asteroid(float xPos, float yPos, float zPos, vector<Asteroid*>* astero
 	components.push_back(transform);
 	components.push_back(physics);
 	components.push_back(new Health(100));
+	components.push_back(new DivideOnContact(3));
 	GameObject::InitComponents();
 
 }

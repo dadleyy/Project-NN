@@ -12,10 +12,11 @@ using namespace std;
 #include "BulletManager.h"
 #include "PhysicsComponent.h"
 
-Bullet::Bullet(BulletManager* gManager) : SPEED(20)
+Bullet::Bullet(BulletManager* gManager) : SPEED(50)
 {
 	transform = new Transform();
 
+	damage = 30;
 	print = new PrintUponCollision();
 	fireBullet = new BulletFiring();
 	forward = XMFLOAT3();

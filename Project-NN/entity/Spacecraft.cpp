@@ -12,6 +12,7 @@
 
 Spacecraft::Spacecraft(float xPos, float yPos, float zPos)
 {
+	damage = 10;
 	transform = new Transform();
     drawable = new Drawable();
 	bManager = new BulletManager();
