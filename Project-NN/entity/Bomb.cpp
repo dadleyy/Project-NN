@@ -35,7 +35,7 @@ Bomb::Bomb(float xPos, float yPos, float zPos) {
 
 	components.push_back(transform);
 	components.push_back(drawable);
-	//components.push_back(explodeOnContact);
+	components.push_back(explodeOnContact);
 	components.push_back(collider);
 	//components.push_back(new Wobble());
 	GameObject::InitComponents();

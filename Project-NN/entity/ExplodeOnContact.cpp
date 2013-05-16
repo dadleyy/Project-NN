@@ -17,5 +17,6 @@ bool ExplodeOnContact::Init(GameObject* go) {
 
 void ExplodeOnContact::HandleCollision(GameObject* other) {
 	//TODO: Explode
-	sceneMgr->Remove(go);
+	go->active = false;
+	//sceneMgr->Remove(go);
 }

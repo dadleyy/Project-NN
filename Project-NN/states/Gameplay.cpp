@@ -182,7 +182,7 @@ void Gameplay::Draw() {
 	resourceMgr->md3dImmediateContext->ClearRenderTargetView(resourceMgr->renderTargets["DScale"], reinterpret_cast<const float*>(&Colors::Black));
 	for(auto it = sceneMgr->Begin(); it != sceneMgr->End(); ++it) 
 	{
-		if(!(*it)->glow)
+		if(!(*it)->glow || !(*it)->active)
 			continue;
 		Drawable* temp = (*it)->GetComponent<Drawable>();
 		if(temp)
